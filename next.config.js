@@ -8,7 +8,7 @@ module.exports = {
     locales: ['en-US', 'pt'],
     defaultLocale: 'en-US',
   },
-  rewrites() {
+  async rewrites() {
     return [
       // Rewrites for /search
       {
@@ -33,13 +33,9 @@ module.exports = {
         destination: '/search',
       },
       {
-        source: '/checkout/(.*)',
-        destination: 'https://d1hhebv6hmhzhi.cloudfront.net/$1'
-      },
-      {
         source: '/checkout',
-        destination: 'https://d1hhebv6hmhzhi.cloudfront.net/'
-      }
+        destination: 'https://d1hhebv6hmhzhi.cloudfront.net'
+      },
     ]
   },
 }

@@ -59,10 +59,8 @@ export async function getStaticProps({
   params,
 }: GetStaticPropsContext<{ uri: string }>) {
   const data = await getItem(params && params.uri)
-  console.log(data, 'lul')
 
   if (!data) {
-    console.log('xixa')
     throw new Error(`Product with uri '${params!.uri}' not found`)
   }
 
