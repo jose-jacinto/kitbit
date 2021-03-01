@@ -33,8 +33,8 @@ module.exports = {
         destination: '/search',
       },
       {
-        source: '/checkout',
-        destination: 'https://d1hhebv6hmhzhi.cloudfront.net'
+        source: '/:path/checkout',
+        destination: 'https://d1hhebv6hmhzhi.cloudfront.net/'
       },
     ]
   },
