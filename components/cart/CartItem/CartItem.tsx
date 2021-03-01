@@ -9,6 +9,20 @@ import { addToCart, removeFromCart } from 'whitebrim'
 
 import s from './CartItem.module.css'
 
+interface Photo {
+  edition_options?: edition_options
+  url: string
+}
+
+interface edition_options {
+  crop_options: {
+    x: number
+    y: number
+    width: number
+    height: number
+  }
+}
+
 const CartItem = (props: any) => {
   const [removing, setRemoving] = useState(false)
   const [quantity, setQuantity] = useState(props.item.quantity)
@@ -133,6 +147,31 @@ const CartItem = (props: any) => {
     }
   }
 
+  const getProcessedUrl = (photo: Photo) => {
+    if (
+      photo &&
+      photo.edition_options !== undefined &&
+      photo.edition_options.crop_options
+    ) {
+      let myEditOption = photo.edition_options
+      let post_edition_string =
+        '&rect=' +
+        Math.floor(myEditOption.crop_options.x) +
+        ',' +
+        Math.floor(myEditOption.crop_options.y) +
+        ',' +
+        Math.floor(myEditOption.crop_options.width) +
+        ',' +
+        Math.floor(myEditOption.crop_options.height) +
+        '&fit=crop'
+      return photo.url.trim() + '?fm=jpg&w=600&h=600' + post_edition_string
+    } else if (photo && photo.url) {
+      return photo.url.trim() + '?fm=jpg&w=600&h=600'
+    } else {
+      return photo.url
+    }
+  }
+
   return (
     <li
       className={cn('flex flex-row space-x-8 py-8', {
@@ -140,18 +179,14 @@ const CartItem = (props: any) => {
       })}
     >
       <div className="w-16 h-16 bg-violet relative overflow-hidden">
-        <Image
+        <img
           className={s.productImage}
-          src={
-            props.item.photo.url.split(':')[0] !== 'https'
-              ? `https://${props.item.photo.url}`
-              : `${props.item.photo.url}`
-          }
+          src={getProcessedUrl(props.item.photo)}
           width={150}
           height={150}
           alt={props.item.name}
           // The cart item image is already optimized and very small in size
-          unoptimized
+          // unoptimized
         />
       </div>
       <div className="flex-1 flex flex-col text-base">

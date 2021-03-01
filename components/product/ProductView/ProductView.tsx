@@ -21,6 +21,20 @@ interface Props {
   product: any
 }
 
+interface Photo {
+  edition_options?: edition_options
+  url: string
+}
+
+interface edition_options {
+  crop_options: {
+    x: number
+    y: number
+    width: number
+    height: number
+  }
+}
+
 const ProductView: FC<Props> = ({ product }) => {
   const { locale } = useRouter()
   const { openSidebar, openModal, setModalView } = useUI()
@@ -115,6 +129,31 @@ const ProductView: FC<Props> = ({ product }) => {
     setLocale(locale === 'pt' ? 'pt_PT' : 'en_US')
   }
 
+  const getProcessedUrl = (photo: Photo) => {
+    if (
+      photo &&
+      photo.edition_options !== undefined &&
+      photo.edition_options.crop_options
+    ) {
+      let myEditOption = photo.edition_options
+      let post_edition_string =
+        '&rect=' +
+        Math.floor(myEditOption.crop_options.x) +
+        ',' +
+        Math.floor(myEditOption.crop_options.y) +
+        ',' +
+        Math.floor(myEditOption.crop_options.width) +
+        ',' +
+        Math.floor(myEditOption.crop_options.height) +
+        '&fit=crop'
+      return photo.url.trim() + '?fm=jpg&w=600&h=600' + post_edition_string
+    } else if (photo && photo.url) {
+      return photo.url.trim() + '?fm=jpg&w=600&h=600'
+    } else {
+      return photo.url
+    }
+  }
+
   return (
     <Container className="max-w-none w-full" clean>
       <NextSeo
@@ -157,35 +196,27 @@ const ProductView: FC<Props> = ({ product }) => {
             <ProductSlider>
               {/* Main photo then gallery */}
               <div key={product.photo.url} className={s.imageContainer}>
-                <Image
+                <img
                   className={s.img}
-                  src={
-                    product.photo.url.split(':')[0] !== 'https'
-                      ? `https://${product.photo.url}`
-                      : `${product.photo.url}`
-                  }
+                  src={getProcessedUrl(product.photo)}
                   alt={product.name}
                   width={1050}
                   height={1050}
-                  priority={true}
-                  quality="85"
+                  // priority={true}
+                  // quality="85"
                 />
               </div>
               {product.gallery &&
                 product.gallery.map((image: { url: string }, i: number) => (
                   <div key={image.url} className={s.imageContainer}>
-                    <Image
+                    <img
                       className={s.img}
-                      src={
-                        image.url.split(':')[0] !== 'https'
-                          ? `https://${image.url}`
-                          : `${image.url}`
-                      }
+                      src={getProcessedUrl(product.photo)}
                       alt={'Product Image'}
                       width={1050}
                       height={1050}
-                      priority={false}
-                      quality="85"
+                      // priority={false}
+                      // quality="85"
                     />
                   </div>
                 ))}

@@ -15,6 +15,45 @@ interface Props {
   priority?: boolean
 }
 
+interface Photo {
+  edition_options?: edition_options
+  url: string
+}
+
+interface edition_options {
+  crop_options: {
+    x: number
+    y: number
+    width: number
+    height: number
+  }
+}
+
+const getProcessedUrl = (photo: Photo) => {
+  if (
+    photo &&
+    photo.edition_options !== undefined &&
+    photo.edition_options.crop_options
+  ) {
+    let myEditOption = photo.edition_options
+    let post_edition_string =
+      '&rect=' +
+      Math.floor(myEditOption.crop_options.x) +
+      ',' +
+      Math.floor(myEditOption.crop_options.y) +
+      ',' +
+      Math.floor(myEditOption.crop_options.width) +
+      ',' +
+      Math.floor(myEditOption.crop_options.height) +
+      '&fit=crop'
+    return photo.url.trim() + '?fm=jpg&w=600&h=600' + post_edition_string
+  } else if (photo && photo.url) {
+    return photo.url.trim() + '?fm=jpg&w=600&h=600'
+  } else {
+    return photo.url
+  }
+}
+
 const ProductCard: FC<Props> = ({
   className,
   product: p,
@@ -35,17 +74,14 @@ const ProductCard: FC<Props> = ({
                 {p.name}
               </span>
             </div>
-            <EnhancedImage
-              src={
-                p.photo.url.split(':')[0] !== 'https'
-                  ? `https://${p.photo.url}`
-                  : `${p.photo.url}`
-              }
+            <img
+              src={getProcessedUrl(p.photo)}
               alt={'Product Image'}
               width={imgWidth}
               height={imgHeight}
-              priority={priority}
-              quality="85"
+              // priority={priority}
+              // quality="85"
+              // loader={getProcessedUrl(p.photo)}
             />
           </div>
         ) : (
@@ -65,18 +101,15 @@ const ProductCard: FC<Props> = ({
               />
             </div>
             <div className={s.imageContainer}>
-              <EnhancedImage
+              <img
                 alt={p.name}
                 className={cn('w-full object-cover', s['product-image'])}
-                src={
-                  p.photo.url.split(':')[0] !== 'https'
-                    ? `https://${p.photo.url}`
-                    : `${p.photo.url}`
-                }
+                src={getProcessedUrl(p.photo)}
                 width={imgWidth}
                 height={imgHeight}
-                priority={priority}
-                quality="85"
+                // priority={priority}
+                // quality="85"
+                // loader={getProcessedUrl(p.photo)}
               />
             </div>
           </>

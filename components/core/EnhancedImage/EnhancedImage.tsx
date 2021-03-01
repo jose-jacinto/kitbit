@@ -4,9 +4,10 @@ import Image from 'next/image'
 
 type Props = Omit<
   JSX.IntrinsicElements['img'],
-  'src' | 'srcSet' | 'ref' | 'width' | 'height' | 'loading'
+  'src' | 'srcSet' | 'ref' | 'width' | 'height' | 'loading' | 'loader'
 > & {
   src: string
+  loader: any
   quality?: string
   priority?: boolean
   loading?: readonly ['lazy', 'eager', undefined]
