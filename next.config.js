@@ -37,7 +37,7 @@ module.exports = {
       },
       {
         source: '/checkout',
-        destination: 'https://d1hhebv6hmhzhi.cloudfront.net'
+        destination: 'https://d1hhebv6hmhzhi.cloudfront.net/'
       }
     ]
   },

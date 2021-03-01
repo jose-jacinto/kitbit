@@ -12,22 +12,24 @@ interface DropdownMenuProps {
   open: boolean
 }
 
-const LINKS = [
-  {
-    name: 'My Orders',
-    href: '/orders',
-  },
-  {
-    name: 'My Profile',
-    href: '/profile',
-  },
-  {
-    name: 'My Cart',
-    href: '/cart',
-  },
-]
-
 const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
+  const { locale } = useRouter()
+
+  const LINKS = [
+    {
+      name: locale === 'pt' ? 'Encomendas' : 'My Orders',
+      href: '/orders',
+    },
+    {
+      name: locale === 'pt' ? 'Perfil' : 'My Profile',
+      href: '/profile',
+    },
+    {
+      name: locale === 'pt' ? 'Carrinho' : 'My Cart',
+      href: '/cart',
+    },
+  ]
+
   const { theme, setTheme } = useTheme()
   const { pathname } = useRouter()
   const { closeSidebarIfPresent, setUser } = useUI()

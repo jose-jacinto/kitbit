@@ -4,10 +4,12 @@ import { Bag, Cross, Check } from '@components/icons'
 import { CartItem } from '@components/cart'
 import { Text } from '@components/ui'
 import { useUI } from '@components/ui/context'
+import { useRouter } from 'next/router'
 
 import { goToCheckoutPage } from 'whitebrim'
 
 export default function Cart() {
+  const { locale } = useRouter()
   const { user, setUser } = useUI()
 
   const goToCheckout = () => {
@@ -42,11 +44,8 @@ export default function Cart() {
               <Bag className="absolute" />
             </span>
             <h2 className="pt-6 text-2xl font-bold tracking-wide text-center">
-              Your cart is empty
+              {locale === 'pt' ? 'O carrinho está vazio' : 'Your cart is empty'}
             </h2>
-            <p className="text-accents-6 px-10 text-center pt-2">
-              Biscuit oat cake wafer icing ice cream tiramisu pudding cupcake.
-            </p>
           </div>
         ) : false ? (
           <div className="flex-1 px-4 flex flex-col justify-center items-center">
@@ -54,8 +53,9 @@ export default function Cart() {
               <Cross width={24} height={24} />
             </span>
             <h2 className="pt-6 text-xl font-light text-center">
-              We couldn’t process the purchase. Please check your card
-              information and try again.
+              {locale === 'pt'
+                ? 'Não foi possível processar a compra. Por favor, verifique o seu cartão informações e tente novamente.'
+                : 'We couldn’t process the purchase. Please check your card information and try again.'}
             </h2>
           </div>
         ) : false ? (
@@ -64,13 +64,21 @@ export default function Cart() {
               <Check />
             </span>
             <h2 className="pt-6 text-xl font-light text-center">
-              Thank you for your order.
+              {locale === 'pt'
+                ? 'Obrigado pela sua encomenda.'
+                : 'Thank you for your order.'}
             </h2>
           </div>
         ) : (
           <div className="px-4 sm:px-6 flex-1">
-            <Text variant="pageHeading">My Cart</Text>
-            <Text variant="sectionHeading">Review your Order</Text>
+            <Text variant="pageHeading">
+              {locale === 'pt' ? 'Carrinho' : 'My Cart'}
+            </Text>
+            <Text variant="sectionHeading">
+              {locale === 'pt'
+                ? 'Confirme a sua encomenda'
+                : 'Review your Order'}
+            </Text>
             <ul className="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-accents-2 border-b border-accents-2">
               {user &&
                 user.cart.map((item: any) => (
@@ -106,8 +114,14 @@ export default function Cart() {
                 <span>{subTotal.toFixed(2)} €</span>
               </li>
               <li className="flex justify-between py-1">
-                <span>Estimated Shipping</span>
-                <span>Shipping options at checkout</span>
+                <span>
+                  {locale === 'pt' ? 'Portes de Envio' : 'Estimated Shipping'}
+                </span>
+                <span>
+                  {locale === 'pt'
+                    ? 'Opções de envio disponíveis no checkout'
+                    : 'Shipping options at checkout'}
+                </span>
                 <span className="font-bold tracking-wide">0.00 €</span>
               </li>
             </ul>
@@ -120,7 +134,9 @@ export default function Cart() {
             <div className="w-full lg:w-72">
               {user && user.cart.length === 0 ? (
                 <Button href="/" Component="a" width="100%">
-                  Continue Shopping
+                  {locale === 'pt'
+                    ? 'Continuar a comprar'
+                    : 'Continue Shopping'}
                 </Button>
               ) : (
                 <Button
@@ -128,7 +144,9 @@ export default function Cart() {
                   Component="a"
                   width="100%"
                 >
-                  Proceed to Checkout
+                  {locale === 'pt'
+                    ? 'Ir para o checkout'
+                    : 'Proceed to Checkout'}
                 </Button>
               )}
             </div>
