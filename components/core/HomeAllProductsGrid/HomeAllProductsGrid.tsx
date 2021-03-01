@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { getCategoryPath, getDesignerPath } from '@lib/search'
 
@@ -15,6 +16,8 @@ interface Props {
 }
 
 const Head: FC<Props> = ({ categories, brands, newestProducts }) => {
+  const { locale } = useRouter()
+
   return (
     <div className={s.root}>
       <div className={s.asideWrapper}>
@@ -22,7 +25,9 @@ const Head: FC<Props> = ({ categories, brands, newestProducts }) => {
           <ul className="mb-10">
             <li className="py-1 text-base font-bold tracking-wide">
               <Link href={getCategoryPath('')}>
-                <a>All Categories</a>
+                <a>
+                  {locale === 'pt' ? 'Todas as Categorias' : 'All Categories'}
+                </a>
               </Link>
             </li>
             {categories.map((cat: any) => (
@@ -36,7 +41,7 @@ const Head: FC<Props> = ({ categories, brands, newestProducts }) => {
           <ul className="">
             <li className="py-1 text-base font-bold tracking-wide">
               <Link href={getDesignerPath('')}>
-                <a>All Designers</a>
+                <a>{locale === 'pt' ? 'Todas as Marcas' : 'All Brands'}</a>
               </Link>
             </li>
             {brands.flatMap((brand: any) => (

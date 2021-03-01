@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from 'react'
 import cn from 'classnames'
+import { useRouter } from 'next/router'
 
 import { UserNav } from '@components/core'
 import { Button } from '@components/ui'
@@ -12,6 +13,8 @@ import s from './CartSidebarView.module.css'
 import { goToCheckoutPage } from 'whitebrim'
 
 const CartSidebarView: FC = () => {
+  const { locale } = useRouter()
+
   const { closeSidebar, user, setUser } = useUI()
   const handleClose = () => closeSidebar()
 
@@ -69,11 +72,11 @@ const CartSidebarView: FC = () => {
             <Bag className="absolute" />
           </span>
           <h2 className="pt-6 text-2xl font-bold tracking-wide text-center">
-            Your cart is empty
+            {locale === 'pt' ? 'O carrinho está vazio' : 'Your cart is empty'}
           </h2>
-          <p className="text-accents-3 px-10 text-center pt-2">
+          {/* <p className="text-accents-3 px-10 text-center pt-2">
             Biscuit oat cake wafer icing ice cream tiramisu pudding cupcake.
-          </p>
+          </p> */}
         </div>
       ) : false ? (
         <div className="flex-1 px-4 flex flex-col justify-center items-center">
@@ -81,8 +84,9 @@ const CartSidebarView: FC = () => {
             <Cross width={24} height={24} />
           </span>
           <h2 className="pt-6 text-xl font-light text-center">
-            We couldn’t process the purchase. Please check your card information
-            and try again.
+            {locale === 'pt'
+              ? 'We couldn’t process the purchase. Please check your card information and try again.'
+              : 'Não foi possível processar a compra. Por favor, verifique as informações do seu cartão e tente novamente.'}
           </h2>
         </div>
       ) : false ? (
@@ -91,14 +95,16 @@ const CartSidebarView: FC = () => {
             <Check />
           </span>
           <h2 className="pt-6 text-xl font-light text-center">
-            Thank you for your order.
+            {locale === 'pt'
+              ? 'Obrigado pela sua encomenda.'
+              : 'Thank you for your order'}
           </h2>
         </div>
       ) : (
         <>
           <div className="px-4 sm:px-6 flex-1">
             <h2 className="pt-1 pb-4 text-2xl leading-7 font-bold text-base tracking-wide">
-              My Cart
+              {locale === 'pt' ? 'Meu Carrinho' : 'My Cart'}
             </h2>
             <ul className="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-accents-3 border-t border-accents-3">
               {user &&
@@ -122,7 +128,9 @@ const CartSidebarView: FC = () => {
                   <span>{subTotal.toFixed(2)} €</span>
                 </li>
                 <li className="flex justify-between py-1">
-                  <span>Estimated Shipping</span>
+                  <span>
+                    {locale === 'pt' ? 'Portes de Envio' : 'Estimated Shipping'}
+                  </span>
                   <span className="font-bold tracking-wide">0.00 €</span>
                 </li>
               </ul>
@@ -132,7 +140,7 @@ const CartSidebarView: FC = () => {
               </div>
             </div>
             <Button onClick={() => goToCheckout()} Component="a" width="100%">
-              Proceed to Checkout
+              {locale === 'pt' ? 'Ir para o checkout' : 'Proceed to Checkout'}
             </Button>
           </div>
         </>

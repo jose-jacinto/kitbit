@@ -1,5 +1,6 @@
 import { FC, useEffect, useState, useCallback } from 'react'
 import { validate } from 'email-validator'
+import { useRouter } from 'next/router'
 
 import { useUI } from '@components/ui/context'
 import { Logo, Button, Input } from '@components/ui'
@@ -7,6 +8,8 @@ import { Logo, Button, Input } from '@components/ui'
 interface Props {}
 
 const ForgotPassword: FC<Props> = () => {
+  const { locale } = useRouter()
+
   // Form State
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
@@ -57,12 +60,14 @@ const ForgotPassword: FC<Props> = () => {
             loading={loading}
             disabled={disabled}
           >
-            Recover Password
+            {locale === 'pt' ? 'Recuperar Password' : 'Recover Password'}
           </Button>
         </div>
 
         <span className="pt-3 text-center text-sm">
-          <span className="text-accents-7">Do you have an account?</span>
+          <span className="text-accents-7">
+            {locale === 'pt' ? 'Tem uma conta?' : 'Do you have an account?'}
+          </span>
           {` `}
           <a
             className="text-accent-9 font-bold hover:underline cursor-pointer"

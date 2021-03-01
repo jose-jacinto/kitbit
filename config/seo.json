@@ -1,6 +1,6 @@
 {
-  "title": "ACME Storefront | Powered by Next.js Commerce",
-  "titleTemplate": "%s - ACME Storefront",
+  "title": "KITBIT | Powered by Next.js Commerce",
+  "titleTemplate": "%s - KITBIT",
   "description": "Next.js Commerce -> https://www.nextjs.org/commerce",
   "openGraph": {
     "type": "website",

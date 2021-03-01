@@ -6,9 +6,10 @@ import { useRouter } from 'next/router'
 interface Props {
   className?: string
   id?: string
+  locale?: string
 }
 
-const Searchbar: FC<Props> = ({ className, id = 'search' }) => {
+const Searchbar: FC<Props> = ({ className, id = 'search', locale }) => {
   const router = useRouter()
 
   useEffect(() => {
@@ -26,7 +27,11 @@ const Searchbar: FC<Props> = ({ className, id = 'search' }) => {
         <input
           id={id}
           className={s.input}
-          placeholder="Search for products..."
+          placeholder={
+            locale === 'pt'
+              ? 'Procurar por produtos...'
+              : 'Search for products...'
+          }
           defaultValue={router.query.q}
           onKeyUp={(e) => {
             e.preventDefault()

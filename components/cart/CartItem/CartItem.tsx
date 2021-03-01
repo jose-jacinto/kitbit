@@ -142,7 +142,11 @@ const CartItem = (props: any) => {
       <div className="w-16 h-16 bg-violet relative overflow-hidden">
         <Image
           className={s.productImage}
-          src={`${props.item.photo.url}`}
+          src={
+            props.item.photo.url.split(':')[0] !== 'https'
+              ? `https://${props.item.photo.url}`
+              : `${props.item.photo.url}`
+          }
           width={150}
           height={150}
           alt={props.item.name}

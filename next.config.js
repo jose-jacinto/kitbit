@@ -4,7 +4,7 @@ module.exports = {
     domains: ['whitebrim2.imgix.net', 'cottonhat-cdn.s3-eu-west-1.amazonaws.com'],
   },
   i18n: {
-    locales: ['en-US', 'es'],
+    locales: ['en-US', 'pt'],
     defaultLocale: 'en-US',
   },
   rewrites() {
@@ -37,7 +37,7 @@ module.exports = {
       },
       {
         source: '/checkout',
-        destination: 'https://d1hhebv6hmhzhi.cloudfront.net/'
+        destination: 'https://d1hhebv6hmhzhi.cloudfront.net'
       }
     ]
   },

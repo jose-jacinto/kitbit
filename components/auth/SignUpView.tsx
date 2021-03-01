@@ -1,5 +1,6 @@
 import { FC, useEffect, useState, useCallback } from 'react'
 import { validate } from 'email-validator'
+import { useRouter } from 'next/router'
 
 import { Info } from '@components/icons'
 import { useUI } from '@components/ui/context'
@@ -10,6 +11,8 @@ import { registerUser, getUser } from 'whitebrim'
 interface Props {}
 
 const SignUpView: FC<Props> = () => {
+  const { locale } = useRouter()
+
   // Form State
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -65,7 +68,7 @@ const SignUpView: FC<Props> = () => {
         getUser()
           .then((response) => {
             setLoading(false)
-            setMessage('Success')
+            setMessage(locale === 'pt' ? 'Sucesso' : 'Success')
             //* Context
             setUser(response.data)
             setTimeout(() => {
@@ -74,12 +77,12 @@ const SignUpView: FC<Props> = () => {
             closeModal()
           })
           .catch((error) => {
-            setMessage('Error')
+            setMessage(locale === 'pt' ? 'Erro' : 'Error')
             setLoading(false)
           })
       })
       .catch(({ errors }) => {
-        setMessage('Error')
+        setMessage(locale === 'pt' ? 'Erro' : 'Error')
         setLoading(false)
       })
   }
@@ -118,10 +121,17 @@ const SignUpView: FC<Props> = () => {
           <span className="inline-block align-middle ">
             <Info width="15" height="15" />
           </span>{' '}
-          <span className="leading-6 text-sm">
-            <strong>Info</strong>: Passwords must be longer than 7 chars and
-            include numbers.{' '}
-          </span>
+          {locale === 'pt' ? (
+            <span className="leading-6 text-sm">
+              <strong>Informação</strong>: A password deve ter mais de 7
+              caracteres e incluir números
+            </span>
+          ) : (
+            <span className="leading-6 text-sm">
+              <strong>Info</strong>: Passwords must be longer than 7 chars and
+              include numbers.{' '}
+            </span>
+          )}
         </span>
         <div className="pt-2 w-full flex flex-col">
           <Button
@@ -130,12 +140,14 @@ const SignUpView: FC<Props> = () => {
             loading={loading}
             disabled={disabled}
           >
-            Sign Up
+            {locale === 'pt' ? 'Registar' : 'Sign Up'}
           </Button>
         </div>
 
         <span className="pt-1 text-center text-sm">
-          <span className="text-accents-7">Do you have an account?</span>
+          <span className="text-accents-7">
+            {locale === 'pt' ? 'Tem uma conta?' : 'Do you have an account?'}
+          </span>
           {` `}
           <a
             className="text-accent-9 font-bold hover:underline cursor-pointer"

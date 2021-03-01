@@ -33,7 +33,7 @@ const ProductView: FC<Props> = ({ product }) => {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [currLocale, setLocale] = useState<string>(
-    locale === 'es' ? 'es_ES' : 'en_US'
+    locale === 'pt' ? 'pt_PT' : 'en_US'
   )
 
   const addItemToCart = () => {
@@ -112,7 +112,7 @@ const ProductView: FC<Props> = ({ product }) => {
   const currLocaleSplit: any = currLocale.split('_')
   const localeSplit: any = locale?.split('-')
   if (localeSplit[0] !== currLocaleSplit[0]) {
-    setLocale(locale === 'es' ? 'es_ES' : 'en_US')
+    setLocale(locale === 'pt' ? 'pt_PT' : 'en_US')
   }
 
   return (
@@ -132,7 +132,10 @@ const ProductView: FC<Props> = ({ product }) => {
             : product.description.en_US,
           images: [
             {
-              url: `${product.photo.url}`,
+              url:
+                product.photo.url.split(':')[0] !== 'https'
+                  ? `https://${product.photo.url}`
+                  : `${product.photo.url}`,
               width: 800,
               height: 600,
               alt: product.name,
@@ -156,7 +159,11 @@ const ProductView: FC<Props> = ({ product }) => {
               <div key={product.photo.url} className={s.imageContainer}>
                 <Image
                   className={s.img}
-                  src={`${product.photo.url}`}
+                  src={
+                    product.photo.url.split(':')[0] !== 'https'
+                      ? `https://${product.photo.url}`
+                      : `${product.photo.url}`
+                  }
                   alt={product.name}
                   width={1050}
                   height={1050}
@@ -169,7 +176,11 @@ const ProductView: FC<Props> = ({ product }) => {
                   <div key={image.url} className={s.imageContainer}>
                     <Image
                       className={s.img}
-                      src={`${image.url}`}
+                      src={
+                        image.url.split(':')[0] !== 'https'
+                          ? `https://${image.url}`
+                          : `${image.url}`
+                      }
                       alt={'Product Image'}
                       width={1050}
                       height={1050}
@@ -238,7 +249,7 @@ const ProductView: FC<Props> = ({ product }) => {
                 loading={loading}
                 disabled={loading} // if (no variant selected and variantLength > 0)
               >
-                Add to Cart
+                {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
               </Button>
             ) : null}
           </div>

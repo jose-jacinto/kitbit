@@ -11,12 +11,14 @@ import { Button } from '@components/ui'
 import { HTMLContent } from '@components/core'
 import { Trash } from '@components/icons'
 import s from './WishlistCard.module.css'
+import { useRouter } from 'next/router'
 
 interface Props {
   item: WishlistItem
 }
 
 const WishlistCard: FC<Props> = ({ item }) => {
+  const { locale } = useRouter()
   const product = item.product!
   const { price } = usePrice({
     amount: product.prices?.price?.value,
@@ -83,7 +85,7 @@ const WishlistCard: FC<Props> = ({ item }) => {
           onClick={addToCart}
           loading={loading}
         >
-          Add to Cart
+          {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
         </Button>
       </div>
       <div className="col-span-2 flex flex-col justify-between">

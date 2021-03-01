@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import cn from 'classnames'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { Github } from '@components/icons'
 import { Logo, Container } from '@components/ui'
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const Footer: FC<Props> = ({ className }) => {
+  const { locale } = useRouter()
   const rootClassName = cn(className)
 
   return (
@@ -23,10 +25,10 @@ const Footer: FC<Props> = ({ className }) => {
           <div className="col-span-1 lg:col-span-2">
             <Link href="/">
               <a className="flex flex-initial items-center font-bold md:mr-24">
-                <span className="rounded-full border border-gray-700 mr-2">
+                {/* <span className="rounded-full border border-gray-700 mr-2">
                   <Logo />
-                </span>
-                <span>ACME</span>
+                </span> */}
+                <span>KITBIT</span>
               </a>
             </Link>
           </div>
@@ -53,18 +55,18 @@ const Footer: FC<Props> = ({ className }) => {
           </div>
           <div className="col-span-1 lg:col-span-6 flex items-start lg:justify-end text-primary">
             <div className="flex space-x-6 items-center h-10">
-              <a href="https://github.com/vercel/commerce" className={s.link}>
+              {/* <a href="https://github.com/vercel/commerce" className={s.link}>
                 <Github />
-              </a>
+              </a> */}
               <I18nWidget />
             </div>
           </div>
         </div>
         <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4">
           <div>
-            <span>&copy; 2020 ACME, Inc. All rights reserved.</span>
+            <span>&copy; 2021 KITBIT. All rights reserved.</span>
           </div>
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <span className="text-primary">Crafted by</span>
             <a href="https://vercel.com" aria-label="Vercel.com Link">
               <img
@@ -73,7 +75,7 @@ const Footer: FC<Props> = ({ className }) => {
                 className="inline-block h-6 ml-4 text-primary"
               />
             </a>
-          </div>
+          </div> */}
         </div>
       </Container>
     </footer>

@@ -2,7 +2,6 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useRouter } from 'next/router'
 import type { Page } from '@bigcommerce/storefront-data-hooks/api/operations/get-all-pages'
-import { CommerceProvider } from '@bigcommerce/storefront-data-hooks'
 import { CartSidebarView } from '@components/cart'
 import { Container, Sidebar, Button, Modal, Toast } from '@components/ui'
 import { Navbar, Featurebar, Footer } from '@components/core'
@@ -53,43 +52,45 @@ const Layout: FC<Props> = ({ children }) => {
   }, [handleScroll])
 
   return (
-    <CommerceProvider locale={locale}>
-      <div className={cn(s.root)}>
-        <header
-          className={cn(
-            'sticky top-0 bg-primary z-40 transition-all duration-150',
-            { 'shadow-magical': hasScrolled }
-          )}
-        >
-          <Container>
-            <Navbar />
-          </Container>
-        </header>
-        <main className="fit">{children}</main>
-        <Footer />
-        <Sidebar open={displaySidebar} onClose={closeSidebar}>
-          <CartSidebarView />
-        </Sidebar>
+    <div className={cn(s.root)}>
+      <header
+        className={cn(
+          'sticky top-0 bg-primary z-40 transition-all duration-150',
+          { 'shadow-magical': hasScrolled }
+        )}
+      >
+        <Container>
+          <Navbar />
+        </Container>
+      </header>
+      <main className="fit">{children}</main>
+      <Footer />
+      <Sidebar open={displaySidebar} onClose={closeSidebar}>
+        <CartSidebarView />
+      </Sidebar>
 
-        <Modal open={displayModal} onClose={closeModal}>
-          {modalView === 'LOGIN_VIEW' && <LoginView />}
-          {modalView === 'SIGNUP_VIEW' && <SignUpView />}
-          {modalView === 'FORGOT_VIEW' && <ForgotPassword />}
-        </Modal>
-        <Featurebar
-          title="This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy."
-          hide={acceptedCookies}
-          action={
-            <Button className="mx-5" onClick={() => setAcceptedCookies(true)}>
-              Accept cookies
-            </Button>
-          }
-        />
-        {/* <Toast open={displayToast} onClose={closeModal}>
-          {toastText}
-        </Toast> */}
-      </div>
-    </CommerceProvider>
+      <Modal open={displayModal} onClose={closeModal}>
+        {modalView === 'LOGIN_VIEW' && <LoginView />}
+        {modalView === 'SIGNUP_VIEW' && <SignUpView />}
+        {modalView === 'FORGOT_VIEW' && <ForgotPassword />}
+      </Modal>
+      <Featurebar
+        title={
+          locale === 'pt'
+            ? 'Este website utiliza cookies para garantir a melhor experiência possível.'
+            : 'This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy.'
+        }
+        hide={acceptedCookies}
+        action={
+          <Button className="mx-5" onClick={() => setAcceptedCookies(true)}>
+            {locale === 'pt' ? 'Aceitar Cookies' : 'Accept cookies'}
+          </Button>
+        }
+      />
+      <Toast open={displayToast} onClose={closeModal}>
+        {toastText}
+      </Toast>
+    </div>
   )
 }
 

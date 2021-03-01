@@ -1,5 +1,6 @@
 import { FC, useEffect, useState, useCallback } from 'react'
 import { validate } from 'email-validator'
+import { useRouter } from 'next/router'
 
 import { Logo, Button, Input } from '@components/ui'
 import { useUI } from '@components/ui/context'
@@ -9,6 +10,8 @@ import { loginUser, getUser, setUser } from 'whitebrim'
 interface Props {}
 
 const LoginView: FC<Props> = () => {
+  const { locale } = useRouter()
+
   // Form State
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -45,12 +48,20 @@ const LoginView: FC<Props> = () => {
             closeModal()
           })
           .catch((error) => {
-            setMessage('Invalid email or password')
+            setMessage(
+              locale !== 'pt'
+                ? 'Invalid email or password'
+                : 'Email ou password inválidos'
+            )
             setLoading(false)
           })
       })
       .catch(({ errors }) => {
-        setMessage('Invalid email or password')
+        setMessage(
+          locale !== 'pt'
+            ? 'Invalid email or password'
+            : 'Email ou password inválidos'
+        )
         setLoading(false)
       })
   }
@@ -78,16 +89,28 @@ const LoginView: FC<Props> = () => {
         <Logo width="64px" height="64px" />
       </div>
       <div className="flex flex-col space-y-3">
-        {message && (
+        {message && locale === 'pt' ? (
           <div className="text-red border border-red p-3">
-            {message}. Did you {` `}
+            {message} Esqueceu a sua {` `}
             <a
               className="text-accent-9 inline font-bold hover:underline cursor-pointer"
               onClick={() => setModalView('FORGOT_VIEW')}
             >
-              forgot your password?
+              password?
             </a>
           </div>
+        ) : (
+          message && (
+            <div className="text-red border border-red p-3">
+              {message} Did you {` `}
+              <a
+                className="text-accent-9 inline font-bold hover:underline cursor-pointer"
+                onClick={() => setModalView('FORGOT_VIEW')}
+              >
+                forgot your password?
+              </a>
+            </div>
+          )
         )}
         <Input type="email" placeholder="Email" onChange={setEmail} />
         <Input type="password" placeholder="Password" onChange={setPassword} />
@@ -101,13 +124,15 @@ const LoginView: FC<Props> = () => {
           Log In
         </Button>
         <div className="pt-1 text-center text-sm">
-          <span className="text-accents-7">Don't have an account?</span>
+          <span className="text-accents-7">
+            {locale === 'pt' ? 'Não tem uma conta?' : "Don't have an account?"}
+          </span>
           {` `}
           <a
             className="text-accent-9 font-bold hover:underline cursor-pointer"
             onClick={() => setModalView('SIGNUP_VIEW')}
           >
-            Sign Up
+            {locale === 'pt' ? 'Registe-se' : 'Sign Up'}
           </a>
         </div>
       </div>
