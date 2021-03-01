@@ -48,6 +48,29 @@ const Footer: FC<Props> = ({ className }) => {
                   </a>
                 </Link>
               </li>
+              <li className="py-3 md:py-0 md:pb-4">
+                <Link href="/shipping">
+                  <a className="text-primary hover:text-accents-6 transition ease-in-out duration-150">
+                    {locale === 'pt' ? 'Portes e Envio' : 'Shipping'}
+                  </a>
+                </Link>
+              </li>
+              <li className="py-3 md:py-0 md:pb-4">
+                <Link href="/payments">
+                  <a className="text-primary hover:text-accents-6 transition ease-in-out duration-150">
+                    {locale === 'pt'
+                      ? 'Métodos de Pagamento'
+                      : 'Payment Methods'}
+                  </a>
+                </Link>
+              </li>
+              <li className="py-3 md:py-0 md:pb-4">
+                <Link href="/contacts">
+                  <a className="text-primary hover:text-accents-6 transition ease-in-out duration-150">
+                    {locale === 'pt' ? 'Contacte-nos' : 'Contact Us'}
+                  </a>
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="col-span-1 lg:col-span-2">
