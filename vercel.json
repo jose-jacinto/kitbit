@@ -1,13 +1,8 @@
 {
-    "routes": [
+    "rewrites": [
         {
-            "src": "/checkout",
-            "dest": "https://d3v0kwj6fsyaja.cloudfront.net/1.0/index.html",
-            "continue": true
-        },
-        {
-            "src": "/checkout/(.*)",
-            "dest": "https://d3v0kwj6fsyaja.cloudfront.net/1.0/$1"
+            "source": "/checkout/:match*",
+            "destination": "https://d3v0kwj6fsyaja.cloudfront.net/1.0/:match*"
         }
     ]
 }
