@@ -2,7 +2,7 @@
     "routes": [
         {
             "src": "/checkout/(.*)",
-            "dest": "https://d1hhebv6hmhzhi.cloudfront.net/$1"
+            "dest": "https://d3v0kwj6fsyaja.cloudfront.net/1.0/$1"
         }
     ]
 }
