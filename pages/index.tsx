@@ -148,7 +148,7 @@ export default function Home({
       <Grid>
         {featured.slice(0, 3).map((item, i) => (
           <ProductCard
-            key={item.uri}
+            key={item._id}
             product={item}
             // The first image is the largest one in the grid
             imgWidth={i === 0 ? 1600 : 820}
@@ -160,7 +160,7 @@ export default function Home({
       <Marquee variant="secondary">
         {bestSelling.slice(3, 6).map((item, i) => (
           <ProductCard
-            key={item.uri}
+            key={item._id}
             product={item}
             variant="slim"
             imgWidth={320}
@@ -181,7 +181,7 @@ export default function Home({
       <Grid layout="B">
         {featured.slice(3, 6).map((item, i) => (
           <ProductCard
-            key={item.uri}
+            key={item._id}
             product={item}
             // The second image is the largest one in the grid
             imgWidth={i === 1 ? 1600 : 820}
@@ -192,7 +192,7 @@ export default function Home({
       <Marquee>
         {bestSelling.slice(0, 3).map((item, i) => (
           <ProductCard
-            key={item.uri}
+            key={item._id}
             product={item}
             variant="slim"
             imgWidth={360}

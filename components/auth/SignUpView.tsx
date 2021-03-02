@@ -18,6 +18,17 @@ const SignUpView: FC<Props> = () => {
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+
+  const [extraData, setExtraData] = useState({
+    street1: '',
+    street2: '',
+    code: '',
+    city: '',
+    country: 'PT',
+    telephone: '',
+    NIF: '',
+  })
+
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [dirty, setDirty] = useState(false)
@@ -40,24 +51,24 @@ const SignUpView: FC<Props> = () => {
       email: email,
       password: password,
       shipping_address: {
-        name: 'test',
-        street1: 'test',
-        street2: 'test',
-        code: 'test',
-        city: 'test',
-        country: 'PT',
+        name: firstName + ' ' + lastName,
+        street1: extraData.street1,
+        street2: extraData.street2,
+        code: extraData.code,
+        city: extraData.city,
+        country: extraData.country,
       },
       billing_address: {
-        name: 'test',
-        street1: 'test',
-        street2: 'test',
-        code: 'test',
-        city: 'test',
-        country: 'PT',
+        name: firstName + ' ' + lastName,
+        street1: extraData.street1,
+        street2: extraData.street2,
+        code: extraData.code,
+        city: extraData.city,
+        country: extraData.country,
       },
       custom: {
-        telephone: 'test',
-        NIF: 'test',
+        telephone: extraData.telephone,
+        NIF: extraData.NIF,
       },
       cart_items: [],
     }
@@ -113,10 +124,67 @@ const SignUpView: FC<Props> = () => {
         {message && (
           <div className="text-red border border-red p-3">{message}</div>
         )}
-        <Input placeholder="First Name" onChange={setFirstName} />
-        <Input placeholder="Last Name" onChange={setLastName} />
+
+        <Input
+          placeholder={locale === 'pt' ? 'Primeiro Nome' : 'First Name'}
+          onChange={setFirstName}
+        />
+        <Input
+          placeholder={locale === 'pt' ? 'Último Nome' : 'Last Name'}
+          onChange={setLastName}
+        />
+
         <Input type="email" placeholder="Email" onChange={setEmail} />
         <Input type="password" placeholder="Password" onChange={setPassword} />
+
+        <Input
+          type="text"
+          placeholder={locale === 'pt' ? 'Morada' : 'Address'}
+          onChange={(ev) =>
+            setExtraData({ ...extraData, street1: ev.target.value })
+          }
+        />
+        <Input
+          type="text"
+          placeholder={
+            locale === 'pt'
+              ? 'Número, Apartamento, etc...'
+              : 'Nº, Apartment etc...'
+          }
+          onChange={(ev) =>
+            setExtraData({ ...extraData, street2: ev.target.value })
+          }
+        />
+        <Input
+          type="text"
+          placeholder={locale === 'pt' ? 'Código Postal' : 'Zip Code'}
+          onChange={(ev) =>
+            setExtraData({ ...extraData, code: ev.target.value })
+          }
+        />
+        <Input
+          type="text"
+          placeholder={locale === 'pt' ? 'Cidade' : 'City'}
+          onChange={(ev) =>
+            setExtraData({ ...extraData, city: ev.target.value })
+          }
+        />
+        <Input
+          type="text"
+          placeholder={locale === 'pt' ? 'Telefone' : 'Telephone'}
+          onChange={(ev) =>
+            setExtraData({ ...extraData, telephone: ev.target.value })
+          }
+        />
+        <Input
+          type="text"
+          placeholder={locale === 'pt' ? 'NIF' : 'NIF'}
+          onChange={(ev) =>
+            setExtraData({ ...extraData, NIF: ev.target.value })
+          }
+        />
+        {/* </div> */}
+
         <span className="text-accents-8">
           <span className="inline-block align-middle ">
             <Info width="15" height="15" />

@@ -53,7 +53,7 @@ export default function Wishlist() {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <WishlistCard key={item.id} item={item} />
+                    <WishlistCard key={item._id} item={item} />
                   </Transition.Child>
                 ))}
             </Transition>
