@@ -1,12 +1,12 @@
 {
     "routes": [
         {
-            "src": "/checkout/(.*)",
-            "dest": "https://d3v0kwj6fsyaja.cloudfront.net/1.0/$1"
+            "src": "/checkout",
+            "dest": "https://d3v0kwj6fsyaja.cloudfront.net/1.0/index.html"
         },
         {
-            "src": "/checkout",
-            "dest": "https: //d3v0kwj6fsyaja.cloudfront.net/1.0/"
+            "src": "/checkout/(.*)",
+            "dest": "https://d3v0kwj6fsyaja.cloudfront.net/1.0/$1"
         }
     ]
 }
