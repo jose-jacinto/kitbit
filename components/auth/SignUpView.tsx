@@ -1,4 +1,5 @@
 import { FC, useEffect, useState, useCallback } from 'react'
+import cn from 'classnames'
 import { validate } from 'email-validator'
 import { useRouter } from 'next/router'
 
@@ -7,6 +8,8 @@ import { useUI } from '@components/ui/context'
 import { Logo, Button, Input } from '@components/ui'
 
 import { registerUser, getUser } from 'whitebrim'
+
+import s from './SignUpView.module.css'
 
 interface Props {}
 
@@ -70,7 +73,7 @@ const SignUpView: FC<Props> = () => {
         telephone: extraData.telephone,
         NIF: extraData.NIF,
       },
-      cart_items: [],
+      // cart_items: [],
     }
 
     setLoading(true)
@@ -115,7 +118,8 @@ const SignUpView: FC<Props> = () => {
   return (
     <form
       onSubmit={handleSignup}
-      className="w-80 flex flex-col justify-between p-3"
+      className="flex flex-col justify-between p-3"
+      style={{ width: '35rem' }}
     >
       <div className="flex justify-center pb-12 ">
         <Logo width="64px" height="64px" />
@@ -125,65 +129,94 @@ const SignUpView: FC<Props> = () => {
           <div className="text-red border border-red p-3">{message}</div>
         )}
 
-        <Input
-          placeholder={locale === 'pt' ? 'Primeiro Nome' : 'First Name'}
-          onChange={setFirstName}
-        />
-        <Input
-          placeholder={locale === 'pt' ? 'Último Nome' : 'Last Name'}
-          onChange={setLastName}
-        />
+        <div className={cn(s.row)}>
+          <div className={cn(s.col6)}>
+            <Input
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder={locale === 'pt' ? 'Primeiro Nome' : 'First Name'}
+              onChange={setFirstName}
+            />
+          </div>
+          <div className={cn(s.col6)}>
+            <Input
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder={locale === 'pt' ? 'Último Nome' : 'Last Name'}
+              onChange={setLastName}
+            />
+          </div>
+          <div className={cn(s.col6)}>
+            <Input
+              type="email"
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder="Email"
+              onChange={setEmail}
+            />
+          </div>
+          <div className={cn(s.col6)}>
+            <Input
+              type="password"
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder="Password"
+              onChange={setPassword}
+            />
+          </div>
+          <div className={cn(s.col6)}>
+            <Input
+              type="text"
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder={locale === 'pt' ? 'Morada' : 'Address'}
+              onChange={(ev) => setExtraData({ ...extraData, street1: ev })}
+            />
+          </div>
 
-        <Input type="email" placeholder="Email" onChange={setEmail} />
-        <Input type="password" placeholder="Password" onChange={setPassword} />
+          <div className={cn(s.col6)}>
+            <Input
+              type="text"
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder={
+                locale === 'pt'
+                  ? 'Número, Apartamento, etc...'
+                  : 'Nº, Apartment etc...'
+              }
+              onChange={(ev) => setExtraData({ ...extraData, street2: ev })}
+            />
+          </div>
 
-        <Input
-          type="text"
-          placeholder={locale === 'pt' ? 'Morada' : 'Address'}
-          onChange={(ev) =>
-            setExtraData({ ...extraData, street1: ev.target.value })
-          }
-        />
-        <Input
-          type="text"
-          placeholder={
-            locale === 'pt'
-              ? 'Número, Apartamento, etc...'
-              : 'Nº, Apartment etc...'
-          }
-          onChange={(ev) =>
-            setExtraData({ ...extraData, street2: ev.target.value })
-          }
-        />
-        <Input
-          type="text"
-          placeholder={locale === 'pt' ? 'Código Postal' : 'Zip Code'}
-          onChange={(ev) =>
-            setExtraData({ ...extraData, code: ev.target.value })
-          }
-        />
-        <Input
-          type="text"
-          placeholder={locale === 'pt' ? 'Cidade' : 'City'}
-          onChange={(ev) =>
-            setExtraData({ ...extraData, city: ev.target.value })
-          }
-        />
-        <Input
-          type="text"
-          placeholder={locale === 'pt' ? 'Telefone' : 'Telephone'}
-          onChange={(ev) =>
-            setExtraData({ ...extraData, telephone: ev.target.value })
-          }
-        />
-        <Input
-          type="text"
-          placeholder={locale === 'pt' ? 'NIF' : 'NIF'}
-          onChange={(ev) =>
-            setExtraData({ ...extraData, NIF: ev.target.value })
-          }
-        />
-        {/* </div> */}
+          <div className={cn(s.col6)}>
+            <Input
+              type="text"
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder={locale === 'pt' ? 'Código Postal' : 'Zip Code'}
+              onChange={(ev) => {
+                setExtraData({ ...extraData, code: ev })
+              }}
+            />
+          </div>
+          <div className={cn(s.col6)}>
+            <Input
+              type="text"
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder={locale === 'pt' ? 'Cidade' : 'City'}
+              onChange={(ev) => setExtraData({ ...extraData, city: ev })}
+            />
+          </div>
+          <div className={cn(s.col6)}>
+            <Input
+              type="text"
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder={locale === 'pt' ? 'Telefone' : 'Telephone'}
+              onChange={(ev) => setExtraData({ ...extraData, telephone: ev })}
+            />
+          </div>
+          <div className={cn(s.col6)}>
+            <Input
+              type="text"
+              style={{ width: '95%', marginBottom: 10 }}
+              placeholder={locale === 'pt' ? 'NIF' : 'NIF'}
+              onChange={(ev) => setExtraData({ ...extraData, NIF: ev })}
+            />
+          </div>
+        </div>
 
         <span className="text-accents-8">
           <span className="inline-block align-middle ">

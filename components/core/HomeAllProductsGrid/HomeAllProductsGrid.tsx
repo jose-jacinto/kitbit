@@ -2,7 +2,7 @@ import { FC } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { getCategoryPath, getDesignerPath } from '@lib/search'
+import { getCategoryPath, getBrandPath } from '@lib/search'
 
 import { Grid } from '@components/ui'
 import { ProductCard } from '@components/product'
@@ -40,13 +40,13 @@ const Head: FC<Props> = ({ categories, brands, newestProducts }) => {
           </ul>
           <ul className="">
             <li className="py-1 text-base font-bold tracking-wide">
-              <Link href={getDesignerPath('')}>
+              <Link href={getBrandPath('')}>
                 <a>{locale === 'pt' ? 'Todas as Marcas' : 'All Brands'}</a>
               </Link>
             </li>
             {brands.flatMap((brand: any) => (
               <li key={brand._id} className="py-1 text-accents-8">
-                <Link href={`/search?designer=${brand._id}`}>
+                <Link href={`/search?brand=${brand._id}`}>
                   <a>{brand.name}</a>
                 </Link>
               </li>

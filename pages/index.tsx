@@ -92,8 +92,8 @@ export async function getStaticProps({}: GetStaticPropsContext) {
     filterOption2: { name: null, id: null },
     multi: false,
   }
-  let designersItems = {
-    modelName: 'designers',
+  let brandItems = {
+    modelName: 'brands',
     currentPage: 1,
     selectedPageSize: 6,
     filterOption: { name: null, id: null },
@@ -102,7 +102,7 @@ export async function getStaticProps({}: GetStaticPropsContext) {
   }
 
   const { items: categories } = await fetchItems(categoriesItems)
-  const { items: designers } = await fetchItems(designersItems)
+  const { items: brands } = await fetchItems(brandItems)
 
   return {
     props: {
@@ -110,7 +110,7 @@ export async function getStaticProps({}: GetStaticPropsContext) {
       bestSellingProducts,
       newestProducts,
       categories,
-      designers,
+      brands,
     },
     revalidate: 10,
   }
@@ -123,7 +123,7 @@ export default function Home({
   bestSellingProducts,
   newestProducts,
   categories,
-  designers,
+  brands,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { featured, bestSelling } = useMemo(() => {
     // Create a copy of products that we can mutate
@@ -202,7 +202,7 @@ export default function Home({
       </Marquee>
       <HomeAllProductsGrid
         categories={categories ? categories : []}
-        brands={designers ? designers : []}
+        brands={brands ? brands : []}
         newestProducts={newestProducts}
       />
     </div>

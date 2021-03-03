@@ -13,7 +13,7 @@ import getSlug from '@lib/get-slug'
 import {
   filterQuery,
   getCategoryPath,
-  getDesignerPath,
+  getBrandPath,
   useSearchMeta,
 } from '@lib/search'
 
@@ -57,8 +57,8 @@ export async function getStaticProps({}: GetStaticPropsContext) {
     filter: {},
     multi: false,
   }
-  let designersItems = {
-    modelName: 'designers',
+  let brandItems = {
+    modelName: 'brands',
     currentPage: 1,
     selectedPageSize: 6,
     filter: {},
@@ -66,10 +66,10 @@ export async function getStaticProps({}: GetStaticPropsContext) {
   }
 
   const { items: categories } = await fetchItems(categoriesItems)
-  const { items: designers } = await fetchItems(designersItems)
+  const { items: brands } = await fetchItems(brandItems)
 
   return {
-    props: { categories, designers },
+    props: { categories, brands },
   }
 }
 
@@ -82,27 +82,27 @@ export async function getStaticProps({}: GetStaticPropsContext) {
 
 export default function Search({
   categories,
-  designers,
+  brands,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
   const { q } = router.query
-  // `q` can be included but because categories and designers can't be searched
+  // `q` can be included but because categories and brands can't be searched
   // in the same way of products, it's better to ignore the search input if one
   // of those is selected
   const [currentQuery, setQuery] = useState<any>(null)
   const [currentCat, setCat] = useState<any>(null)
-  const [currentDesigner, setDesigner] = useState<any>(null)
+  const [currentBrand, setBrand] = useState<any>(null)
 
   const [data, setData] = useState<any>(null)
 
-  const renderList = (cat: null | undefined, designer: null | undefined) => {
+  const renderList = (cat: any | undefined, brand: any | undefined) => {
     let filter: any = {}
 
     if (cat) {
-      filter['category'] = cat
+      filter['categories'] = cat
     }
-    if (designer) {
-      filter['designers'] = designer
+    if (brand) {
+      filter['brands'] = brand._id
     }
 
     let payload = {
@@ -124,7 +124,11 @@ export default function Search({
       })
   }
 
-  if (!data || q !== currentQuery) {
+  if (!data && router.query.cat) {
+    renderList(router.query.cat, null)
+  }
+
+  if ((!data || q !== currentQuery) && !router.query.cat) {
     renderList(null, null)
   }
 
@@ -147,11 +151,11 @@ export default function Search({
                     { shallow: true }
                   )
                   setCat(null)
-                  setDesigner(null)
+                  setBrand(null)
                   renderList(null, null)
                 }}
               >
-                All Categories
+                {router.locale === 'pt' ? 'Categorias' : 'All Categories'}
               </a>
             </li>
             {categories.map((category: any) => (
@@ -177,7 +181,7 @@ export default function Search({
                       { shallow: true }
                     )
                     setCat(cat)
-                    setDesigner(null)
+                    setBrand(null)
                     renderList(cat, null)
                   }}
                 >
@@ -200,19 +204,19 @@ export default function Search({
                     undefined,
                     { shallow: true }
                   )
-                  setDesigner(null)
+                  setBrand(null)
                   setCat(null)
                   renderList(null, null)
                 }}
               >
-                All Designers
+                {router.locale === 'pt' ? 'Marcas' : 'All Brands'}
               </a>
             </li>
-            {designers.flatMap((brand: any) => (
+            {brands.flatMap((brand: any) => (
               <li
                 key={brand.path}
                 className={cn('py-1 text-accents-8', {
-                  underline: currentDesigner === brand._id,
+                  underline: currentBrand === brand._id,
                 })}
               >
                 <a
@@ -220,19 +224,19 @@ export default function Search({
                   onClick={(e) => {
                     e.preventDefault()
 
-                    const designer = brand._id
+                    console.log(brand._id)
 
                     router.push(
                       {
                         pathname: `/search`,
-                        query: designer ? { designer } : {},
+                        query: brand && brand._id ? { brands: brand._id } : {},
                       },
                       undefined,
                       { shallow: true }
                     )
                     setCat(null)
-                    setDesigner(designer)
-                    renderList(null, designer)
+                    setBrand(brand)
+                    renderList(null, brand)
                   }}
                 >
                   {brand.name}
@@ -242,7 +246,7 @@ export default function Search({
           </ul>
         </div>
         <div className="col-span-8">
-          {(q || currentCat || currentDesigner) && (
+          {(q || currentCat || currentBrand) && (
             <div className="mb-12 transition ease-in duration-75">
               {data ? (
                 <>
@@ -272,7 +276,7 @@ export default function Search({
                     ) : (
                       <>
                         There are no products that match the selected category &
-                        designer
+                        brand
                       </>
                     )}
                   </span>

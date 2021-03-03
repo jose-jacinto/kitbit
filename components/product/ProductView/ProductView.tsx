@@ -211,7 +211,7 @@ const ProductView: FC<Props> = ({ product }) => {
                   <div key={image.url} className={s.imageContainer}>
                     <img
                       className={s.img}
-                      src={getProcessedUrl(product.photo)}
+                      src={getProcessedUrl(image)}
                       alt={'Product Image'}
                       width={1050}
                       height={1050}
