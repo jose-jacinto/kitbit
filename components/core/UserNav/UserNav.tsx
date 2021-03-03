@@ -25,8 +25,16 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
 
   useEffect(() => {
     //! FOR WHITEBRIM CHECKOUT (NEED TO FIX THIS ISSUE ON CHECKOUT)
-    const persist =
-      '{"auth":"{"currLang":null,"token":null,"userId":null,"userDetails":null,"cart":[]}","_persist":"{"version":-1,"rehydrated":true}"}'
+    const persist = {
+      auth: {
+        currLang: null,
+        token: null,
+        userId: null,
+        userDetails: null,
+        cart: [],
+      },
+      _persist: { version: -1, rehydrated: true },
+    }
 
     localStorage.setItem('persist:whitebrim', JSON.stringify(persist))
 
