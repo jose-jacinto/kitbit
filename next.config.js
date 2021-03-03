@@ -10,10 +10,7 @@ module.exports = {
   },
   async rewrites() {
     return [
-      {
-        "source": "/checkout",
-        "destination": "https://d3v0kwj6fsyaja.cloudfront.net/1.0/index.html"
-      },
+      
       {
           "source": "/checkout/:match*",
           "destination": "https://d3v0kwj6fsyaja.cloudfront.net/1.0/:match*"
