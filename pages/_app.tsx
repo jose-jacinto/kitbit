@@ -9,6 +9,12 @@ import { Head } from '@components/core'
 
 const Noop: FC = ({ children }) => <>{children}</>
 
+declare global {
+  interface Window {
+    snowplow: any
+  }
+}
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const Layout = (Component as any).Layout || Noop
 
