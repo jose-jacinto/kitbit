@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import Link from 'next/link'
 import cn from 'classnames'
 import { Menu } from '@headlessui/react'
@@ -21,38 +21,17 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
     user,
     setUser,
   } = useUI()
-  const [trackerStarted, setTracker] = useState(false)
 
   useEffect(() => {
     //! FOR WHITEBRIM CHECKOUT (NEED TO FIX THIS ISSUE ON CHECKOUT)
-    const persist = {
-      auth: {
-        currLang: null,
-        token: null,
-        userId: null,
-        userDetails: null,
-        cart: [],
-      },
-      _persist: { version: -1, rehydrated: true },
-    }
+    const auth: any =
+      '{"currLang":null,"token":null,"userId":null,"userDetails":null,"cart":[]}'
+    const persist: any = '{"version":-1,"rehydrated":true}'
 
-    localStorage.setItem('persist:whitebrim', JSON.stringify(persist))
-
-    if (!trackerStarted) {
-      window.snowplow('newTracker', 'sp', 'collector.whitebrim.co', {
-        appId: process.env.NEXT_PUBLIC_WB_PROJECT_ID,
-        platform: 'web',
-        contexts: {
-          webPage: true,
-          performanceTiming: true,
-        },
-      })
-      window.snowplow('enableActivityTracking', 30, 10)
-      window.snowplow('trackPageView')
-      console.log('LeTracker')
-
-      setTracker(true)
-    }
+    localStorage.setItem(
+      'persist:whitebrim',
+      JSON.stringify({ auth: auth, _persist: persist })
+    )
 
     if (localStorage.getItem('wb_token')) {
       console.log('Authenticating...')
