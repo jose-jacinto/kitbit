@@ -87,6 +87,18 @@ const CartItem = (props: any) => {
               ...props.user,
               cart: response.data.cart,
             }
+
+            const product = response.data.cartItemModel
+            window.snowplow(
+              'trackRemoveFromCart',
+              product.productSpec.sku,
+              product.name,
+              product.metaSpec.categoria.code,
+              product.productSpec.price,
+              response.data.cart_item.quantity,
+              'EUR'
+            )
+
             props.setUser(newUser)
             setRemoving(false)
           }
@@ -129,6 +141,17 @@ const CartItem = (props: any) => {
       addToCart(submitValues)
         .then((response) => {
           if (response.status === 200) {
+            const product = response.data.cartItemModel
+            window.snowplow(
+              'trackAddToCart',
+              product.productSpec.sku,
+              product.name,
+              product.metaSpec.categoria.code,
+              product.productSpec.price,
+              response.data.cart_item.quantity,
+              'EUR'
+            )
+
             let newUser = {
               ...props.user,
               cart: response.data,

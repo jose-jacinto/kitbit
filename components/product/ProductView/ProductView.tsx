@@ -86,6 +86,17 @@ const ProductView: FC<Props> = ({ product }) => {
       addToCart(submitValues)
         .then((response) => {
           if (response.status === 200) {
+            const product = response.data.cartItemModel
+            window.snowplow(
+              'trackAddToCart',
+              product.productSpec.sku,
+              product.name,
+              product.metaSpec.categoria.code,
+              product.productSpec.price,
+              response.data.cart_item.quantity,
+              'EUR'
+            )
+
             openSidebar()
             setLoading(false)
           } else if (response.status === 304) {
