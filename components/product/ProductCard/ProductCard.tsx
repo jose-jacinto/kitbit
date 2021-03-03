@@ -3,7 +3,6 @@ import cn from 'classnames'
 import Link from 'next/link'
 import s from './ProductCard.module.css'
 
-import { EnhancedImage } from '@components/core'
 import WishlistButton from '@components/wishlist/WishlistButton'
 
 interface Props {
