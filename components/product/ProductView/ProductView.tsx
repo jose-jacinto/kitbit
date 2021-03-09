@@ -16,6 +16,7 @@ import WishlistButton from '@components/wishlist/WishlistButton'
 import { getItemVariants } from '../helpers'
 
 import { addToCart } from 'whitebrim'
+import { getEnabledCategories } from 'trace_events'
 
 interface Props {
   className?: string
@@ -56,15 +57,22 @@ const ProductView: FC<Props> = ({ product }) => {
 
   useEffect(() => {
     if (!effect) {
-      ReactPixel.init('471210317253954');
-      ReactPixel.track('ViewContent', {
-        content_name: product.name,
-        content_category: '',
-        content_ids: [product.sku],
-        content_type: 'product',
-        value: product.price,
-        currency: 'EUR'
-      });
+      console.log(product)
+      import("react-facebook-pixel")
+        .then((x) => x.default)
+        .then((ReactPixel) => {
+          ReactPixel.init('471210317253954');
+          ReactPixel.track('ViewContent', {
+            content_name: product.name,
+            content_category: product.categories[0].name,
+            content_ids: [product.sku],
+            content_type: 'product',
+            value: product.price,
+            currency: 'EUR'
+          });
+        });
+
+
       setEffect(true)
     }
   }, [])
@@ -192,7 +200,7 @@ const ProductView: FC<Props> = ({ product }) => {
           product.photo.url
         ]}
         description="Unavailable"
-        // brand="ACME"
+        brand={product.brands[0].name}
         offers={[
           {
             price: product.price,
