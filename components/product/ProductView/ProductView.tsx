@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { NextSeo, ProductJsonLd } from 'next-seo'
 
+import ReactPixel from 'react-facebook-pixel';
+
 import s from './ProductView.module.css'
 import { useUI } from '@components/ui/context'
 import { Swatch, ProductSlider } from '@components/product'
@@ -54,6 +56,8 @@ const ProductView: FC<Props> = ({ product }) => {
 
   useEffect(() => {
     if (!effect) {
+
+      ReactPixel.track('ViewContent');
       setEffect(true)
     }
   }, [])
