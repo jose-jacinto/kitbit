@@ -57,7 +57,14 @@ const ProductView: FC<Props> = ({ product }) => {
   useEffect(() => {
     if (!effect) {
       ReactPixel.init('471210317253954');
-      ReactPixel.track('ViewContent');
+      ReactPixel.track('ViewContent', {
+        content_name: product.name,
+        content_category: '',
+        content_ids: [product.sku],
+        content_type: 'product',
+        value: product.price,
+        currency: 'EUR'
+      });
       setEffect(true)
     }
   }, [])
