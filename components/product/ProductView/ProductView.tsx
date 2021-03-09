@@ -176,11 +176,11 @@ const ProductView: FC<Props> = ({ product }) => {
   return (
     <Container className="max-w-none w-full" clean>
       <ProductJsonLd
-        productName="Executive Anvil"
+        productName={product.name}
         images={[
           product.photo.url
         ]}
-        description={product.description}
+        description={product.description[currLocale]}
         // brand="ACME"
         offers={[
           {
