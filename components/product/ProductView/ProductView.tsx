@@ -197,8 +197,13 @@ const ProductView: FC<Props> = ({ product }) => {
               width: 800,
               height: 600,
               alt: product.name,
-            },
+            }
           ],
+          'product:availability': 'In Stock',
+          'product:condition': 'New',
+          'product:price:amount': product.price,
+          'product:price:currency': 'EUR',
+          'product:retailer_item_id': product.stock
         }}
       />
       <div className={cn(s.root, 'fit')}>
@@ -221,8 +226,8 @@ const ProductView: FC<Props> = ({ product }) => {
                   alt={product.name}
                   width={1050}
                   height={1050}
-                  // priority={true}
-                  // quality="85"
+                // priority={true}
+                // quality="85"
                 />
               </div>
               {product.gallery &&
@@ -234,8 +239,8 @@ const ProductView: FC<Props> = ({ product }) => {
                       alt={'Product Image'}
                       width={1050}
                       height={1050}
-                      // priority={false}
-                      // quality="85"
+                    // priority={false}
+                    // quality="85"
                     />
                   </div>
                 ))}
@@ -289,19 +294,19 @@ const ProductView: FC<Props> = ({ product }) => {
           </section>
           <div>
             {(selectedSize && !selectedSize[0]._id) ||
-            (selectedSize && selectedSize[0]._id && selectedColor) ||
-            Object.keys(variants).length === 0 ? (
-              <Button
-                aria-label="Add to Cart"
-                type="button"
-                className={s.button}
-                onClick={addItemToCart}
-                loading={loading}
-                disabled={loading} // if (no variant selected and variantLength > 0)
-              >
-                {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
-              </Button>
-            ) : null}
+              (selectedSize && selectedSize[0]._id && selectedColor) ||
+              Object.keys(variants).length === 0 ? (
+                <Button
+                  aria-label="Add to Cart"
+                  type="button"
+                  className={s.button}
+                  onClick={addItemToCart}
+                  loading={loading}
+                  disabled={loading} // if (no variant selected and variantLength > 0)
+                >
+                  {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
+                </Button>
+              ) : null}
           </div>
         </div>
 
