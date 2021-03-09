@@ -180,7 +180,7 @@ const ProductView: FC<Props> = ({ product }) => {
         images={[
           product.photo.url
         ]}
-        description={product.description[currLocale]}
+        description="Unavailable"
         // brand="ACME"
         offers={[
           {
@@ -188,6 +188,7 @@ const ProductView: FC<Props> = ({ product }) => {
             priceCurrency: 'EUR',
             itemCondition: "https://schema.org/NewCondition",
             availability: "https://schema.org/InStock",
+            url: `https://kitbit.vercel.app/product/${product.uri}`,
             seller: {
               name: 'Kitbit',
             },
