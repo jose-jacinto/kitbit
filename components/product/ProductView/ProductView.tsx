@@ -56,7 +56,7 @@ const ProductView: FC<Props> = ({ product }) => {
 
   useEffect(() => {
     if (!effect) {
-
+      ReactPixel.init('471210317253954');
       ReactPixel.track('ViewContent');
       setEffect(true)
     }
