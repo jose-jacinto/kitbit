@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react'
 import cn from 'classnames'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { NextSeo } from 'next-seo'
+import { NextSeo, ProductJsonLd } from 'next-seo'
 
 import s from './ProductView.module.css'
 import { useUI } from '@components/ui/context'
@@ -175,6 +175,26 @@ const ProductView: FC<Props> = ({ product }) => {
 
   return (
     <Container className="max-w-none w-full" clean>
+      <ProductJsonLd
+        productName="Executive Anvil"
+        images={[
+          product.photo.url
+        ]}
+        description={product.description}
+        // brand="ACME"
+        offers={[
+          {
+            price: product.price,
+            priceCurrency: 'EUR',
+            itemCondition: "https://schema.org/NewCondition",
+            availability: "https://schema.org/InStock",
+            seller: {
+              name: 'Kitbit',
+            },
+          },
+        ]}
+        mpn={product.sku}
+      />
       <NextSeo
         title={product.name}
         description={
@@ -198,12 +218,7 @@ const ProductView: FC<Props> = ({ product }) => {
               height: 600,
               alt: product.name,
             }
-          ],
-          'product:availability': 'In Stock',
-          'product:condition': 'New',
-          'product:price:amount': product.price,
-          'product:price:currency': 'EUR',
-          'product:retailer_item_id': product.stock
+          ]
         }}
       />
       <div className={cn(s.root, 'fit')}>
