@@ -68,7 +68,8 @@ const ProductView: FC<Props> = ({ product }) => {
             content_ids: [product.sku],
             content_type: 'product',
             value: product.price,
-            currency: 'EUR'
+            currency: 'EUR',
+            google_product_category: product.categories[0].name,
           });
         });
 
