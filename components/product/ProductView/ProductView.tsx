@@ -214,6 +214,8 @@ const ProductView: FC<Props> = ({ product }) => {
           },
         ]}
         mpn={product.sku}
+        sku={product.sku}
+
       />
       <NextSeo
         title={product.name}
