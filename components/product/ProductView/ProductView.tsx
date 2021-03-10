@@ -197,6 +197,7 @@ const ProductView: FC<Props> = ({ product }) => {
     <Container className="max-w-none w-full" clean>
       <ProductJsonLd
         productName={product.name}
+        category="3356"
         images={[
           product.photo.url
         ]}
