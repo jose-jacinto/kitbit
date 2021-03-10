@@ -27,7 +27,7 @@
     "lodash.debounce": "^4.0.8",
     "lodash.random": "^3.2.0",
     "next": "^10.0.7",
-    "next-seo": "^4.11.0",
+    "next-seo": "github:cottonhat/next-seo",
     "next-themes": "^0.0.4",
     "postcss-import": "^13.0.0",
     "postcss-nesting": "^7.0.1",
