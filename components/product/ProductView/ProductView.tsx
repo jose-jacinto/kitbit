@@ -61,7 +61,7 @@ const ProductView: FC<Props> = ({ product }) => {
       import("react-facebook-pixel")
         .then((x) => x.default)
         .then((ReactPixel) => {
-          ReactPixel.init('471210317253954');
+          ReactPixel.init('201854665067073');
           ReactPixel.track('ViewContent', {
             content_name: product.name,
             content_category: product.categories[0].name,
