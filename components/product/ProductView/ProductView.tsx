@@ -234,10 +234,7 @@ const ProductView: FC<Props> = ({ product }) => {
             : product.description.en_US,
           images: [
             {
-              url: product.photo.url,
-              // product.photo.url.split(':')[0] !== 'https'
-              //   ? `https://${product.photo.url}`
-              //   : `${product.photo.url}`,
+              url: `https:${product.photo.url}`,
               width: 800,
               height: 600,
               alt: product.name,
