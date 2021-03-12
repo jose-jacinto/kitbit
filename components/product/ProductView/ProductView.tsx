@@ -65,7 +65,7 @@ const ProductView: FC<Props> = ({ product }) => {
           ReactPixel.track('ViewContent', {
             content_name: product.name,
             content_category: product.categories[0].name,
-            content_ids: [product.sku],
+            content_ids: [product._id],
             content_type: 'product',
             value: product.price,
             currency: 'EUR',
@@ -217,7 +217,7 @@ const ProductView: FC<Props> = ({ product }) => {
         ]}
         mpn={product.sku}
         sku={product.sku}
-        productID={product.sku}
+        productID={product._id}
       />
       <NextSeo
         title={product.name}
