@@ -94,3 +94,32 @@
     @apply right-12 text-white bg-violet;
   }
 }
+
+.notify {
+  padding-top: 0.50rem;
+  padding-bottom: 0.50rem;
+  margin-left: 20px;
+}
+
+.input {
+  width: 55%;
+}
+
+.productTitle {
+  @apply pt-0 max-w-full w-full leading-extra-loose;
+  font-size: 2rem;
+  letter-spacing: 0.4px;
+
+  & span {
+    @apply py-4 px-6 bg-primary text-primary font-bold;
+    font-size: inherit;
+    letter-spacing: inherit;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+}
+
+.productPrice {
+  @apply py-4 px-6 bg-primary text-primary font-semibold inline-block text-sm leading-6;
+  letter-spacing: 0.4px;
+}

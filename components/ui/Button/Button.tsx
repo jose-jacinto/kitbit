@@ -18,6 +18,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   type?: 'submit' | 'reset' | 'button'
   Component?: string | JSXElementConstructor<any>
   width?: string | number
+  price?: number
   loading?: boolean
   disabled?: boolean
 }

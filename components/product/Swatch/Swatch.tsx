@@ -9,16 +9,17 @@ interface Props {
   children?: any
   className?: string
   label?: string
+  price?: number
   variant?: 'size' | 'color' | string
-  color?: string
 }
 
 const Swatch: FC<Props & ButtonProps> = ({
   className,
   color = '',
   label,
-  variant = 'size',
+  variant = 'type',
   active,
+  price,
   ...props
 }) => {
   variant = variant?.toLowerCase()
@@ -28,7 +29,7 @@ const Swatch: FC<Props & ButtonProps> = ({
     s.root,
     {
       [s.active]: active,
-      [s.size]: variant === 'size',
+      [s.size]: variant === 'type',
       [s.color]: color,
       [s.dark]: color ? isDark(color) : false,
     },
@@ -42,12 +43,14 @@ const Swatch: FC<Props & ButtonProps> = ({
       aria-label="Variant Swatch"
       {...props}
     >
-      {variant === 'color' && active && (
+      {active && (
         <span>
-          <Check />
+          <Check width={'20'} height={'20'} />
         </span>
       )}
-      {variant === 'size' ? label : null}
+      {label}
+      <br />
+      {price && price.toFixed(2)} €
     </Button>
   )
 }

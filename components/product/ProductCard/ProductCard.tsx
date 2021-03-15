@@ -85,6 +85,18 @@ const ProductCard: FC<Props> = ({
           </div>
         ) : (
           <>
+            <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
+              {p.isNew && (
+                <h3 className={s.productTitle}>
+                  <span>{'New'}</span>
+                </h3>
+              )}
+              {p.stock <= 0 ? (
+                <span className={s.productPrice}>{'Out of Stock!'}</span>
+              ) : (
+                <span className={s.productPrice}>{'In Stock!'}</span>
+              )}
+            </div>
             <div className={s.squareBg} />
             <div className="flex flex-row justify-between box-border w-full z-20 absolute">
               <div className="absolute top-0 left-0 pr-16 max-w-full">

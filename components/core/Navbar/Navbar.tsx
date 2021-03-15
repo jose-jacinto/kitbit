@@ -58,7 +58,7 @@ const Navbar: FC<Props> = ({ className }) => {
             </Link>
             {categories &&
               categories.map((cat: any) => (
-                <Link href={`/search?cat=${cat._id}`}>
+                <Link href={`/search?cat=${cat._id}`} key={cat._id}>
                   <a className={s.link}>{cat.name}</a>
                 </Link>
               ))}

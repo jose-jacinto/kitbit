@@ -27,11 +27,11 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
     const auth: any =
       '{"currLang":null,"token":null,"userId":null,"userDetails":null,"cart":[]}'
     const persist: any = '{"version":-1,"rehydrated":true}'
-
     localStorage.setItem(
       'persist:whitebrim',
       JSON.stringify({ auth: auth, _persist: persist })
     )
+    //! FOR WHITEBRIM CHECKOUT (NEED TO FIX THIS ISSUE ON CHECKOUT)
 
     if (localStorage.getItem('wb_token')) {
       console.log('Authenticating...')

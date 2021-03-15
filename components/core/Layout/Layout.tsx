@@ -27,6 +27,7 @@ const Layout: FC<Props> = ({ children }) => {
     closeToast,
     displayToast,
   } = useUI()
+  const [cookie_consent, setCookieConsent] = useState<any>(null)
   const [acceptedCookies, setAcceptedCookies] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
   const { locale = 'en-US' } = useRouter()
@@ -45,11 +46,19 @@ const Layout: FC<Props> = ({ children }) => {
   }, [])
 
   useEffect(() => {
+    if (!cookie_consent && typeof window !== 'undefined')
+      setCookieConsent(localStorage.getItem('cookie_consent') ? true : false)
+
     document.addEventListener('scroll', handleScroll)
     return () => {
       document.removeEventListener('scroll', handleScroll)
     }
   }, [handleScroll])
+
+  const acceptCookies = () => {
+    localStorage.setItem('cookie_consent', 'true')
+    setAcceptedCookies(true)
+  }
 
   return (
     <div className={cn(s.root)}>
@@ -74,19 +83,21 @@ const Layout: FC<Props> = ({ children }) => {
         {modalView === 'SIGNUP_VIEW' && <SignUpView />}
         {modalView === 'FORGOT_VIEW' && <ForgotPassword />}
       </Modal>
-      <Featurebar
-        title={
-          locale === 'pt'
-            ? 'Este website utiliza cookies para garantir a melhor experiência possível.'
-            : 'This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy.'
-        }
-        hide={acceptedCookies}
-        action={
-          <Button className="mx-5" onClick={() => setAcceptedCookies(true)}>
-            {locale === 'pt' ? 'Aceitar Cookies' : 'Accept cookies'}
-          </Button>
-        }
-      />
+      {cookie_consent !== null && (
+        <Featurebar
+          title={
+            locale === 'pt'
+              ? 'Este website utiliza cookies para garantir a melhor experiência possível.'
+              : 'This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy.'
+          }
+          hide={acceptedCookies || cookie_consent}
+          action={
+            <Button className="mx-5" onClick={acceptCookies}>
+              {locale === 'pt' ? 'Aceitar Cookies' : 'Accept cookies'}
+            </Button>
+          }
+        />
+      )}
       <Toast open={displayToast} onClose={closeModal}>
         {toastText}
       </Toast>

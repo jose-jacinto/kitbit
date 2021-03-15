@@ -4,19 +4,18 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { NextSeo, ProductJsonLd } from 'next-seo'
 
-import ReactPixel from 'react-facebook-pixel';
+import ReactPixel from 'react-facebook-pixel'
+import WishlistButton from '@components/wishlist/WishlistButton'
 
 import s from './ProductView.module.css'
 import { useUI } from '@components/ui/context'
 import { Swatch, ProductSlider } from '@components/product'
-import { Button, Container } from '@components/ui'
+import { Button, Input, Container } from '@components/ui'
 import { HTMLContent } from '@components/core'
-import WishlistButton from '@components/wishlist/WishlistButton'
-
-import { getItemVariants } from '../helpers'
+// import WishlistButton from '@components/wishlist/WishlistButton'
 
 import { addToCart } from 'whitebrim'
-import { getEnabledCategories } from 'trace_events'
+import axios from 'axios'
 
 interface Props {
   className?: string
@@ -39,29 +38,48 @@ interface edition_options {
 }
 
 const ProductView: FC<Props> = ({ product }) => {
-  const { locale } = useRouter()
+  const { locale, query, push } = useRouter()
   const { openSidebar, openModal, setModalView } = useUI()
 
-  const variants = getItemVariants(product)
-  const [selectedSize, selectSize] = useState<any>(null)
-
-  const [colors, setColors] = useState<any>([])
-  const [selectedColor, selectColor] = useState<any>(null)
+  const [selectedMainVar, selectMainVar] = useState<any>(null)
+  const [email, setEmail] = useState('')
 
   const [loading, setLoading] = useState<boolean>(false)
   const [currLocale, setLocale] = useState<string>(
     locale === 'pt' ? 'pt_PT' : 'en_US'
   )
 
+  const [displayPrice, setPrice] = useState<any>(null)
   const [effect, setEffect] = useState<boolean>(false)
 
   useEffect(() => {
+    if (!displayPrice) {
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/get_price?modelId[]=${product._id}`,
+          localStorage.getItem('wb_token')
+            ? {
+                headers: {
+                  Authorization: localStorage.getItem('wb_token')
+                    ? localStorage.getItem('wb_token')
+                    : null,
+                },
+              }
+            : {}
+        )
+        .then((response) => {
+          setPrice(response.data[0].productSpec.price)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+
     if (!effect) {
-      console.log(product)
-      import("react-facebook-pixel")
+      import('react-facebook-pixel')
         .then((x) => x.default)
         .then((ReactPixel) => {
-          ReactPixel.init('201854665067073');
+          ReactPixel.init('201854665067073')
           ReactPixel.track('ViewContent', {
             content_name: product.name,
             content_category: product.categories[0].name,
@@ -69,12 +87,18 @@ const ProductView: FC<Props> = ({ product }) => {
             content_type: 'product',
             value: product.price,
             currency: 'EUR',
-            google_product_category: "3356"
-          });
-        });
-
+            google_product_category: '3356',
+          })
+        })
 
       setEffect(true)
+    }
+
+    if (query && product.variant_options) {
+      const variant = product.variant_options.find(
+        (variant: any) => variant._id === query.variant
+      )
+      selectMainVar(variant)
     }
   }, [])
 
@@ -83,21 +107,14 @@ const ProductView: FC<Props> = ({ product }) => {
       setLoading(true)
       let submitValues
 
-      if (
-        (selectedSize && selectedSize[0].variant_id && selectedColor) ||
-        (selectedSize && selectedSize[0].variant_id && !selectedColor)
-      ) {
+      if (selectedMainVar && selectedMainVar._id) {
         submitValues = {
           addons: [],
           customizations: [],
           model_id: product._id,
           model_name: product.model_name,
           quantity: 1,
-          // If color use color id else use size id
-          variant: !selectedColor
-            ? selectedSize[0].variant_id
-            : selectedColor.variant_id, // SELECTED_VARIANT
-          //
+          variant: selectedMainVar._id, // SELECTED_VARIANT
           userId: localStorage.getItem('wb_userId'), // USER ID
         }
       } else {
@@ -144,21 +161,13 @@ const ProductView: FC<Props> = ({ product }) => {
     }
   }
 
-  const selectMainVariant = (key: any) => {
-    selectColor(null)
-
-    variants[key].size_name = key
-    selectSize(variants[key])
-
-    if (variants[key][0].option_name) {
-      setColors(variants[key])
-    } else {
-      setColors([])
-    }
-  }
-
-  const selectMainColor = (color: object) => {
-    selectColor(color)
+  const selectMainVariant = (variant: any) => {
+    window.history.pushState(
+      null,
+      '',
+      `/product/${product.uri}?variant=${variant._id}`
+    )
+    selectMainVar(variant)
   }
 
   // Set locale to show product info in the correct language
@@ -198,17 +207,15 @@ const ProductView: FC<Props> = ({ product }) => {
       <ProductJsonLd
         productName={product.name}
         category="3356"
-        images={[
-          product.photo.url
-        ]}
+        images={[product.photo.url]}
         description="Unavailable"
         brand={product.brands[0].name}
         offers={[
           {
             price: product.price,
             priceCurrency: 'EUR',
-            itemCondition: "https://schema.org/NewCondition",
-            availability: "https://schema.org/InStock",
+            itemCondition: 'https://schema.org/NewCondition',
+            availability: 'https://schema.org/InStock',
             url: `https://kitbit.vercel.app/product/${product.uri}`,
             seller: {
               name: 'Kitbit',
@@ -238,20 +245,41 @@ const ProductView: FC<Props> = ({ product }) => {
               width: 800,
               height: 600,
               alt: product.name,
-            }
-          ]
+            },
+          ],
         }}
       />
       <div className={cn(s.root, 'fit')}>
         <div className={cn(s.productDisplay, 'fit')}>
+          <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
+            {product.isNew && (
+              <h3 className={s.productTitle}>
+                <span>{'New'}</span>
+              </h3>
+            )}
+            {product.stock <= 0 ? (
+              <span className={s.productPrice}>{'Out of Stock!'}</span>
+            ) : (
+              <span className={s.productPrice}>{'In Stock!'}</span>
+            )}
+          </div>
           <div className={s.nameBox}>
             <h1 className={s.name}>{product.name}</h1>
             <div className={s.price}>
-              {product.price.toFixed(2)}
-              {` `}€
+              {product.discount[0] && product.discount[0].active ? (
+                <>
+                  <span>
+                    <del>{product.price.toFixed(2)} €</del>
+                  </span>
+                  <span className="ml-5">
+                    {product.discount[0].finalPrice.toFixed(2)} €
+                  </span>
+                </>
+              ) : (
+                <span>{displayPrice && displayPrice.toFixed(2)} €</span>
+              )}
             </div>
           </div>
-
           <div className={s.sliderContainer}>
             <ProductSlider>
               {/* Main photo then gallery */}
@@ -262,8 +290,6 @@ const ProductView: FC<Props> = ({ product }) => {
                   alt={product.name}
                   width={1050}
                   height={1050}
-                // priority={true}
-                // quality="85"
                 />
               </div>
               {product.gallery &&
@@ -275,50 +301,27 @@ const ProductView: FC<Props> = ({ product }) => {
                       alt={'Product Image'}
                       width={1050}
                       height={1050}
-                    // priority={false}
-                    // quality="85"
                     />
                   </div>
                 ))}
             </ProductSlider>
           </div>
         </div>
-
         <div className={s.sidebar}>
           <section>
             <div className="pb-4">
-              {Object.keys(variants).length > 0 && (
-                <h2 className="uppercase font-medium">Size</h2>
-              )}
               <div className="flex flex-row py-4">
-                {Object.keys(variants).map((key: any, i: number) => {
+                {product.variant_options.map((variant: any, i: number) => {
                   return (
                     <Swatch
-                      key={`${key}-${i}`}
-                      active={selectedSize && selectedSize.size_name === key}
+                      key={`${variant.name}-${i}`}
+                      active={
+                        selectedMainVar && selectedMainVar._id === variant._id
+                      }
                       variant={'slim'}
-                      color={''}
-                      label={`${key}`}
-                      onClick={() => selectMainVariant(key)}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-            <div className="pb-4">
-              {colors.length > 0 && (
-                <h2 className="uppercase font-medium">Color</h2>
-              )}
-              <div className="flex flex-row py-4">
-                {colors.map((color: any, i: number) => {
-                  return (
-                    <Swatch
-                      key={`${color._id}-${i}`}
-                      active={selectedColor && selectedColor._id === color._id}
-                      variant={'slim'}
-                      color={color.options_name}
-                      label={color.option_name}
-                      onClick={() => selectMainColor(color)}
+                      label={`${variant.name}`}
+                      price={variant.price}
+                      onClick={() => selectMainVariant(variant)}
                     />
                   )
                 })}
@@ -329,9 +332,9 @@ const ProductView: FC<Props> = ({ product }) => {
             </div>
           </section>
           <div>
-            {(selectedSize && !selectedSize[0]._id) ||
-              (selectedSize && selectedSize[0]._id && selectedColor) ||
-              Object.keys(variants).length === 0 ? (
+            {product.stock > 0 ? (
+              selectedMainVar ||
+              (!selectedMainVar && product.variant_options.length === 0) ? (
                 <Button
                   aria-label="Add to Cart"
                   type="button"
@@ -342,10 +345,31 @@ const ProductView: FC<Props> = ({ product }) => {
                 >
                   {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
                 </Button>
-              ) : null}
+              ) : null
+            ) : (
+              <>
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  onChange={setEmail}
+                  className={s.input}
+                />
+                <Button
+                  aria-label={
+                    locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'
+                  }
+                  type="button"
+                  className={s.notify}
+                  onClick={() => console.log('Notify')}
+                  loading={loading}
+                  disabled={loading} // if (no variant selected and variantLength > 0)
+                >
+                  {locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'}
+                </Button>
+              </>
+            )}
           </div>
         </div>
-
         <WishlistButton
           className={s.wishlistButton}
           productId={product.entityId}
