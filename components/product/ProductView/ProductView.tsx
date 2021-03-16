@@ -21,6 +21,7 @@ interface Props {
   className?: string
   children?: any
   product: any
+  urlVariant?: any
 }
 
 interface Photo {
