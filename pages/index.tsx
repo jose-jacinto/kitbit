@@ -5,6 +5,7 @@ import rangeMap from '@lib/range-map'
 import { Layout } from '@components/core'
 import { Grid, Marquee, Hero } from '@components/ui'
 import { ProductCard } from '@components/product'
+import { BrandCard } from '@components/brand'
 import HomeAllProductsGrid from '@components/core/HomeAllProductsGrid'
 
 import { getItems } from 'whitebrim'
@@ -149,10 +150,9 @@ export default function Home({
       </Grid>
       <Marquee>
         {brands.map((item: any, i: number) => (
-          <ProductCard
+          <BrandCard
             key={item._id}
-            product={item}
-            variant="slim"
+            brand={item}
             imgWidth={360}
             imgHeight={480}
           />

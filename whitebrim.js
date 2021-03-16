@@ -551,21 +551,18 @@ export const getShippingFee = (options, cart, shipping) => {
 
 export const getItems = (options) =>
     new Promise((resolve, reject) => {
-        var filterString = "?";
+        let filterString = "?";
 
         if (options.filters) {
-            var thisLength = Object.keys(options.filters).length;
-            var i = 0;
-
-            for (var k in options.filters) {
-                if (options.filters[k] !== null) filterString += "".concat(k, "=").concat(options.filters[k]);
-                if (i < thisLength - 1 || options.pagination) filterString += "&";
+            let i = 0;
+            for (let k in options.filters) {
+                if (typeof options.filters[k] !== 'undefined' && options.filters[k] !== null) filterString += "".concat(k, "=").concat(options.filters[k], "&");
                 i++;
             }
         }
         
-        if (options.pagination) filterString += "&limit=".concat(options.pagination.limit, "&page=").concat(options.pagination.page, "&");
-        if (options.q) filterString += `q=${options.q}`
+        if (options.pagination) filterString += "limit=".concat(options.pagination.limit, "&page=").concat(options.pagination.page, "");
+        if (options.q) filterString += `&q=${options.q}`
 
         axios
             .get(`${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/${options.modelName}${filterString}`, {})
