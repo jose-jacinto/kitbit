@@ -224,8 +224,6 @@ export default function Search({
                   onClick={(e) => {
                     e.preventDefault()
 
-                    console.log(brand._id)
-
                     router.push(
                       {
                         pathname: `/search`,

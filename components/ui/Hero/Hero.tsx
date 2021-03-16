@@ -7,6 +7,7 @@ interface Props {
   className?: string
   headline: string
   description: string
+  image?: string
 }
 
 const Hero: FC<Props> = ({ headline, description }) => {

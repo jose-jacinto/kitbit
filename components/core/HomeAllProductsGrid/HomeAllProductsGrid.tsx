@@ -12,10 +12,10 @@ import s from './HomeAllProductsGrid.module.css'
 interface Props {
   categories?: any
   brands?: any
-  newestProducts?: any
+  products?: any
 }
 
-const Head: FC<Props> = ({ categories, brands, newestProducts }) => {
+const Head: FC<Props> = ({ categories, brands, products }) => {
   const { locale } = useRouter()
 
   return (
@@ -56,7 +56,7 @@ const Head: FC<Props> = ({ categories, brands, newestProducts }) => {
       </div>
       <div className="flex-1">
         <Grid layout="normal">
-          {newestProducts.map((item: { uri: string }, i: any) => (
+          {products.map((item: { uri: string }, i: any) => (
             <ProductCard
               key={item.uri}
               product={item}

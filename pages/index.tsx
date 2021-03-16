@@ -13,11 +13,11 @@ const fetchItems = async (data: {
   modelName: string
   currentPage: number
   selectedPageSize: number
-  filterOption: {
+  filterOption?: {
     name: any
     id: any
   }
-  filterOption2: {
+  filterOption2?: {
     name: any
     id: any
   }
@@ -54,35 +54,30 @@ const fetchItems = async (data: {
     }))
 }
 
-export async function getStaticProps({ }: GetStaticPropsContext) {
-  let featuredItems = {
+export async function getStaticProps({}: GetStaticPropsContext) {
+  let highlightItems = {
     modelName: 'product',
     currentPage: 1,
-    selectedPageSize: 6,
-    filterOption: { name: 'isFeatured', id: true },
-    filterOption2: { name: null, id: null },
+    selectedPageSize: 3,
+    filterOption: { name: 'type', id: 'highlight' },
     multi: false,
   }
-  let bestSellingItems = {
+  let recentItems = {
     modelName: 'product',
     currentPage: 1,
     selectedPageSize: 6,
-    filterOption: { name: 'isBestSelling', id: true },
-    filterOption2: { name: null, id: null },
+    filterOption: { name: 'type', id: 'recent' },
     multi: false,
   }
-  let newestItems = {
+  let items = {
     modelName: 'product',
     currentPage: 1,
-    selectedPageSize: 6,
-    filterOption: { name: 'order_by', id: 'createdAt' },
-    filterOption2: { name: 'order', id: 'asc' },
-    multi: true,
+    selectedPageSize: 12,
   }
 
-  const { items: featuredProducts } = await fetchItems(featuredItems)
-  const { items: bestSellingProducts } = await fetchItems(bestSellingItems)
-  const { items: newestProducts } = await fetchItems(newestItems)
+  const { items: highlightProducts } = await fetchItems(highlightItems)
+  const { items: recentProducts } = await fetchItems(recentItems)
+  const { items: products } = await fetchItems(items)
 
   let categoriesItems = {
     modelName: 'categories',
@@ -106,9 +101,9 @@ export async function getStaticProps({ }: GetStaticPropsContext) {
 
   return {
     props: {
-      featuredProducts,
-      bestSellingProducts,
-      newestProducts,
+      highlightProducts,
+      recentProducts,
+      products,
       categories,
       brands,
     },
@@ -116,37 +111,17 @@ export async function getStaticProps({ }: GetStaticPropsContext) {
   }
 }
 
-const nonNullable = (v: any) => v
-
 export default function Home({
-  featuredProducts,
-  bestSellingProducts,
-  newestProducts,
+  highlightProducts,
+  recentProducts,
+  products,
   categories,
   brands,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { featured, bestSelling } = useMemo(() => {
-    // Create a copy of products that we can mutate
-    const products = [...newestProducts]
-    // If the lists of featured and best selling products don't have enough
-    // products, then fill them with products from the products list, this
-    // is useful for new commerce sites that don't have a lot of products
-    return {
-      featured: rangeMap(6, (i) => featuredProducts[i] ?? products.shift())
-        .filter(nonNullable)
-        .sort((a, b) => a.price - b.price)
-        .reverse(),
-      bestSelling: rangeMap(
-        6,
-        (i) => bestSellingProducts[i] ?? products.shift()
-      ).filter(nonNullable),
-    }
-  }, [newestProducts, featuredProducts, bestSellingProducts])
-
+}: any) {
   return (
     <div>
       <Grid>
-        {featured.slice(0, 3).map((item, i) => (
+        {highlightProducts.map((item: any, i: number) => (
           <ProductCard
             key={item._id}
             product={item}
@@ -157,23 +132,12 @@ export default function Home({
           />
         ))}
       </Grid>
-      <Marquee variant="secondary">
-        {bestSelling.slice(3, 6).map((item, i) => (
-          <ProductCard
-            key={item._id}
-            product={item}
-            variant="slim"
-            imgWidth={320}
-            imgHeight={320}
-          />
-        ))}
-      </Marquee>
       <Hero
         headline="Kitbit - One-stop shop for the modern explorer"
         description="Domephgt"
       />
       <Grid layout="B">
-        {featured.slice(3, 6).map((item, i) => (
+        {recentProducts.map((item: any, i: number) => (
           <ProductCard
             key={item._id}
             product={item}
@@ -184,7 +148,7 @@ export default function Home({
         ))}
       </Grid>
       <Marquee>
-        {bestSelling.slice(0, 3).map((item, i) => (
+        {brands.map((item: any, i: number) => (
           <ProductCard
             key={item._id}
             product={item}
@@ -197,7 +161,7 @@ export default function Home({
       <HomeAllProductsGrid
         categories={categories ? categories : []}
         brands={brands ? brands : []}
-        newestProducts={newestProducts}
+        products={products}
       />
     </div>
   )
