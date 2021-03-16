@@ -37,8 +37,8 @@ interface edition_options {
   }
 }
 
-const ProductView: FC<Props> = ({ product }) => {
-  const { locale, query, push } = useRouter()
+const ProductView: FC<Props> = ({ product, urlVariant }) => {
+  const { locale } = useRouter()
   const { openSidebar, openModal, setModalView } = useUI()
 
   const [selectedMainVar, selectMainVar] = useState<any>(null)
@@ -94,9 +94,9 @@ const ProductView: FC<Props> = ({ product }) => {
       setEffect(true)
     }
 
-    if (query && product.variant_options) {
+    if (urlVariant && product.variant_options) {
       const variant = product.variant_options.find(
-        (variant: any) => variant._id === query.variant
+        (variant: any) => variant._id === urlVariant
       )
       selectMainVar(variant)
     }
@@ -196,7 +196,7 @@ const ProductView: FC<Props> = ({ product }) => {
         '&fit=crop'
       return photo.url.trim() + '?fm=jpg&w=600&h=600' + post_edition_string
     } else if (photo && photo.url) {
-      return photo.url.trim() + '?fm=jpg&w=600&h=600'
+      return photo.url.trim() + '?fit=crop&fm=jpg&w=600&h=600'
     } else {
       return photo.url
     }

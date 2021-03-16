@@ -47,7 +47,7 @@ const getProcessedUrl = (photo: Photo) => {
       '&fit=crop'
     return photo.url.trim() + '?fm=jpg&w=600&h=600' + post_edition_string
   } else if (photo && photo.url) {
-    return photo.url.trim() + '?fm=jpg&w=600&h=600'
+    return photo.url.trim() + '?fit=crop&fm=jpg&w=600&h=600'
   } else {
     return photo.url
   }

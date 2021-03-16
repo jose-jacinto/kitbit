@@ -39,15 +39,10 @@ const Swatch: FC<Props & ButtonProps> = ({
   return (
     <Button
       className={rootClassName}
-      style={color ? { backgroundColor: color } : {}}
+      style={active ? { backgroundColor: '#5F3DC4', color: '#fff' } : {}}
       aria-label="Variant Swatch"
       {...props}
     >
-      {active && (
-        <span>
-          <Check width={'20'} height={'20'} />
-        </span>
-      )}
       {label}
       <br />
       {price && price.toFixed(2)} €

@@ -57,7 +57,7 @@ const getItem = async (uri: any) => {
 
 export async function getStaticProps({
   params,
-}: GetStaticPropsContext<{ uri: string }>) {
+}: GetStaticPropsContext<{ uri: string; variant?: any }>) {
   const data = await getItem(params && params.uri)
 
   if (!data) {
@@ -100,10 +100,15 @@ export default function Uri({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
 
+  const param = router.asPath.match(new RegExp(`[&?]${'variant'}=(.*)(&|$)`))
+
   return router.isFallback ? (
     <h1>Loading...</h1> // TODO (BC) Add Skeleton Views
   ) : (
-    <ProductView product={item} />
+    <ProductView
+      product={item}
+      urlVariant={param && param[1] ? param[1] : null}
+    />
   )
 }
 
