@@ -15,7 +15,7 @@ interface Props {
   products?: any
 }
 
-const Head: FC<Props> = ({ categories, brands, products }) => {
+const HomeAllProductsGrid: FC<Props> = ({ categories, brands, products }) => {
   const { locale } = useRouter()
 
   return (
@@ -71,4 +71,4 @@ const Head: FC<Props> = ({ categories, brands, products }) => {
   )
 }
 
-export default Head
+export default HomeAllProductsGrid

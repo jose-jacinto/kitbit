@@ -1,7 +1,7 @@
 {
-  "title": "KITBIT | Powered by Next.js Commerce",
-  "titleTemplate": "%s - KITBIT",
-  "description": "Next.js Commerce -> https://www.nextjs.org/commerce",
+  "title": "Kitbit",
+  "titleTemplate": "%s - One-stop shop for the modern explorer",
+  "description": "One-stop shop for the modern explorer",
   "openGraph": {
     "type": "website",
     "locale": "en_IE",

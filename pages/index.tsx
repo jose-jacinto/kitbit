@@ -1,42 +1,21 @@
-import { useMemo } from 'react'
-import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
-import rangeMap from '@lib/range-map'
+import type { GetStaticPropsContext } from 'next'
 
-import { Layout } from '@components/core'
+import { Layout, HomeAllProductsGrid } from '@components/core'
 import { Grid, Marquee, Hero } from '@components/ui'
 import { ProductCard } from '@components/product'
 import { BrandCard } from '@components/brand'
-import HomeAllProductsGrid from '@components/core/HomeAllProductsGrid'
 
 import { getItems } from 'whitebrim'
 
 const fetchItems = async (data: {
   modelName: string
-  currentPage: number
-  selectedPageSize: number
-  filterOption?: {
-    name: any
-    id: any
-  }
-  filterOption2?: {
-    name: any
-    id: any
-  }
-  multi?: boolean
+  filter?: object
+  currentPage?: number
+  selectedPageSize?: number
 }) => {
-  let filter: any = {}
-
-  if (data.filterOption && data.filterOption.name && data.filterOption.id) {
-    filter[data.filterOption.name] = data.filterOption.id
-  }
-
-  if (data.filterOption2 && data.filterOption2.name && data.filterOption2.id) {
-    filter[data.filterOption2.name] = data.filterOption2.id
-  }
-
   let params = {
     modelName: data.modelName,
-    filters: filter,
+    filters: data.filter,
     pagination: {
       page: data.currentPage,
       limit: data.selectedPageSize,
@@ -60,45 +39,36 @@ export async function getStaticProps({}: GetStaticPropsContext) {
     modelName: 'product',
     currentPage: 1,
     selectedPageSize: 3,
-    filterOption: { name: 'type', id: 'highlight' },
-    multi: false,
+    filter: { name: 'type', id: 'highlight' },
   }
   let recentItems = {
     modelName: 'product',
     currentPage: 1,
-    selectedPageSize: 6,
-    filterOption: { name: 'type', id: 'recent' },
-    multi: false,
+    selectedPageSize: 3,
+    filter: { name: 'type', id: 'recent' },
   }
   let items = {
     modelName: 'product',
     currentPage: 1,
-    selectedPageSize: 12,
+    selectedPageSize: 150,
   }
 
   const { items: highlightProducts } = await fetchItems(highlightItems)
   const { items: recentProducts } = await fetchItems(recentItems)
   const { items: products } = await fetchItems(items)
 
-  let categoriesItems = {
+  const { items: categories } = await fetchItems({
     modelName: 'categories',
+    filter: {},
     currentPage: 1,
-    selectedPageSize: 6,
-    filterOption: { name: null, id: null },
-    filterOption2: { name: null, id: null },
-    multi: false,
-  }
-  let brandItems = {
+    selectedPageSize: 150,
+  })
+  const { items: brands } = await fetchItems({
     modelName: 'brands',
+    filter: {},
     currentPage: 1,
-    selectedPageSize: 6,
-    filterOption: { name: null, id: null },
-    filterOption2: { name: null, id: null },
-    multi: false,
-  }
-
-  const { items: categories } = await fetchItems(categoriesItems)
-  const { items: brands } = await fetchItems(brandItems)
+    selectedPageSize: 150,
+  })
 
   return {
     props: {
@@ -135,7 +105,7 @@ export default function Home({
       </Grid>
       <Hero
         headline="Kitbit - One-stop shop for the modern explorer"
-        description="Domephgt"
+        description="Description"
       />
       <Grid layout="B">
         {recentProducts.map((item: any, i: number) => (
@@ -161,7 +131,7 @@ export default function Home({
       <HomeAllProductsGrid
         categories={categories ? categories : []}
         brands={brands ? brands : []}
-        products={products}
+        products={products ? products : []}
       />
     </div>
   )

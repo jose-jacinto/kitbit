@@ -15,9 +15,9 @@ module.exports = {
         "destination": "https://d3v0kwj6fsyaja.cloudfront.net/index.html"
       },
       {
-          "source": "/checkout/:match*",
-          "destination": "https://d3v0kwj6fsyaja.cloudfront.net/:match*"
-    }
+        "source": "/checkout/:match*",
+        "destination": "https://d3v0kwj6fsyaja.cloudfront.net/:match*"
+      }
     ];
   }
 }

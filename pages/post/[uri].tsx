@@ -1,24 +1,14 @@
-import { useState } from 'react'
+import type { GetStaticPathsContext, GetStaticPropsContext } from 'next'
 
-import type {
-  GetStaticPathsContext,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-} from 'next'
-import { useRouter } from 'next/router'
+import { NextSeo, ArticleJsonLd } from 'next-seo'
 
 import { Layout } from '@components/core'
 import { Container } from '@components/ui'
-import { NextSeo, ArticleJsonLd } from 'next-seo'
 
 import { getItems, getItemByUri } from 'whitebrim'
 
 const getAllModels = async (data: { modelName: string }) => {
-  let params = {
-    modelName: data.modelName,
-  }
-
-  return getItems(params)
+  return getItems({ modelName: data.modelName })
     .then((res: { data: { results: []; total_pages: number } }) => ({
       items: res.data.results,
       totalPages: res.data.total_pages,
@@ -32,12 +22,10 @@ const getAllModels = async (data: { modelName: string }) => {
 }
 
 const getItem = async (uri: any) => {
-  let params = {
+  return getItemByUri({
     modelName: 'blog',
     uri: uri,
-  }
-
-  return getItemByUri(params)
+  })
     .then((res) => ({
       item: res.data,
       error: false,
@@ -64,11 +52,7 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths({ locales }: GetStaticPathsContext) {
-  let payload = {
-    modelName: 'blog',
-  }
-  const data = await getAllModels(payload)
-
+  const data = await getAllModels({ modelName: 'blog' })
   return {
     paths: locales
       ? locales.reduce<string[]>((arr, locale) => {
@@ -84,46 +68,37 @@ export async function getStaticPaths({ locales }: GetStaticPathsContext) {
   }
 }
 
-export default function Post(props: any) {
-  const { locale } = useRouter()
-  const [currLocale, setLocale] = useState<string>(
-    locale === 'pt' ? 'pt_PT' : 'en_US'
-  )
-
+export default function Post({ item }: any) {
   return (
     <div className="pb-20">
       <ArticleJsonLd
-        url={`https://kitbit.vercel.app/post/${props.item.uri}`}
-        title={props.item.title}
-        images={[props.item.photo.url]}
-        datePublished="2015-02-05T08:00:00+08:00"
-        dateModified="2015-02-05T09:00:00+08:00"
+        url={`https://kitbit.vercel.app/post/${item.uri}`}
+        title={item.title}
+        images={[item.photo.url]}
+        datePublished={item.creat_default.createdAt}
+        dateModified={
+          item.edit_default && item.edit_default.createdAt
+            ? item.edit_default.createdAt
+            : ''
+        }
         authorName={['Kitbit']}
         publisherName="Kitbit"
-        publisherLogo={`https://kitbit.vercel.app/post/${props.item.uri}`}
-        description={props.item.intro}
+        publisherLogo={`https://kitbit.vercel.app/post/${item.uri}`}
+        description={item.intro}
       />
       <NextSeo
-        title={props.item.title}
-        description={props.item.intro}
-        // description={
-        //   currLocale
-        //     ? props.item.description[currLocale]
-        //     : props.item.description.en_US
-        // }
+        title={item.title}
+        description={item.intro}
         openGraph={{
           type: 'website',
-          title: props.item.name,
-          description: props.item.intro,
-          //   description: currLocale
-          //     ? props.item.description[currLocale]
-          //     : props.item.description.en_US,
+          title: item.name,
+          description: item.intro,
           images: [
             {
-              url: `https:${props.item.photo.url}`,
+              url: `https:${item.photo.url}`,
               width: 800,
               height: 600,
-              alt: props.item.name,
+              alt: item.name,
             },
           ],
         }}
@@ -131,10 +106,10 @@ export default function Post(props: any) {
       <div className="text-center pt-40 pb-56 bg-violet">
         <Container>
           <h2 className="text-4xl tracking-tight leading-10 font-extrabold text-white sm:text-5xl sm:leading-none md:text-6xl">
-            {props.item.title}
+            {item.title}
           </h2>
           <p className="mt-3 max-w-md mx-auto text-gray-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-            {props.item.intro}
+            {item.intro}
           </p>
           <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-12">
             <div className="flex">
@@ -161,7 +136,7 @@ export default function Post(props: any) {
         <div className="text-lg leading-7 font-medium py-6 text-justify max-w-6xl mx-auto">
           <div
             dangerouslySetInnerHTML={{
-              __html: props.item.html,
+              __html: item.html,
             }}
           />
         </div>

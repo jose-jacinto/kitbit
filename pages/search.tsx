@@ -1,50 +1,46 @@
-import cn from 'classnames'
-import { useState } from 'react'
 import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
-import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import cn from 'classnames'
 
 import { Layout } from '@components/core'
 import { ProductCard } from '@components/product'
-import { Container, Grid, Skeleton } from '@components/ui'
+import { Container, Grid, Skeleton, InfiniteScroll } from '@components/ui'
 
 import rangeMap from '@lib/range-map'
-import getSlug from '@lib/get-slug'
-import {
-  filterQuery,
-  getCategoryPath,
-  getBrandPath,
-  useSearchMeta,
-} from '@lib/search'
 
 import { getItems } from 'whitebrim'
 
 const fetchItems = (data: {
   modelName: string
-  currentPage: number
-  selectedPageSize: number
-  filter: any
-  q?: string
-  multi?: boolean
+  filter?: object
+  currentPage?: number
+  selectedPageSize?: number
 }) => {
-  let params = {
+  let wbParams = {
     modelName: data.modelName,
     filters: data.filter,
-    q: data.q ? data.q : null, //* search
     pagination: {
       page: data.currentPage,
       limit: data.selectedPageSize,
     },
   }
-  return getItems(params)
+
+  return getItems(wbParams)
     .then((res) => ({
       items: res.data.results,
-      totalPages: res.data.total_pages,
+      total_results: res.data.total_results,
+      total_pages: res.data.total_pages,
+      limit: res.data.limit,
+      page: res.data.page,
       error: false,
     }))
     .catch(() => ({
       items: null,
-      totalPages: 0,
+      total_results: 0,
+      total_pages: 0,
+      limit: 0,
+      page: 0,
       error: true,
     }))
 }
@@ -52,84 +48,69 @@ const fetchItems = (data: {
 export async function getStaticProps({}: GetStaticPropsContext) {
   let categoriesItems = {
     modelName: 'categories',
-    currentPage: 1,
-    selectedPageSize: 6,
     filter: {},
-    multi: false,
+    currentPage: 1,
+    selectedPageSize: 150,
   }
   let brandItems = {
     modelName: 'brands',
-    currentPage: 1,
-    selectedPageSize: 6,
     filter: {},
-    multi: false,
+    currentPage: 1,
+    selectedPageSize: 150,
   }
 
   const { items: categories } = await fetchItems(categoriesItems)
   const { items: brands } = await fetchItems(brandItems)
 
   return {
-    props: { categories, brands },
+    props: {
+      categories,
+      brands,
+    },
   }
 }
-
-/* const SORT = Object.entries({
-  'latest-desc': 'Latest arrivals',
-  'trending-desc': 'Trending',
-  'price-asc': 'Price: Low to high',
-  'price-desc': 'Price: High to low',
-}) */
 
 export default function Search({
   categories,
   brands,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
-  const { q } = router.query
-  // `q` can be included but because categories and brands can't be searched
-  // in the same way of products, it's better to ignore the search input if one
-  // of those is selected
-  const [currentQuery, setQuery] = useState<any>(null)
-  const [currentCat, setCat] = useState<any>(null)
-  const [currentBrand, setBrand] = useState<any>(null)
+  const { q, cat, brand }: any = router.query
+
+  const [page, setPage] = useState<number>(1)
 
   const [data, setData] = useState<any>(null)
 
-  const renderList = (cat: any | undefined, brand: any | undefined) => {
+  useEffect(() => {
     let filter: any = {}
 
-    if (cat) {
-      filter['categories'] = cat
-    }
-    if (brand) {
-      filter['brands'] = brand._id
-    }
+    if (q) filter['q'] = q
+    if (cat) filter['categories'] = cat
+    if (brand) filter['brands'] = brand._id ? brand._id : brand
 
     let payload = {
       modelName: 'product',
-      currentPage: 1,
-      selectedPageSize: 150,
+      currentPage: page,
+      selectedPageSize: 6,
       filter: filter,
-      q: typeof q === 'string' ? q : '',
-      multi: false,
     }
 
     fetchItems(payload)
       .then((res) => {
-        setQuery(q)
+        if (data && page !== 1) res.items = [...data.items, ...res.items]
         setData(res)
       })
       .catch((error) => {
         setData(null)
       })
-  }
 
-  if (!data && router.query.cat) {
-    renderList(router.query.cat, null)
-  }
+    return () => {
+      console.log('Effect ended')
+    }
+  }, [page, q, cat, brand])
 
-  if ((!data || q !== currentQuery) && !router.query.cat) {
-    renderList(null, null)
+  const leNext = () => {
+    setPage(data.page + 1)
   }
 
   return (
@@ -150,19 +131,19 @@ export default function Search({
                     undefined,
                     { shallow: true }
                   )
-                  setCat(null)
-                  setBrand(null)
-                  renderList(null, null)
+                  setPage(1)
                 }}
               >
-                {router.locale === 'pt' ? 'Categorias' : 'All Categories'}
+                {router.locale === 'pt'
+                  ? 'Todas as Categorias'
+                  : 'All Categories'}
               </a>
             </li>
             {categories.map((category: any) => (
               <li
                 key={category._id}
                 className={cn('py-1 text-accents-8', {
-                  underline: currentCat === category._id,
+                  underline: cat === category._id,
                 })}
               >
                 <a
@@ -180,9 +161,7 @@ export default function Search({
                       undefined,
                       { shallow: true }
                     )
-                    setCat(cat)
-                    setBrand(null)
-                    renderList(cat, null)
+                    setPage(1)
                   }}
                 >
                   {category.name}
@@ -204,19 +183,17 @@ export default function Search({
                     undefined,
                     { shallow: true }
                   )
-                  setBrand(null)
-                  setCat(null)
-                  renderList(null, null)
+                  setPage(1)
                 }}
               >
-                {router.locale === 'pt' ? 'Marcas' : 'All Brands'}
+                {router.locale === 'pt' ? 'Todas as Marcas' : 'All Brands'}
               </a>
             </li>
             {brands.flatMap((brand: any) => (
               <li
                 key={brand.path}
                 className={cn('py-1 text-accents-8', {
-                  underline: currentBrand === brand._id,
+                  underline: router.query && router.query.brand === brand._id,
                 })}
               >
                 <a
@@ -227,14 +204,12 @@ export default function Search({
                     router.push(
                       {
                         pathname: `/search`,
-                        query: brand && brand._id ? { brands: brand._id } : {},
+                        query: brand && brand._id ? { brand: brand._id } : {},
                       },
                       undefined,
                       { shallow: true }
                     )
-                    setCat(null)
-                    setBrand(brand)
-                    renderList(null, brand)
+                    setPage(1)
                   }}
                 >
                   {brand.name}
@@ -244,7 +219,7 @@ export default function Search({
           </ul>
         </div>
         <div className="col-span-8">
-          {(q || currentCat || currentBrand) && (
+          {q && (
             <div className="mb-12 transition ease-in duration-75">
               {data ? (
                 <>
@@ -254,10 +229,13 @@ export default function Search({
                       hidden: !data,
                     })}
                   >
-                    Showing {data.items.length} results{' '}
+                    {router.locale === 'pt' ? 'A mostrar' : 'Showing'}{' '}
+                    {data.items.length}{' '}
+                    {router.locale === 'pt' ? 'resultados' : 'results'}{' '}
                     {q && (
                       <>
-                        for "<strong>{q}</strong>"
+                        {router.locale === 'pt' ? 'para' : 'for'} "
+                        <strong>{q}</strong>"
                       </>
                     )}
                   </span>
@@ -269,42 +247,52 @@ export default function Search({
                   >
                     {q ? (
                       <>
-                        There are no products that match "<strong>{q}</strong>"
+                        {router.locale === 'pt'
+                          ? 'Não há produtos que correspondam'
+                          : 'There are no products that match'}{' '}
+                        "<strong>{q}</strong>"
                       </>
                     ) : (
                       <>
-                        There are no products that match the selected category &
-                        brand
+                        {router.locale === 'pt'
+                          ? 'Não há produtos que correspondam à categoria e marca selecionadas'
+                          : 'There are no products that match the selected category & brand'}
                       </>
                     )}
                   </span>
                 </>
               ) : q ? (
                 <>
-                  Searching for: "<strong>{q}</strong>"
+                  {router.locale === 'pt' ? 'A procurar por' : 'Searching for'}:
+                  "<strong>{q}</strong>"
                 </>
               ) : (
-                <>Searching...</>
+                <>{router.locale === 'pt' ? 'A procurar' : 'Searching'}...</>
               )}
             </div>
           )}
-
           {data ? (
-            <Grid layout="normal">
+            <InfiniteScroll
+              layout="normal"
+              dataLength={data.items.length}
+              next={leNext}
+              hasMore={data.total_pages > data.page}
+              locale={router.locale}
+            >
               {data.items.map((item: any) => (
                 <ProductCard
                   variant="simple"
                   key={item.uri}
-                  className="animated fadeIn"
+                  className="flex flex-1 animated fadeIn"
                   product={item}
                   imgWidth={480}
                   imgHeight={480}
                 />
               ))}
-            </Grid>
+            </InfiniteScroll>
           ) : (
             <Grid layout="normal">
-              {rangeMap(12, (i) => (
+              {rangeMap(6, (i) => (
                 <Skeleton
                   key={i}
                   className="w-full animated fadeIn"
@@ -314,33 +302,33 @@ export default function Search({
             </Grid>
           )}
         </div>
-        <div className="col-span-2">
-          <ul>
-            {/* <li className="py-1 text-base font-bold tracking-wide">Sort</li>
+      </div>
+      {/* <div className="col-span-2">
+        <ul>
+          <li className="py-1 text-base font-bold tracking-wide">Sort</li>
+          <li
+            className={cn('py-1 text-accents-8', {
+              underline: !sort,
+            })}
+          >
+            <Link href={{ pathname, query: filterQuery({ q }) }}>
+              <a>Relevance</a>
+            </Link>
+          </li>
+          {SORT.map(([key, text]) => (
             <li
+              key={key}
               className={cn('py-1 text-accents-8', {
-                underline: !sort,
+                underline: sort === key,
               })}
             >
-              <Link href={{ pathname, query: filterQuery({ q }) }}>
-                <a>Relevance</a>
+              <Link href={{ pathname, query: filterQuery({ q, sort: key }) }}>
+                <a>{text}</a>
               </Link>
             </li>
-            {SORT.map(([key, text]) => (
-              <li
-                key={key}
-                className={cn('py-1 text-accents-8', {
-                  underline: sort === key,
-                })}
-              >
-                <Link href={{ pathname, query: filterQuery({ q, sort: key }) }}>
-                  <a>{text}</a>
-                </Link>
-              </li>
-            ))} */}
-          </ul>
-        </div>
-      </div>
+          ))}
+        </ul>
+      </div> */}
     </Container>
   )
 }

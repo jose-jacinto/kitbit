@@ -1,5 +1,5 @@
 {
-  "name": "e-comm-example",
+  "name": "kitbit",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -35,6 +35,7 @@
     "react-aria": "^3.0.0",
     "react-dom": "^16.14.0",
     "react-facebook-pixel": "^1.0.4",
+    "react-infinite-scroll-component": "^6.0.0",
     "react-intersection-observer": "^8.29.1",
     "react-merge-refs": "^1.1.0",
     "react-ticker": "^1.2.2",

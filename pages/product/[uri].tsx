@@ -15,10 +15,9 @@ const getAllModels = async (data: {
   currentPage: number
   selectedPageSize: number
 }) => {
-  let filter = {}
   let params = {
     modelName: data.modelName,
-    filters: filter,
+    filters: {},
     pagination: {
       page: data.currentPage,
       limit: data.selectedPageSize,
@@ -39,12 +38,7 @@ const getAllModels = async (data: {
 }
 
 const getItem = async (uri: any) => {
-  let params = {
-    modelName: 'product',
-    uri: uri,
-  }
-
-  return getItemByUri(params)
+  return getItemByUri({ modelName: 'product', uri: uri })
     .then((res) => ({
       item: res.data,
       error: false,
@@ -71,12 +65,11 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths({ locales }: GetStaticPathsContext) {
-  let payload = {
+  const data = await getAllModels({
     modelName: 'product',
     currentPage: 1,
     selectedPageSize: 150,
-  }
-  const data = await getAllModels(payload)
+  })
 
   return {
     paths: locales
@@ -99,7 +92,6 @@ export default function Uri({
   item,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
-
   const param = router.asPath.match(new RegExp(`[&?]${'variant'}=(.*)(&|$)`))
 
   return router.isFallback ? (

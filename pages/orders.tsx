@@ -1,9 +1,9 @@
-// import type { GetStaticPropsContext } from 'next'
+import { useRouter } from 'next/router'
+
 import { Layout } from '@components/core'
 import { Container, Text } from '@components/ui'
 import { Bag } from '@components/icons'
 
-import { useRouter } from 'next/router'
 export default function Orders() {
   const { locale } = useRouter()
 
