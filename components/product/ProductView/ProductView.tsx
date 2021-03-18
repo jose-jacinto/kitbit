@@ -60,12 +60,12 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           `${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/get_price?modelId[]=${product._id}`,
           localStorage.getItem('wb_token')
             ? {
-                headers: {
-                  Authorization: localStorage.getItem('wb_token')
-                    ? localStorage.getItem('wb_token')
-                    : null,
-                },
-              }
+              headers: {
+                Authorization: localStorage.getItem('wb_token')
+                  ? localStorage.getItem('wb_token')
+                  : null,
+              },
+            }
             : {}
         )
         .then((response) => {
@@ -195,9 +195,9 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         ',' +
         Math.floor(myEditOption.crop_options.height) +
         '&fit=crop'
-      return photo.url.trim() + '?fm=jpg&w=600&h=600' + post_edition_string
+      return photo.url.trim() + '?fm=jpg&w=1200&h=1200' + post_edition_string
     } else if (photo && photo.url) {
-      return photo.url.trim() + '?fit=crop&fm=jpg&w=600&h=600'
+      return photo.url.trim() + '?fit=crop&fm=jpg&w=1200&h=1200'
     } else {
       return photo.url
     }
@@ -261,8 +261,8 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
             {product.stock <= 0 ? (
               <span className={s.productPrice}>{'Out of Stock!'}</span>
             ) : (
-              <span className={s.productPrice}>{'In Stock!'}</span>
-            )}
+                <span className={s.productPrice}>{'In Stock!'}</span>
+              )}
           </div>
           <div className={s.nameBox}>
             <h1 className={s.name}>{product.name}</h1>
@@ -277,8 +277,8 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                   </span>
                 </>
               ) : (
-                <span>{displayPrice && displayPrice.toFixed(2)} €</span>
-              )}
+                  <span>{displayPrice && displayPrice.toFixed(2)} €</span>
+                )}
             </div>
           </div>
           <div className={s.sliderContainer}>
@@ -335,40 +335,40 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           <div>
             {product.stock > 0 ? (
               selectedMainVar ||
-              (!selectedMainVar && product.variant_options.length === 0) ? (
-                <Button
-                  aria-label="Add to Cart"
-                  type="button"
-                  className={s.button}
-                  onClick={addItemToCart}
-                  loading={loading}
-                  disabled={loading} // if (no variant selected and variantLength > 0)
-                >
-                  {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
-                </Button>
-              ) : null
+                (!selectedMainVar && product.variant_options.length === 0) ? (
+                  <Button
+                    aria-label="Add to Cart"
+                    type="button"
+                    className={s.button}
+                    onClick={addItemToCart}
+                    loading={loading}
+                    disabled={loading} // if (no variant selected and variantLength > 0)
+                  >
+                    {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
+                  </Button>
+                ) : null
             ) : (
-              <>
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  onChange={setEmail}
-                  className={s.input}
-                />
-                <Button
-                  aria-label={
-                    locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'
-                  }
-                  type="button"
-                  className={s.notify}
-                  onClick={() => console.log('Notify')}
-                  loading={loading}
-                  disabled={loading} // if (no variant selected and variantLength > 0)
-                >
-                  {locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'}
-                </Button>
-              </>
-            )}
+                <>
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    onChange={setEmail}
+                    className={s.input}
+                  />
+                  <Button
+                    aria-label={
+                      locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'
+                    }
+                    type="button"
+                    className={s.notify}
+                    onClick={() => console.log('Notify')}
+                    loading={loading}
+                    disabled={loading} // if (no variant selected and variantLength > 0)
+                  >
+                    {locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'}
+                  </Button>
+                </>
+              )}
           </div>
         </div>
         <WishlistButton

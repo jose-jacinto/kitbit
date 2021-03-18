@@ -6,7 +6,7 @@ import cn from 'classnames'
 import s from './Navbar.module.css'
 
 import { Searchbar, UserNav } from '@components/core'
-// import { Logo } from '@components/ui'
+import { Logo } from '@components/ui'
 
 import { getItems } from 'whitebrim'
 
@@ -49,9 +49,8 @@ const Navbar: FC<Props> = ({ className }) => {
       <div className="flex justify-between align-center flex-row py-4 md:py-6 relative">
         <div className="flex flex-1 items-center">
           <Link href="/">
-            <a className={s.logo} aria-label="Logo">
-              KITBIT
-              {/* <Logo /> */}
+            <a aria-label="Logo">
+              <Logo />
             </a>
           </Link>
           <nav className="space-x-4 ml-6 hidden lg:block">

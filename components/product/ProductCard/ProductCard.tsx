@@ -45,9 +45,9 @@ const getProcessedUrl = (photo: Photo) => {
       ',' +
       Math.floor(myEditOption.crop_options.height) +
       '&fit=crop'
-    return photo.url.trim() + '?fm=jpg&w=600&h=600' + post_edition_string
+    return photo.url.trim() + '?fm=jpg&w=1200&h=1200' + post_edition_string
   } else if (photo && photo.url) {
-    return photo.url.trim() + '?fit=crop&fm=jpg&w=600&h=600'
+    return photo.url.trim() + '?fit=crop&fm=jpg&w=1200&h=1200'
   } else {
     return photo.url
   }
@@ -78,53 +78,53 @@ const ProductCard: FC<Props> = ({
               alt={'Product Image'}
               width={imgWidth}
               height={imgHeight}
-              // priority={priority}
-              // quality="85"
-              // loader={getProcessedUrl(p.photo)}
+            // priority={priority}
+            // quality="85"
+            // loader={getProcessedUrl(p.photo)}
             />
           </div>
         ) : (
-          <>
-            <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
-              {p.isNew && (
-                <h3 className={s.productTitle}>
-                  <span>{'New'}</span>
-                </h3>
-              )}
-              {p.stock <= 0 ? (
-                <span className={s.productPrice}>{'Out of Stock!'}</span>
-              ) : (
-                <span className={s.productPrice}>{'In Stock!'}</span>
-              )}
-            </div>
-            <div className={s.squareBg} />
-            <div className="flex flex-row justify-between box-border w-full z-20 absolute">
-              <div className="absolute top-0 left-0 pr-16 max-w-full">
-                <h3 className={s.productTitle}>
-                  <span>{p.name}</span>
-                </h3>
-                <span className={s.productPrice}>{p.price.toFixed(2)} €</span>
+            <>
+              <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
+                {p.isNew && (
+                  <h3 className={s.productTitle}>
+                    <span>{'New'}</span>
+                  </h3>
+                )}
+                {p.stock <= 0 ? (
+                  <span className={s.productPrice}>{'Out of Stock!'}</span>
+                ) : (
+                    <span className={s.productPrice}>{'In Stock!'}</span>
+                  )}
               </div>
-              <WishlistButton
-                className={s.wishlistButton}
-                productId={p._id}
-                variant={null}
-              />
-            </div>
-            <div className={s.imageContainer}>
-              <img
-                alt={p.name}
-                className={cn('w-full object-cover', s['product-image'])}
-                src={getProcessedUrl(p.photo)}
-                width={imgWidth}
-                height={imgHeight}
+              <div className={s.squareBg} />
+              <div className="flex flex-row justify-between box-border w-full z-20 absolute">
+                <div className="absolute top-0 left-0 pr-16 max-w-full">
+                  <h3 className={s.productTitle}>
+                    <span>{p.name}</span>
+                  </h3>
+                  <span className={s.productPrice}>{p.price.toFixed(2)} €</span>
+                </div>
+                <WishlistButton
+                  className={s.wishlistButton}
+                  productId={p._id}
+                  variant={null}
+                />
+              </div>
+              <div className={s.imageContainer}>
+                <img
+                  alt={p.name}
+                  className={cn('w-full object-cover', s['product-image'])}
+                  src={getProcessedUrl(p.photo)}
+                  width={imgWidth}
+                  height={imgHeight}
                 // priority={priority}
                 // quality="85"
                 // loader={getProcessedUrl(p.photo)}
-              />
-            </div>
-          </>
-        )}
+                />
+              </div>
+            </>
+          )}
       </a>
     </Link>
   )

@@ -25,10 +25,9 @@ const Footer: FC<Props> = ({ className }) => {
           <div className="col-span-1 lg:col-span-2">
             <Link href="/">
               <a className="flex flex-initial items-center font-bold md:mr-24">
-                {/* <span className="rounded-full border border-gray-700 mr-2">
+                <span className="rounded-full border-gray-700 mr-2">
                   <Logo />
-                </span> */}
-                <span>KITBIT</span>
+                </span>
               </a>
             </Link>
           </div>
@@ -87,18 +86,18 @@ const Footer: FC<Props> = ({ className }) => {
         </div>
         <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4">
           <div>
-            <span>&copy; 2021 KITBIT. All rights reserved.</span>
+            <span>&copy; 2021 Kitbit. All rights reserved.</span>
           </div>
-          {/* <div className="flex items-center">
-            <span className="text-primary">Crafted by</span>
-            <a href="https://vercel.com" aria-label="Vercel.com Link">
+          <div className="flex items-center">
+            <span className="text-primary">Crafted by Cottonhat</span>
+            <a href="https://cottonhat.net" aria-label="Cottonhat.net Link">
               <img
-                src="/vercel.svg"
-                alt="Vercel.com Logo"
+                src="https://cottonhat.net/images/logo_02.png"
+                alt="Cottonhat.net Logo"
                 className="inline-block h-6 ml-4 text-primary"
               />
             </a>
-          </div> */}
+          </div>
         </div>
       </Container>
     </footer>

@@ -208,8 +208,8 @@ const CartItem = (props: any) => {
           width={150}
           height={150}
           alt={props.item.name}
-          // The cart item image is already optimized and very small in size
-          // unoptimized
+        // The cart item image is already optimized and very small in size
+        // unoptimized
         />
       </div>
       <div className="flex-1 flex flex-col text-base">
