@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { FC } from 'react'
 import cn from 'classnames'
 import { useRouter } from 'next/router'
 
@@ -10,7 +10,7 @@ import { useUI } from '@components/ui/context'
 import CartItem from '../CartItem'
 import s from './CartSidebarView.module.css'
 
-import { goToCheckoutPage } from 'whitebrim'
+// import { goToCheckoutPage } from 'whitebrim'
 
 const CartSidebarView: FC = () => {
   const { locale } = useRouter()
@@ -18,17 +18,17 @@ const CartSidebarView: FC = () => {
   const { closeSidebar, user, setUser } = useUI()
   const handleClose = () => closeSidebar()
 
-  const goToCheckout = () => {
-    goToCheckoutPage()
-      .then((response) => {
-        window.location.replace(
-          `/checkout/?linkRef=${response.data.linkRef}&deploymentId=${process.env.NEXT_PUBLIC_WB_DEPLOYMENT_ID}`
-        )
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+  // const goToCheckout = () => {
+  //   goToCheckoutPage()
+  //     .then((response) => {
+  //       window.location.replace(
+  //         `/checkout/?linkRef=${response.data.linkRef}&deploymentId=${process.env.NEXT_PUBLIC_WB_DEPLOYMENT_ID}`
+  //       )
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
 
   let subTotal = 0
   if (user) {
@@ -139,8 +139,8 @@ const CartSidebarView: FC = () => {
                 <span>{subTotal.toFixed(2)} €</span>
               </div>
             </div>
-            <Button onClick={() => goToCheckout()} Component="a" width="100%">
-              {locale === 'pt' ? 'Ir para o checkout' : 'Proceed to Checkout'}
+            <Button href="/cart" Component="a" width="100%">
+              {locale === 'pt' ? 'Ir para o carrinho' : 'Proceed to Cart'}
             </Button>
           </div>
         </>

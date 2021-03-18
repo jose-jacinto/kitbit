@@ -1,11 +1,15 @@
 import s from './LoadingDots.module.css'
 
-const LoadingDots: React.FC = () => {
+export interface Props {
+  className?: string
+}
+
+const LoadingDots: React.FC<Props> = (props: any) => {
   return (
     <span className={s.root}>
-      <span />
-      <span />
-      <span />
+      <span className={props.className ? props.className : 'bg-accents-6'} />
+      <span className={props.className ? props.className : 'bg-accents-6'} />
+      <span className={props.className ? props.className : 'bg-accents-6'} />
     </span>
   )
 }

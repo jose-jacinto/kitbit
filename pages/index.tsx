@@ -1,8 +1,11 @@
 import type { GetStaticPropsContext } from 'next'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 import { Layout, HomeAllProductsGrid } from '@components/core'
 import { Grid, Marquee, Hero } from '@components/ui'
 import { ProductCard } from '@components/product'
+import { useUI } from '@components/ui/context'
 import { BrandCard } from '@components/brand'
 
 import { getItems } from 'whitebrim'
@@ -34,18 +37,26 @@ const fetchItems = async (data: {
     }))
 }
 
-export async function getStaticProps({ }: GetStaticPropsContext) {
+export async function getStaticProps({}: GetStaticPropsContext) {
   let highlightItems = {
     modelName: 'product',
     currentPage: 1,
     selectedPageSize: 3,
-    filter: { name: 'type', id: 'highlight' },
+    filter: {
+      type: 'highlight',
+      order_by: 'type_highlight',
+      order: 'asc',
+    },
   }
   let recentItems = {
     modelName: 'product',
     currentPage: 1,
     selectedPageSize: 3,
-    filter: { name: 'type', id: 'recent' },
+    filter: {
+      type: 'recent',
+      order_by: 'type_recent',
+      order: 'asc',
+    },
   }
   let items = {
     modelName: 'product',
@@ -89,6 +100,16 @@ export default function Home({
   categories,
   brands,
 }: any) {
+  const { query } = useRouter()
+  const { setModalView, openModal } = useUI()
+
+  useEffect(() => {
+    if (query.req_link_param && query.rel_usr) {
+      setModalView('FORGOT_VIEW')
+      return openModal()
+    }
+  }, [query.req_link_param && query.rel_usr])
+
   return (
     <div>
       <Grid>

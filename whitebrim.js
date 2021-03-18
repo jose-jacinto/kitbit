@@ -560,14 +560,12 @@ export const getItems = (options) =>
                 i++;
             }
         }
-        
-        if (options.pagination) filterString += "limit=".concat(options.pagination.limit, "&page=").concat(options.pagination.page, "");
 
-        // console.log(`${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/${options.modelName}${filterString}`)
+        if (options.pagination) filterString += "limit=".concat(options.pagination.limit, "&page=").concat(options.pagination.page, "");
 
         axios
             .get(`${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/${options.modelName}${filterString}`, {})
-            .then((response) => {                
+            .then((response) => {
                 resolve(response);
             })
             .catch((err) => {
@@ -790,3 +788,36 @@ export const goToCheckoutPage = (options) =>
                 reject(err);
             });
     });
+
+export const applyPromoCode = (options) =>
+    new Promise((resolve, reject) => {
+        axios
+            .post(`${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/project/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/account/apply_promo_code`, { promoCode: options }, {
+                headers: {
+                    Authorization: localStorage.getItem("wb_token"),
+                },
+            })
+            .then((response) => {
+                resolve(response);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+
+export const removePromoCode = () =>
+    new Promise((resolve, reject) => {
+        axios
+            .post(`${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/project/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/account/remove_promo_code`, { promoCode: null }, {
+                headers: {
+                    Authorization: localStorage.getItem("wb_token"),
+                },
+            })
+            .then((response) => {
+                resolve(response);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+

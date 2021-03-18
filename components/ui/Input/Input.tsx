@@ -1,30 +1,22 @@
 import cn from 'classnames'
 import s from './Input.module.css'
-import React, { InputHTMLAttributes } from 'react'
+import React, { forwardRef, InputHTMLAttributes } from 'react'
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
-  onChange?: (...args: any[]) => any
+  ref?: any
 }
 
-const Input: React.FC<Props> = (props) => {
-  const { className, children, onChange, ...rest } = props
+const Input: React.FC<Props> = forwardRef((props, ref) => {
+  const { className, children, ...rest } = props
 
   const rootClassName = cn(s.root, {}, className)
-
-  const handleOnChange = (e: any) => {
-    if (onChange) {
-      onChange(e.target.value)
-    }
-    return null
-  }
 
   return (
     <label>
       <input
+        ref={ref}
         className={rootClassName}
-        onChange={handleOnChange}
-        autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck="false"
@@ -32,6 +24,6 @@ const Input: React.FC<Props> = (props) => {
       />
     </label>
   )
-}
+})
 
 export default Input

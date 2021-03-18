@@ -11,6 +11,7 @@ module.exports = {
         '8xl': '1920px',
       },
       colors: {
+        kitbit: '#F16131',
         primary: 'var(--primary)',
         'primary-2': 'var(--primary-2)',
         secondary: 'var(--secondary)',
@@ -37,19 +38,27 @@ module.exports = {
         red: 'var(--red)',
       },
       textColor: {
+        kitbit: '#F16131',
         base: 'var(--text-base)',
         primary: 'var(--text-primary)',
         secondary: 'var(--text-secondary)',
       },
       boxShadow: {
+        kitbit: '#F16131',
         'outline-2': '0 0 0 2px var(--accents-2)',
         magical:
           'rgba(0, 0, 0, 0.02) 0px 30px 30px, rgba(0, 0, 0, 0.03) 0px 0px 8px, rgba(0, 0, 0, 0.05) 0px 1px 0px',
       },
       lineHeight: {
         'extra-loose': '2.2'
+      },
+      backgroundColor: {
+        kitbit: '#F16131',
+      },
+      borderColor: {
+        kitbit: '#F16131',
       }
     },
   },
-  plugins: [require('@tailwindcss/ui')],
+  plugins: [require('@tailwindcss/ui'), require('@tailwindcss/forms')],
 }

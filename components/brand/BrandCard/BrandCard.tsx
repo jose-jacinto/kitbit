@@ -67,14 +67,14 @@ const BrandCard: FC<Props> = ({
         className={cn(s.root, { [s.simple]: variant === 'simple' }, className)}
       >
         <div className="relative overflow-hidden box-border">
-          <div className="absolute inset-0 flex items-center justify-end mr-8 z-20">
+          {/* <div className="absolute inset-0 flex items-center justify-end mr-8 z-20">
             <span className="bg-black text-white inline-block p-3 font-bold text-xl break-words">
               {brand.name}
             </span>
-          </div>
+          </div> */}
           <img
             src={getProcessedUrl(brand.photo)}
-            alt={'brand Image'}
+            alt={brand.name}
             width={imgWidth}
             height={imgHeight}
           />

@@ -24,7 +24,7 @@
 }
 
 .squareBg {
-  @apply absolute inset-0 bg-violet z-0 h-full;
+  @apply absolute inset-0 bg-black z-0 h-full;
 }
 
 .nameBox {
@@ -35,19 +35,19 @@
   }
 
   & .name {
-    @apply px-6 py-2 bg-primary text-primary font-bold;
+    @apply px-6 py-2 bg-black text-white font-bold;
     font-size: 2rem;
     letter-spacing: 0.4px;
   }
 
   & .price {
-    @apply px-6 py-2 pb-4 bg-primary text-primary font-bold inline-block tracking-wide;
+    @apply px-6 py-2 pb-4 bg-black text-white font-bold inline-block tracking-wide;
   }
 
   @screen lg {
     & .name,
     & .price {
-      @apply bg-violet-light text-white;
+      @apply bg-black text-white;
     }
   }
 }
@@ -88,21 +88,11 @@
 }
 
 .wishlistButton {
-  @apply absolute z-30 top-6 right-0 bg-primary text-primary w-10 h-10 flex items-center justify-center font-semibold leading-6 cursor-pointer;
+  @apply absolute z-30 top-6 right-0 bg-black text-white w-10 h-10 flex items-center justify-center font-semibold leading-6 cursor-pointer;
 
   @screen lg {
-    @apply right-12 text-white bg-violet;
+    @apply right-12 text-white bg-black;
   }
-}
-
-.notify {
-  padding-top: 0.50rem;
-  padding-bottom: 0.50rem;
-  margin-left: 20px;
-}
-
-.input {
-  width: 55%;
 }
 
 .productTitle {
@@ -111,7 +101,7 @@
   letter-spacing: 0.4px;
 
   & span {
-    @apply py-4 px-6 bg-primary text-primary font-bold;
+    @apply py-4 px-6 bg-black text-white font-bold;
     font-size: inherit;
     letter-spacing: inherit;
     box-decoration-break: clone;
@@ -120,6 +110,6 @@
 }
 
 .productPrice {
-  @apply py-4 px-6 bg-primary text-primary font-semibold inline-block text-sm leading-6;
+  @apply py-4 px-6 bg-black text-white font-semibold inline-block text-sm leading-6;
   letter-spacing: 0.4px;
 }

@@ -24,3 +24,7 @@
 .root blockquote {
   @apply mb-6;
 }
+
+.root a:hover {
+  text-decoration: underline;
+}

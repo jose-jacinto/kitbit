@@ -1,93 +1,90 @@
-import { FC, useEffect, useState, useCallback } from 'react'
-import { validate } from 'email-validator'
+import { FC, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useForm } from 'react-hook-form'
 
 import { Logo, Button, Input } from '@components/ui'
 import { useUI } from '@components/ui/context'
 
-import { loginUser, getUser, setUser } from 'whitebrim'
+import { loginUser, getUser } from 'whitebrim'
 
 interface Props {}
 
 const LoginView: FC<Props> = () => {
   const { locale } = useRouter()
 
-  // Form State
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const { register, handleSubmit, watch, errors } = useForm()
+  watch('')
+
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const [dirty, setDirty] = useState(false)
-  const [disabled, setDisabled] = useState(false)
+  const [buttonMessage, setButtonMessage] = useState('')
+
   const { setModalView, closeModal, setUser } = useUI()
 
-  const handleLogin = (e: React.SyntheticEvent<EventTarget>) => {
-    e.preventDefault()
+  const emailMessage =
+    locale === 'pt'
+      ? 'Preencha este campo com um endereço de email válido'
+      : 'Fill in this field with a valid email address'
+  const requiredMessage =
+    locale === 'pt' ? 'Este campo é obrigatório' : 'This field is required'
 
-    if (!dirty && !disabled) {
-      setDirty(true)
-      handleValidation()
-    }
-
-    let data = {
-      email: email,
-      password: password,
-    }
-
+  const handleLogin = (values: any) => {
     setLoading(true)
-    loginUser(data)
+
+    loginUser(values)
       .then((response) => {
         getUser()
           .then((response) => {
             setLoading(false)
+
             //* Context
             setUser(response.data)
+
+            setButtonMessage(
+              locale === 'pt' ? 'Login feito com sucesso' : 'Login successfully'
+            )
             setTimeout(() => {
               setMessage('')
+              setButtonMessage('')
             }, 2500)
+
             closeModal()
           })
-          .catch((error) => {
+          .catch(() => {
             setMessage(
               locale !== 'pt'
                 ? 'Invalid email or password'
                 : 'Email ou password inválidos'
             )
             setLoading(false)
+            setTimeout(() => {
+              setMessage('')
+            }, 2500)
           })
       })
-      .catch(({ errors }) => {
+      .catch(() => {
         setMessage(
           locale !== 'pt'
             ? 'Invalid email or password'
             : 'Email ou password inválidos'
         )
         setLoading(false)
+        setTimeout(() => {
+          setMessage('')
+        }, 2500)
       })
   }
 
-  const handleValidation = useCallback(() => {
-    // Test for Alphanumeric password
-    const validPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)
-
-    // Unable to send form unless fields are valid.
-    if (dirty) {
-      setDisabled(!validate(email) || password.length < 7 || !validPassword)
-    }
-  }, [email, password, dirty])
-
-  useEffect(() => {
-    handleValidation()
-  }, [handleValidation])
-
   return (
     <form
-      onSubmit={handleLogin}
+      onSubmit={handleSubmit(handleLogin)}
+      noValidate
       className="w-80 flex flex-col justify-between p-3"
     >
       <div className="flex justify-center pb-12 ">
         <Logo width="64px" height="64px" />
       </div>
+
       <div className="flex flex-col space-y-3">
         {message && locale === 'pt' ? (
           <div className="text-red border border-red p-3">
@@ -112,16 +109,32 @@ const LoginView: FC<Props> = () => {
             </div>
           )
         )}
-        <Input type="email" placeholder="Email" onChange={setEmail} />
-        <Input type="password" placeholder="Password" onChange={setPassword} />
+
+        <Input
+          type="email"
+          name="email"
+          placeholder="Email"
+          ref={register({
+            required: true,
+            pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+          })}
+        />
+        <span className="form-error">{errors.email && emailMessage}</span>
+        <Input
+          type="password"
+          name="password"
+          placeholder="Password"
+          ref={register({ required: true })}
+        />
+        <span className="form-error">{errors.password && requiredMessage}</span>
 
         <Button
           variant="slim"
           type="submit"
           loading={loading}
-          disabled={disabled}
+          disabled={loading || message}
         >
-          Log In
+          {buttonMessage ? buttonMessage : 'Log In'}
         </Button>
         <div className="pt-1 text-center text-sm">
           <span className="text-accents-7">

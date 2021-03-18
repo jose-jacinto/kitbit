@@ -30,7 +30,7 @@ const Layout: FC<Props> = ({ children }) => {
   const [cookie_consent, setCookieConsent] = useState<any>(null)
   const [acceptedCookies, setAcceptedCookies] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
-  const { locale = 'en-US' } = useRouter()
+  const { locale = 'en-US', pathname } = useRouter()
 
   usePreventScroll({
     isDisabled: !(displaySidebar || displayModal),
@@ -72,7 +72,9 @@ const Layout: FC<Props> = ({ children }) => {
           <Navbar />
         </Container>
       </header>
-      <main className="fit">{children}</main>
+      <main className={`fit ${pathname === '/profile' && 'bg-gray-100'}`}>
+        {children}
+      </main>
       <Footer />
       <Sidebar open={displaySidebar} onClose={closeSidebar}>
         <CartSidebarView />

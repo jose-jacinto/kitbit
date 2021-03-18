@@ -1,16 +1,67 @@
+import { useState } from 'react'
+
 import { Layout } from '@components/core'
-import { Button } from '@components/ui'
+import { Button, LoadingDots } from '@components/ui'
 import { Bag, Cross, Check } from '@components/icons'
 import { CartItem } from '@components/cart'
-import { Text } from '@components/ui'
+import { Input, Text } from '@components/ui'
 import { useUI } from '@components/ui/context'
 import { useRouter } from 'next/router'
 
-import { goToCheckoutPage } from 'whitebrim'
+import { applyPromoCode, removePromoCode, goToCheckoutPage } from 'whitebrim'
 
 export default function Cart() {
   const { locale } = useRouter()
   const { user, setUser } = useUI()
+
+  const couponText = locale === 'pt' ? 'Adicionar' : 'Add'
+
+  const [coupon, setCoupon] = useState<any>('')
+  const [loadingCoupon, setLoadingCoupon] = useState<any>(false)
+  const [couponMessage, setCouponMessage] = useState<any>(null)
+
+  const addCoupon = () => {
+    setLoadingCoupon(true)
+    applyPromoCode(coupon)
+      .then((response: any) => {
+        setLoadingCoupon(false)
+
+        if (response && response.status !== 204) {
+          setCouponMessage(locale === 'pt' ? 'Adicionado' : 'Added')
+          setTimeout(() => {
+            setCouponMessage(null)
+          }, 2500)
+          setUser(response.data)
+        } else {
+          setCouponMessage(locale === 'pt' ? 'Não encontrado' : 'Not found')
+          setTimeout(() => {
+            setCouponMessage(null)
+          }, 2500)
+        }
+      })
+      .catch((err: any) => {
+        setLoadingCoupon(false)
+        setCouponMessage(locale === 'pt' ? 'Erro' : 'Error')
+        setTimeout(() => {
+          setCouponMessage(null)
+        }, 2500)
+      })
+  }
+
+  const removeCoupon = () => {
+    removePromoCode()
+      .then((response: any) => {
+        if (response && response.status !== 204) {
+          console.log(response)
+          setUser(response.data)
+        } else {
+          console.log(response)
+        }
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  }
 
   const goToCheckout = () => {
     goToCheckoutPage()
@@ -107,7 +158,39 @@ export default function Cart() {
       </div>
       <div className="lg:col-span-4">
         <div className="flex-shrink-0 px-4 py-24 sm:px-6">
-          <div className="border-t border-accents-2">
+          <div>
+            <div className="flex justify-between border-b border-accents-2 py-3 font-bold mb-10">
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-12 sm:col-span-6">
+                  <h3>{locale === 'pt' ? 'Apply Coupon' : 'Aplicar Cupão'}</h3>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <Input
+                    type="text"
+                    id="coupon"
+                    name="coupon"
+                    placeholder={'****'}
+                    value={coupon}
+                    onChange={(e) => setCoupon(e.target.value)}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <Button
+                    variant="slim"
+                    onClick={() => addCoupon()}
+                    disabled={loadingCoupon || couponMessage}
+                  >
+                    {loadingCoupon ? (
+                      <LoadingDots className="bg-white" />
+                    ) : couponMessage ? (
+                      couponMessage
+                    ) : (
+                      couponText
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
             <ul className="py-3">
               <li className="flex justify-between py-1">
                 <span>Subtotal</span>
@@ -124,6 +207,19 @@ export default function Cart() {
                 </span>
                 <span className="font-bold tracking-wide">0.00 €</span>
               </li>
+              {user &&
+                user.cartExtraData &&
+                user.cartExtraData.promoRow.map((promo: any) => (
+                  <li className="flex justify-between py-1" key={promo._id}>
+                    <span>{promo.title}</span>
+                    <a
+                      className="hover:underline cursor-pointer"
+                      onClick={() => removeCoupon()}
+                    >
+                      {locale === 'pt' ? 'Remover' : 'Remove'}
+                    </a>
+                  </li>
+                ))}
             </ul>
             <div className="flex justify-between border-t border-accents-2 py-3 font-bold mb-10">
               <span>Total</span>

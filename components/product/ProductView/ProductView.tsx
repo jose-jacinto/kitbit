@@ -1,6 +1,5 @@
 import { FC, useState, useEffect } from 'react'
 import cn from 'classnames'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { NextSeo, ProductJsonLd } from 'next-seo'
 
@@ -10,7 +9,7 @@ import WishlistButton from '@components/wishlist/WishlistButton'
 import s from './ProductView.module.css'
 import { useUI } from '@components/ui/context'
 import { Swatch, ProductSlider } from '@components/product'
-import { Button, Input, Container } from '@components/ui'
+import { Button, Input, Text, Container } from '@components/ui'
 import { HTMLContent } from '@components/core'
 // import WishlistButton from '@components/wishlist/WishlistButton'
 
@@ -43,7 +42,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
   const { openSidebar, openModal, setModalView } = useUI()
 
   const [selectedMainVar, selectMainVar] = useState<any>(null)
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState<any>('')
 
   const [loading, setLoading] = useState<boolean>(false)
   const [currLocale, setLocale] = useState<string>(
@@ -60,12 +59,12 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           `${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/get_price?modelId[]=${product._id}`,
           localStorage.getItem('wb_token')
             ? {
-              headers: {
-                Authorization: localStorage.getItem('wb_token')
-                  ? localStorage.getItem('wb_token')
-                  : null,
-              },
-            }
+                headers: {
+                  Authorization: localStorage.getItem('wb_token')
+                    ? localStorage.getItem('wb_token')
+                    : null,
+                },
+              }
             : {}
         )
         .then((response) => {
@@ -83,7 +82,10 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           ReactPixel.init('201854665067073')
           ReactPixel.track('ViewContent', {
             content_name: product.name,
-            content_category: product.categories[0].name,
+            content_category:
+              product.categories && product.categories.length > 0
+                ? product.categories[0].name
+                : '',
             content_ids: [product._id],
             content_type: 'product',
             value: product.price,
@@ -253,16 +255,11 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
       <div className={cn(s.root, 'fit')}>
         <div className={cn(s.productDisplay, 'fit')}>
           <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
-            {product.isNew && (
-              <h3 className={s.productTitle}>
-                <span>{'New'}</span>
-              </h3>
-            )}
             {product.stock <= 0 ? (
               <span className={s.productPrice}>{'Out of Stock!'}</span>
             ) : (
-                <span className={s.productPrice}>{'In Stock!'}</span>
-              )}
+              <span className={s.productPrice}>{'In Stock!'}</span>
+            )}
           </div>
           <div className={s.nameBox}>
             <h1 className={s.name}>{product.name}</h1>
@@ -273,12 +270,20 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                     <del>{product.price.toFixed(2)} €</del>
                   </span>
                   <span className="ml-5">
-                    {product.discount[0].finalPrice.toFixed(2)} €
+                    {product.discount[0].finalPrice.toFixed(2)} €{' '}
+                    <span className="ml-4 text-kitbit">
+                      {product.isNew && 'NEW!'}
+                    </span>
                   </span>
                 </>
               ) : (
-                  <span>{displayPrice && displayPrice.toFixed(2)} €</span>
-                )}
+                <span>
+                  {displayPrice && displayPrice.toFixed(2)} €{' '}
+                  <span className="ml-4 text-kitbit">
+                    {product.isNew && 'NEW!'}
+                  </span>
+                </span>
+              )}
             </div>
           </div>
           <div className={s.sliderContainer}>
@@ -299,7 +304,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                     <img
                       className={s.img}
                       src={getProcessedUrl(image)}
-                      alt={'Product Image'}
+                      alt={product.name}
                       width={1050}
                       height={1050}
                     />
@@ -310,10 +315,10 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         </div>
         <div className={s.sidebar}>
           <section>
-            <div className="pb-4">
-              <div className="flex flex-row py-4">
-                {product.variant_options.map((variant: any, i: number) => {
-                  return (
+            {product.variant_options.map((variant: any, i: number) => {
+              return (
+                <div className="pb-4">
+                  <div className="flex flex-row py-4">
                     <Swatch
                       key={`${variant.name}-${i}`}
                       active={
@@ -324,10 +329,10 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                       price={variant.price}
                       onClick={() => selectMainVariant(variant)}
                     />
-                  )
-                })}
-              </div>
-            </div>
+                  </div>
+                </div>
+              )
+            })}
             <div className="pb-14 break-words w-full max-w-xl">
               <HTMLContent html={product.description[currLocale]} />
             </div>
@@ -335,40 +340,46 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           <div>
             {product.stock > 0 ? (
               selectedMainVar ||
-                (!selectedMainVar && product.variant_options.length === 0) ? (
-                  <Button
-                    aria-label="Add to Cart"
-                    type="button"
-                    className={s.button}
-                    onClick={addItemToCart}
-                    loading={loading}
-                    disabled={loading} // if (no variant selected and variantLength > 0)
-                  >
-                    {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
-                  </Button>
-                ) : null
+              (!selectedMainVar && product.variant_options.length === 0) ? (
+                <Button
+                  aria-label="Add to Cart"
+                  type="button"
+                  className={s.button}
+                  onClick={addItemToCart}
+                  loading={loading}
+                  disabled={loading} // if (no variant selected and variantLength > 0)
+                >
+                  {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
+                </Button>
+              ) : null
             ) : (
-                <>
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    onChange={setEmail}
-                    className={s.input}
-                  />
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-12 sm:col-span-6">
+                  <Text className="heading">
+                    {locale === 'pt'
+                      ? 'Out of Stock. Receive a notification when back in stock'
+                      : 'Fora de stock. Receba uma notificação quando estiver em estoque'}
+                  </Text>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <Input type="email" placeholder="Email" onChange={setEmail} />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
                   <Button
                     aria-label={
                       locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'
                     }
+                    variant="slim"
                     type="button"
-                    className={s.notify}
                     onClick={() => console.log('Notify')}
                     loading={loading}
-                    disabled={loading} // if (no variant selected and variantLength > 0)
+                    disabled={loading}
                   >
                     {locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'}
                   </Button>
-                </>
-              )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <WishlistButton

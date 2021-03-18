@@ -1,247 +1,237 @@
-import { FC, useEffect, useState, useCallback } from 'react'
-import cn from 'classnames'
-import { validate } from 'email-validator'
+import { FC, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useForm } from 'react-hook-form'
 
-import { Info } from '@components/icons'
-import { useUI } from '@components/ui/context'
 import { Logo, Button, Input } from '@components/ui'
+import { useUI } from '@components/ui/context'
 
 import { registerUser, getUser } from 'whitebrim'
-
-import s from './SignUpView.module.css'
 
 interface Props {}
 
 const SignUpView: FC<Props> = () => {
   const { locale } = useRouter()
 
-  // Form State
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-
-  const [extraData, setExtraData] = useState({
-    street1: '',
-    street2: '',
-    code: '',
-    city: '',
-    country: 'PT',
-    telephone: '',
-    NIF: '',
-  })
+  const { register, handleSubmit, watch, errors } = useForm()
+  watch('')
 
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const [dirty, setDirty] = useState(false)
-  const [disabled, setDisabled] = useState(false)
+  const [buttonMessage, setButtonMessage] = useState('')
+
   const { setModalView, closeModal, setUser } = useUI()
 
-  const handleSignup = async (e: React.SyntheticEvent<EventTarget>) => {
-    e.preventDefault()
+  const emailMessage =
+    locale === 'pt'
+      ? 'Preencha este campo com um endereço de email válido'
+      : 'Fill in this field with a valid email address'
+  const requiredMessage =
+    locale === 'pt' ? 'Este campo é obrigatório' : 'This field is required'
 
-    if (!dirty && !disabled) {
-      setDirty(true)
-      handleValidation()
-    }
+  const handleSignup = (values: any) => {
+    setLoading(true)
 
-    let data = {
-      name: {
-        first: firstName,
-        last: lastName,
-      },
-      email: email,
-      password: password,
+    let submitValues = {
+      ...values,
       shipping_address: {
-        name: firstName + ' ' + lastName,
-        street1: extraData.street1,
-        street2: extraData.street2,
-        code: extraData.code,
-        city: extraData.city,
-        country: extraData.country,
+        name: values.firstName + ' ' + values.lastName,
+        street1: values.street1,
+        street2: values.street2,
+        code: values.code,
+        city: values.city,
+        country: values.country,
       },
       billing_address: {
-        name: firstName + ' ' + lastName,
-        street1: extraData.street1,
-        street2: extraData.street2,
-        code: extraData.code,
-        city: extraData.city,
-        country: extraData.country,
+        name: values.firstName + ' ' + values.lastName,
+        street1: values.street1,
+        street2: values.street2,
+        code: values.code,
+        city: values.city,
+        country: values.country,
       },
-      custom: {
-        telephone: extraData.telephone,
-        NIF: extraData.NIF,
-      },
-      // cart_items: [],
     }
 
-    setLoading(true)
-    registerUser(data)
+    registerUser(submitValues)
       .then((response) => {
         getUser()
           .then((response) => {
             setLoading(false)
-            setMessage(locale === 'pt' ? 'Sucesso' : 'Success')
+
             //* Context
             setUser(response.data)
+
+            setButtonMessage(
+              locale === 'pt'
+                ? 'Registo feito com sucesso'
+                : 'Successful registration'
+            )
             setTimeout(() => {
               setMessage('')
+              setButtonMessage('')
             }, 2500)
             closeModal()
           })
-          .catch((error) => {
+          .catch(() => {
             setMessage(locale === 'pt' ? 'Erro' : 'Error')
             setLoading(false)
+            setTimeout(() => {
+              setMessage('')
+            }, 2500)
           })
       })
-      .catch(({ errors }) => {
+      .catch(() => {
         setMessage(locale === 'pt' ? 'Erro' : 'Error')
         setLoading(false)
+        setTimeout(() => {
+          setMessage('')
+        }, 2500)
       })
   }
 
-  const handleValidation = useCallback(() => {
-    // Test for Alphanumeric password
-    const validPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)
-
-    // Unable to send form unless fields are valid.
-    if (dirty) {
-      setDisabled(!validate(email) || password.length < 7 || !validPassword)
-    }
-  }, [email, password, dirty])
-
-  useEffect(() => {
-    handleValidation()
-  }, [handleValidation])
-
   return (
     <form
-      onSubmit={handleSignup}
+      onSubmit={handleSubmit(handleSignup)}
+      noValidate
       className="flex flex-col justify-between p-3"
-      style={{ width: '35rem' }}
+      style={{ width: '45rem' }}
     >
       <div className="flex justify-center pb-12 ">
         <Logo width="64px" height="64px" />
       </div>
+
       <div className="flex flex-col space-y-4">
         {message && (
           <div className="text-red border border-red p-3">{message}</div>
         )}
 
-        <div className={cn(s.row)}>
-          <div className={cn(s.col6)}>
+        <div className="grid grid-cols-6 gap-6">
+          <div className="col-span-6 sm:col-span-3">
             <Input
               style={{ width: '95%', marginBottom: 10 }}
+              type="name"
+              name="name.first"
               placeholder={locale === 'pt' ? 'Primeiro Nome' : 'First Name'}
-              onChange={setFirstName}
+              ref={register({
+                required: true,
+              })}
             />
+            <span className="form-error">
+              {errors.name && errors.name.first && requiredMessage}
+            </span>
           </div>
-          <div className={cn(s.col6)}>
+          <div className="col-span-6 sm:col-span-3">
             <Input
               style={{ width: '95%', marginBottom: 10 }}
+              type="name"
+              name="name.last"
               placeholder={locale === 'pt' ? 'Último Nome' : 'Last Name'}
-              onChange={setLastName}
+              ref={register({
+                required: true,
+              })}
             />
+            <span className="form-error">
+              {errors.name && errors.name.last && requiredMessage}
+            </span>
           </div>
-          <div className={cn(s.col6)}>
+          <div className="col-span-6 sm:col-span-3">
             <Input
+              style={{ width: '95%', marginBottom: 10 }}
               type="email"
-              style={{ width: '95%', marginBottom: 10 }}
+              name="email"
               placeholder="Email"
-              onChange={setEmail}
+              ref={register({
+                required: true,
+                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              })}
             />
+            <span className="form-error">{errors.email && emailMessage}</span>
           </div>
-          <div className={cn(s.col6)}>
+          <div className="col-span-6 sm:col-span-3">
             <Input
+              style={{ width: '95%', marginBottom: 10 }}
               type="password"
-              style={{ width: '95%', marginBottom: 10 }}
+              name="password"
               placeholder="Password"
-              onChange={setPassword}
+              ref={register({ required: true })}
             />
+            <span className="form-error">
+              {errors.password && requiredMessage}
+            </span>
           </div>
-          <div className={cn(s.col6)}>
+          <div className="col-span-6 sm:col-span-3">
             <Input
-              type="text"
               style={{ width: '95%', marginBottom: 10 }}
+              type="text"
+              name="street1"
               placeholder={locale === 'pt' ? 'Morada' : 'Address'}
-              onChange={(ev) => setExtraData({ ...extraData, street1: ev })}
+              ref={register}
             />
           </div>
 
-          <div className={cn(s.col6)}>
+          <div className="col-span-6 sm:col-span-3">
             <Input
-              type="text"
               style={{ width: '95%', marginBottom: 10 }}
+              type="text"
+              name="street2"
               placeholder={
                 locale === 'pt'
                   ? 'Número, Apartamento, etc...'
                   : 'Nº, Apartment etc...'
               }
-              onChange={(ev) => setExtraData({ ...extraData, street2: ev })}
+              ref={register}
             />
           </div>
 
-          <div className={cn(s.col6)}>
+          <div className="col-span-6 sm:col-span-3">
             <Input
-              type="text"
               style={{ width: '95%', marginBottom: 10 }}
+              type="text"
+              name="code"
               placeholder={locale === 'pt' ? 'Código Postal' : 'Zip Code'}
-              onChange={(ev) => {
-                setExtraData({ ...extraData, code: ev })
-              }}
+              ref={register}
             />
           </div>
-          <div className={cn(s.col6)}>
+          <div className="col-span-6 sm:col-span-3">
             <Input
-              type="text"
               style={{ width: '95%', marginBottom: 10 }}
+              type="text"
+              name="city"
               placeholder={locale === 'pt' ? 'Cidade' : 'City'}
-              onChange={(ev) => setExtraData({ ...extraData, city: ev })}
+              ref={register}
             />
           </div>
-          <div className={cn(s.col6)}>
+          <div className="col-span-6 sm:col-span-3">
             <Input
-              type="text"
               style={{ width: '95%', marginBottom: 10 }}
+              type="text"
+              name="custom.telephone"
               placeholder={locale === 'pt' ? 'Telefone' : 'Telephone'}
-              onChange={(ev) => setExtraData({ ...extraData, telephone: ev })}
+              ref={register}
             />
           </div>
-          <div className={cn(s.col6)}>
+          <div className="col-span-6 sm:col-span-3">
             <Input
-              type="text"
               style={{ width: '95%', marginBottom: 10 }}
+              type="text"
+              name="custom.NIF"
               placeholder={locale === 'pt' ? 'NIF' : 'NIF'}
-              onChange={(ev) => setExtraData({ ...extraData, NIF: ev })}
+              ref={register}
             />
           </div>
         </div>
 
-        <span className="text-accents-8">
-          <span className="inline-block align-middle ">
-            <Info width="15" height="15" />
-          </span>{' '}
-          {locale === 'pt' ? (
-            <span className="leading-6 text-sm">
-              <strong>Informação</strong>: A password deve ter mais de 7
-              caracteres e incluir números
-            </span>
-          ) : (
-            <span className="leading-6 text-sm">
-              <strong>Info</strong>: Passwords must be longer than 7 chars and
-              include numbers.{' '}
-            </span>
-          )}
-        </span>
-        <div className="pt-2 w-full flex flex-col">
+        <div className="pt-2 w-full flex flex-col mt-12">
           <Button
             variant="slim"
             type="submit"
             loading={loading}
-            disabled={disabled}
+            disabled={loading || message}
           >
-            {locale === 'pt' ? 'Registar' : 'Sign Up'}
+            {buttonMessage
+              ? buttonMessage
+              : locale === 'pt'
+              ? 'Registar'
+              : 'Sign Up'}
           </Button>
         </div>
 

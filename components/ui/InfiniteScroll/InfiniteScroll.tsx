@@ -36,8 +36,6 @@ const InfiniteScroll: FC<Props> = ({
     className
   )
 
-  console.log(hasMore)
-
   return (
     <InfiniteScrollComponent
       className={rootClassName}

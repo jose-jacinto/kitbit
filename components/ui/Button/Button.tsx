@@ -20,7 +20,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   width?: string | number
   price?: number
   loading?: boolean
-  disabled?: boolean
+  disabled?: any
 }
 
 const Button: React.FC<ButtonProps> = forwardRef((props, buttonRef) => {
