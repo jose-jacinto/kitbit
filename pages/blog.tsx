@@ -22,7 +22,7 @@ const fetchItems = async (data: { modelName: string }) => {
     }))
 }
 
-export async function getStaticProps({}: GetStaticPropsContext) {
+export async function getStaticProps({ }: GetStaticPropsContext) {
   let blogData = {
     modelName: 'blog',
   }
@@ -42,7 +42,7 @@ export default function Blog({ blog }: any) {
     <Container>
       <div className="text-center pt-40 pb-56 bg-violet mb-10 mt-5">
         <h2 className="text-4xl tracking-tight leading-10 font-extrabold text-white sm:text-5xl sm:leading-none md:text-6xl">
-          Blogerino
+          Blog and Projects
         </h2>
       </div>
       {blog.map((post: any, index: number) => (

@@ -55,7 +55,7 @@ const fetchItems = async (data: {
     }))
 }
 
-export async function getStaticProps({}: GetStaticPropsContext) {
+export async function getStaticProps({ }: GetStaticPropsContext) {
   let highlightItems = {
     modelName: 'product',
     currentPage: 1,
@@ -135,7 +135,7 @@ export default function Home({
       </Grid>
       <Hero
         headline="Kitbit - One-stop shop for the modern explorer"
-        description="Domephgt"
+        description="We gather hand-picked boards and electronic products from all around the globe and combine them into kits ready to be assembled and tinkered with."
       />
       <Grid layout="B">
         {recentProducts.map((item: any, i: number) => (

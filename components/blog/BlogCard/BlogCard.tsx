@@ -27,16 +27,14 @@ const getProcessedUrl = (photo: any, rrggbb: any) => {
       '&fit=crop'
     return (
       photo.url.trim() +
-      `?fm=jpg&w=400&h=400&blend-mode=overlay&blend-color=${
-        rrggbb ? rrggbb : '1e0245'
+      `?fm=jpg&w=1200&h=400&bri=-30&fit=crop&blend-color=${rrggbb ? rrggbb : '1e0245'
       }` +
       post_edition_string
     )
   } else if (photo && photo.url) {
     return (
       photo.url.trim() +
-      `?fm=jpg&w=400&h=400&blend-mode=overlay&blend-color=${
-        rrggbb ? rrggbb : '1e0245'
+      `?fm=jpg&w=1200&h=400&bri=-30&fit=crop&blend-color=${rrggbb ? rrggbb : '1e0245'
       }`
     )
   } else {
