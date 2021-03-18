@@ -1,10 +1,9 @@
 import '@assets/main.css'
 import 'keen-slider/keen-slider.min.css'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import type { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
 
 import { ManagedUIContext } from '@components/ui/context'
 import { Head } from '@components/core'

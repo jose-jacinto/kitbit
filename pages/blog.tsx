@@ -1,34 +1,24 @@
 import type { GetStaticPropsContext } from 'next'
 import { Layout } from '@components/core'
-import { Container, Hero } from '@components/ui'
+import { Container } from '@components/ui'
 import { BlogCard } from '@components/blog'
 
 import { getItems } from 'whitebrim'
 
 const fetchItems = async (data: { modelName: string }) => {
-  let params = {
-    modelName: data.modelName,
-  }
-  return getItems(params)
+  return getItems({ modelName: data.modelName })
     .then((res) => ({
       items: res.data.results,
-      totalPages: res.data.total_pages,
       error: false,
     }))
     .catch(() => ({
       items: null,
-      totalPages: 0,
       error: true,
     }))
 }
 
 export async function getStaticProps({ }: GetStaticPropsContext) {
-  let blogData = {
-    modelName: 'blog',
-  }
-
-  const { items: blog } = await fetchItems(blogData)
-
+  const { items: blog } = await fetchItems({ modelName: 'blog' })
   return {
     props: {
       blog,
@@ -46,7 +36,7 @@ export default function Blog({ blog }: any) {
         </h2>
       </div>
       {blog.map((post: any, index: number) => (
-        <BlogCard {...post} />
+        <BlogCard key={index} {...post} />
       ))}
     </Container>
   )

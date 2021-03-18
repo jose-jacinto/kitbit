@@ -562,7 +562,8 @@ export const getItems = (options) =>
         }
         
         if (options.pagination) filterString += "limit=".concat(options.pagination.limit, "&page=").concat(options.pagination.page, "");
-        if (options.q) filterString += `&q=${options.q}`
+
+        // console.log(`${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/${options.modelName}${filterString}`)
 
         axios
             .get(`${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/${options.modelName}${filterString}`, {})

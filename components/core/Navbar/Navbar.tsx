@@ -1,10 +1,12 @@
 import { FC, useEffect, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import cn from 'classnames'
 
 import s from './Navbar.module.css'
-// import { Logo } from '@components/ui'
+
 import { Searchbar, UserNav } from '@components/core'
+// import { Logo } from '@components/ui'
 
 import { getItems } from 'whitebrim'
 
@@ -13,7 +15,7 @@ interface Props {
 }
 
 const Navbar: FC<Props> = ({ className }) => {
-  const { locale } = useRouter()
+  const { locale, push, query } = useRouter()
   const rootClassName = className
 
   const [categoriesLoaded, setCategoriesLoaded] = useState(false)
@@ -58,18 +60,24 @@ const Navbar: FC<Props> = ({ className }) => {
             </Link>
             {categories &&
               categories.map((cat: any) => (
-                <Link href={`/search?cat=${cat._id}`} key={cat._id}>
-                  <a className={s.link}>{cat.name}</a>
-                </Link>
+                <a
+                  className={cn(s.link, {
+                    underline: query.cat === cat._id,
+                  })}
+                  onClick={() =>
+                    push(
+                      {
+                        pathname: `/search`,
+                        query: { cat: cat._id },
+                      },
+                      undefined,
+                      { shallow: true }
+                    )
+                  }
+                >
+                  {cat.name}
+                </a>
               ))}
-            {/* <Link href="/search?q=boards">
-              <a className={s.link}>{locale === 'pt' ? 'Placas' : 'Boards'}</a>
-            </Link>
-            <Link href="/search?q=accessories">
-              <a className={s.link}>
-                {locale === 'pt' ? 'Acessórios' : 'Accessories'}
-              </a>
-            </Link> */}
           </nav>
         </div>
 

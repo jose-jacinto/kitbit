@@ -1,0 +1,31 @@
+.root {
+  --row-height: calc(100vh - 80px - 56px);
+  @apply grid grid-cols-1 gap-0;
+
+  @screen lg {
+    @apply grid-cols-3 grid-rows-2;
+  }
+
+  & > * {
+    @apply row-span-1 bg-transparent box-border overflow-hidden;
+    height: 500px;
+    max-height: 800px;
+
+    @screen lg {
+      @apply col-span-1;
+      height: inherit;
+    }
+  }
+}
+
+.layoutNormal {
+  @apply gap-3;
+
+  & > * {
+    min-height: 325px;
+  }
+}
+
+.importantGrid {
+  grid-column: span 3 / span 3 !important;
+}

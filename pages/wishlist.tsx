@@ -1,10 +1,9 @@
-// import type { GetStaticPropsContext } from 'next'
+import { Transition } from '@headlessui/react'
 
 import { Layout } from '@components/core'
 import { Heart } from '@components/icons'
 import { Container, Text } from '@components/ui'
 import { WishlistCard } from '@components/wishlist'
-import { Transition } from '@headlessui/react'
 
 export default function Wishlist() {
   // MISSING API

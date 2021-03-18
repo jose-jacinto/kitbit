@@ -1,11 +1,10 @@
-// import type { GetStaticPropsContext } from 'next'
+import { useRouter } from 'next/router'
 
 import { Layout } from '@components/core'
 import { Container, Text } from '@components/ui'
-import { useRouter } from 'next/router'
 
 export default function Shipping() {
-  const { locale } = useRouter();
+  const { locale } = useRouter()
 
   // 'heading' | 'body' | 'pageHeading' | 'sectionHeading'
 
