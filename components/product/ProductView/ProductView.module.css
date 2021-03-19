@@ -115,3 +115,8 @@
   @apply py-4 px-6 bg-black text-white font-semibold inline-block text-sm leading-6;
   letter-spacing: 0.4px;
 }
+
+.productPrice2 {
+  @apply py-4 px-6 bg-black font-semibold inline-block text-sm leading-6;
+  letter-spacing: 0.4px;
+}

@@ -11,6 +11,10 @@
       transform: scale(1.05);
     }
 
+    & .productPrice2 {
+      @apply bg-black;
+    }
+
     & .productTitle > span,
     & .productPrice,
     & .wishlistButton {
@@ -117,6 +121,11 @@
 
 .productPrice {
   @apply py-4 px-6 bg-primary text-primary font-semibold inline-block text-sm leading-6;
+  letter-spacing: 0.4px;
+}
+
+.productPrice2 {
+  @apply py-4 px-6 bg-primary text-kitbit font-semibold inline-block text-sm leading-6;
   letter-spacing: 0.4px;
 }
 

@@ -51,8 +51,8 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
   const [effect, setEffect] = useState<boolean>(false)
 
   const newText = locale === 'pt' ? 'NOVO!' : 'NEW!'
-  const inStock = locale === 'pt' ? 'Em Stock!' : 'In Stock!'
-  const outStock = locale === 'pt' ? 'Sem Stock!' : 'Out of Stock!'
+  const inStock = locale === 'pt' ? 'Em Stock' : 'In Stock'
+  const outStock = locale === 'pt' ? 'Sem Stock' : 'Out of Stock'
 
   useEffect(() => {
     if (!displayPrice) {
@@ -263,7 +263,11 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         <div className={cn(s.productDisplay, 'mainElement fit')}>
           <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
             {product.stock <= 0 ? (
-              <span className={s.productPrice}>{outStock}</span>
+              <span
+                className={cn(s.productPrice2, 'text-kitbit', 'text-kitbit')}
+              >
+                {outStock}
+              </span>
             ) : (
               <span className={s.productPrice}>{inStock}</span>
             )}
