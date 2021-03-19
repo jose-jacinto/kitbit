@@ -160,36 +160,43 @@ export default function Cart() {
         <div className="flex-shrink-0 px-4 py-24 sm:px-6">
           <div>
             <div className="flex justify-between border-b border-accents-2 py-3 font-bold mb-10">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-12 sm:col-span-6">
-                  <h3>{locale === 'pt' ? 'Apply Coupon' : 'Aplicar Cupão'}</h3>
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <Input
-                    type="text"
-                    id="coupon"
-                    name="coupon"
-                    placeholder={'****'}
-                    value={coupon}
-                    onChange={(e) => setCoupon(e.target.value)}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <Button
-                    variant="slim"
-                    onClick={() => addCoupon()}
-                    disabled={loadingCoupon || couponMessage}
-                  >
-                    {loadingCoupon ? (
-                      <LoadingDots className="bg-white" />
-                    ) : couponMessage ? (
-                      couponMessage
-                    ) : (
-                      couponText
-                    )}
-                  </Button>
-                </div>
-              </div>
+              {user &&
+                user.cartExtraData &&
+                user.cartExtraData.promoRow &&
+                user.cartExtraData.promoRow.length <= 0 && (
+                  <div className="grid grid-cols-6 gap-6">
+                    <div className="col-span-12 sm:col-span-6">
+                      <h3>
+                        {locale === 'pt' ? 'Aplicar Cupão' : 'Apply Coupon'}
+                      </h3>
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <Input
+                        type="text"
+                        id="coupon"
+                        name="coupon"
+                        placeholder={'****'}
+                        value={coupon}
+                        onChange={(e) => setCoupon(e.target.value)}
+                      />
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <Button
+                        variant="slim"
+                        onClick={() => addCoupon()}
+                        disabled={loadingCoupon || couponMessage}
+                      >
+                        {loadingCoupon ? (
+                          <LoadingDots className="bg-white" />
+                        ) : couponMessage ? (
+                          couponMessage
+                        ) : (
+                          couponText
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                )}
             </div>
             <ul className="py-3">
               <li className="flex justify-between py-1">

@@ -3,7 +3,6 @@ import cn from 'classnames'
 import { useRouter } from 'next/router'
 import { NextSeo, ProductJsonLd } from 'next-seo'
 
-import ReactPixel from 'react-facebook-pixel'
 import WishlistButton from '@components/wishlist/WishlistButton'
 
 import s from './ProductView.module.css'
@@ -39,7 +38,7 @@ interface edition_options {
 
 const ProductView: FC<Props> = ({ product, urlVariant }) => {
   const { locale } = useRouter()
-  const { openSidebar, openModal, setModalView } = useUI()
+  const { openSidebar, openModal, setModalView, user, setUser } = useUI()
 
   const [selectedMainVar, selectMainVar] = useState<any>(null)
   const [email, setEmail] = useState<any>('')
@@ -139,12 +138,17 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
               'trackAddToCart',
               product.productSpec.sku,
               product.name,
-              product.metaSpec.categoria.code,
+              product.metaSpec.categoria ? product.metaSpec.categoria.code : '',
               product.productSpec.price,
               response.data.cart_item.quantity,
               'EUR'
             )
 
+            let newUser = {
+              ...user,
+              cart: response.data.cart,
+            }
+            setUser(newUser)
             openSidebar()
             setLoading(false)
           } else if (response.status === 304) {

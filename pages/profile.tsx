@@ -50,10 +50,6 @@ export default function Profile() {
         nif:
           user && user.custom.nif !== ''
             ? user && user.custom.nif
-            : user && user.custom.NIF,
-        NIF:
-          user && user.custom.NIF !== ''
-            ? user && user.custom.NIF
             : user && user.custom.nif,
         telephone: user && user.custom.telephone,
       },
@@ -94,8 +90,7 @@ export default function Profile() {
       ...data,
       email: data.localProfile.email,
       custom: {
-        nif: data.custom.NIF,
-        NIF: data.custom.NIF,
+        nif: data.custom.nif,
         telephone: data.custom.telephone,
       },
       billing_address: user.billing_address,
@@ -246,23 +241,16 @@ export default function Profile() {
               >
                 <svg
                   className="h-7 w-7"
-                  viewBox="0 0 24 24"
-                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
                   <path
-                    d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                   />
                 </svg>
                 <h3 className="text-lg font-medium leading-6 text-gray-900 ml-4">
@@ -279,23 +267,16 @@ export default function Profile() {
               >
                 <svg
                   className="h-7 w-7"
-                  viewBox="0 0 24 24"
-                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
                   <path
-                    d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
                   />
                 </svg>
                 <h3 className="text-lg font-medium leading-6 text-gray-900 ml-4">
@@ -390,14 +371,14 @@ export default function Profile() {
                         <Input
                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm"
                           type="text"
-                          id="custom.NIF"
-                          name="custom.NIF"
+                          id="custom.nif"
+                          name="custom.nif"
                           ref={registerAcc({
                             required: true,
                           })}
                         />
                         {errorsAcc.custom &&
-                          errorsAcc.custom.NIF &&
+                          errorsAcc.custom.nif &&
                           requiredMessage}
                       </div>
                     </div>

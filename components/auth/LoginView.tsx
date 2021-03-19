@@ -57,9 +57,9 @@ const LoginView: FC<Props> = () => {
                 : 'Email ou password inválidos'
             )
             setLoading(false)
-            setTimeout(() => {
-              setMessage('')
-            }, 2500)
+            // setTimeout(() => {
+            //   setMessage('')
+            // }, 2500)
           })
       })
       .catch(() => {
@@ -69,9 +69,9 @@ const LoginView: FC<Props> = () => {
             : 'Email ou password inválidos'
         )
         setLoading(false)
-        setTimeout(() => {
-          setMessage('')
-        }, 2500)
+        // setTimeout(() => {
+        //   setMessage('')
+        // }, 2500)
       })
   }
 

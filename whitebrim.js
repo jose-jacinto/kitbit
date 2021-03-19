@@ -418,7 +418,6 @@ export const editUser = (options) =>
 export const changePassword = (options) =>
     new Promise((resolve, reject) => {
         const processRequest = {
-            email: options.email,
             password: options.password,
             new_password: options.new_password,
         };

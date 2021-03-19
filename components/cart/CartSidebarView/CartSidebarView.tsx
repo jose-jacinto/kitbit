@@ -10,25 +10,11 @@ import { useUI } from '@components/ui/context'
 import CartItem from '../CartItem'
 import s from './CartSidebarView.module.css'
 
-// import { goToCheckoutPage } from 'whitebrim'
-
 const CartSidebarView: FC = () => {
   const { locale } = useRouter()
 
   const { closeSidebar, user, setUser } = useUI()
   const handleClose = () => closeSidebar()
-
-  // const goToCheckout = () => {
-  //   goToCheckoutPage()
-  //     .then((response) => {
-  //       window.location.replace(
-  //         `/checkout/?linkRef=${response.data.linkRef}&deploymentId=${process.env.NEXT_PUBLIC_WB_DEPLOYMENT_ID}`
-  //       )
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }
 
   let subTotal = 0
   if (user) {

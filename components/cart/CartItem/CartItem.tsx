@@ -43,7 +43,7 @@ const CartItem = (props: any) => {
         addItemToCart()
       } else {
         setQuantity(val)
-        handleRemove(quantity - val)
+        handleRemove(0)
       }
     }
   }
@@ -93,7 +93,7 @@ const CartItem = (props: any) => {
               'trackRemoveFromCart',
               product.productSpec.sku,
               product.name,
-              product.metaSpec.categoria.code,
+              product.metaSpec.categoria ? product.metaSpec.categoria.code : '',
               product.productSpec.price,
               response.data.cart_item.quantity,
               'EUR'
@@ -104,7 +104,11 @@ const CartItem = (props: any) => {
           }
         })
         .catch((err) => {
-          console.log(err.response)
+          if (err && err.response) {
+            console.log(err)
+          } else {
+            console.log(err)
+          }
         })
     }
   }
@@ -146,7 +150,7 @@ const CartItem = (props: any) => {
               'trackAddToCart',
               product.productSpec.sku,
               product.name,
-              product.metaSpec.categoria.code,
+              product.metaSpec.categoria ? product.metaSpec.categoria.code : '',
               product.productSpec.price,
               response.data.cart_item.quantity,
               'EUR'
@@ -154,7 +158,7 @@ const CartItem = (props: any) => {
 
             let newUser = {
               ...props.user,
-              cart: response.data,
+              cart: response.data.cart,
             }
             props.setUser(newUser)
           } else if (response.status === 304) {
@@ -187,9 +191,9 @@ const CartItem = (props: any) => {
         ',' +
         Math.floor(myEditOption.crop_options.height) +
         '&fit=crop'
-      return photo.url.trim() + '?fm=jpg&w=600&h=600' + post_edition_string
+      return photo.url.trim() + '?fm=jpg&w=300&h=300' + post_edition_string
     } else if (photo && photo.url) {
-      return photo.url.trim() + '?fm=jpg&w=600&h=600'
+      return photo.url.trim() + '?fm=jpg&w=300&h=300'
     } else {
       return photo.url
     }
@@ -201,15 +205,11 @@ const CartItem = (props: any) => {
         'opacity-75 pointer-events-none': removing,
       })}
     >
-      <div className="w-16 h-16 bg-violet relative overflow-hidden">
+      <div className="w-28 h-28 bg-violet relative overflow-hidden">
         <img
           className={s.productImage}
           src={getProcessedUrl(props.item.photo)}
-          width={150}
-          height={150}
           alt={props.item.name}
-        // The cart item image is already optimized and very small in size
-        // unoptimized
         />
       </div>
       <div className="flex-1 flex flex-col text-base">

@@ -213,7 +213,7 @@ const SignUpView: FC<Props> = () => {
             <Input
               style={{ width: '95%', marginBottom: 10 }}
               type="text"
-              name="custom.NIF"
+              name="custom.nif"
               placeholder={locale === 'pt' ? 'NIF' : 'NIF'}
               ref={register}
             />

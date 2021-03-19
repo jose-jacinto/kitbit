@@ -33,7 +33,7 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
     )
     //! FOR WHITEBRIM CHECKOUT (NEED TO FIX THIS ISSUE ON CHECKOUT)
 
-    if (localStorage.getItem('wb_token')) {
+    if (localStorage.getItem('wb_token') && !user) {
       console.log('Authenticating...')
       getUser()
         .then((response) => {
@@ -47,7 +47,11 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
           console.log('There was an error authenticating.')
         })
     } else {
-      console.log('Not Logged In')
+      if (user) {
+        console.log('User Loaded')
+      } else {
+        console.log('Not Logged In')
+      }
     }
   }, [])
 

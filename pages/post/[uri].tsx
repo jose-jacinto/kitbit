@@ -2,7 +2,7 @@ import type { GetStaticPathsContext, GetStaticPropsContext } from 'next'
 
 import { NextSeo, ArticleJsonLd } from 'next-seo'
 
-import { Layout } from '@components/core'
+import { Layout, HTMLContent } from '@components/core'
 import { Container } from '@components/ui'
 
 import { getItems, getItemByUri } from 'whitebrim'
@@ -134,11 +134,7 @@ export default function Post({ item }: any) {
       </div>
       <Container>
         <div className="text-lg leading-7 font-medium py-6 text-justify max-w-6xl mx-auto">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: item.html,
-            }}
-          />
+          <HTMLContent html={item.html} />
         </div>
       </Container>
     </div>

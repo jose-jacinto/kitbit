@@ -3,8 +3,6 @@ import cn from 'classnames'
 import Link from 'next/link'
 import s from './BrandCard.module.css'
 
-import WishlistButton from '@components/wishlist/WishlistButton'
-
 interface Props {
   className?: string
   brand: any

@@ -16,10 +16,10 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
   const { locale } = useRouter()
 
   const LINKS = [
-    {
-      name: locale === 'pt' ? 'Encomendas' : 'My Orders',
-      href: '/orders',
-    },
+    // {
+    //   name: locale === 'pt' ? 'Encomendas' : 'My Orders',
+    //   href: '/orders',
+    // },
     {
       name: locale === 'pt' ? 'Perfil' : 'My Profile',
       href: '/profile',
