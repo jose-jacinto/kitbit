@@ -108,7 +108,11 @@ export default function Home({
       setModalView('FORGOT_VIEW')
       return openModal()
     }
-  }, [query.req_link_param && query.rel_usr])
+    if (query.t === 'recover') {
+      setModalView('FORGOT_VIEW')
+      return openModal()
+    }
+  }, [query.req_link_param, query.rel_usr, query.t])
 
   return (
     <div>

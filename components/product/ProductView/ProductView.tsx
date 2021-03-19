@@ -364,8 +364,8 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                 <div className="col-span-12 sm:col-span-6">
                   <Text className="heading">
                     {locale === 'pt'
-                      ? 'Out of Stock. Receive a notification when back in stock'
-                      : 'Fora de stock. Receba uma notificação quando estiver em estoque'}
+                      ? 'Sem stock. Receba uma notificação quando estiver em stock'
+                      : 'Out of Stock. Receive a notification when back in stock'}
                   </Text>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
