@@ -1,5 +1,7 @@
-import type { GetStaticPathsContext, GetStaticPropsContext } from 'next'
+import { useState } from 'react'
 
+import type { GetStaticPathsContext, GetStaticPropsContext } from 'next'
+import { useRouter } from 'next/router'
 import { NextSeo, ArticleJsonLd } from 'next-seo'
 
 import { Layout, HTMLContent } from '@components/core'
@@ -69,11 +71,23 @@ export async function getStaticPaths({ locales }: GetStaticPathsContext) {
 }
 
 export default function Post({ item }: any) {
+  const { locale } = useRouter()
+  const [currLocale, setLocale] = useState<string>(
+    locale === 'pt' ? 'pt_PT' : 'en_US'
+  )
+
+  // Set locale to show product info in the correct language
+  const currLocaleSplit: any = currLocale.split('_')
+  const localeSplit: any = locale?.split('-')
+  if (localeSplit[0] !== currLocaleSplit[0]) {
+    setLocale(locale === 'pt' ? 'pt_PT' : 'en_US')
+  }
+
   return (
     <div className="pb-20">
       <ArticleJsonLd
         url={`https://kitbit.vercel.app/post/${item.uri}`}
-        title={item.title}
+        title={currLocale ? item.title[currLocale] : item.title.en_US}
         images={[item.photo.url]}
         datePublished={item.creat_default.createdAt}
         dateModified={
@@ -84,21 +98,21 @@ export default function Post({ item }: any) {
         authorName={['Kitbit']}
         publisherName="Kitbit"
         publisherLogo={`https://kitbit.vercel.app/post/${item.uri}`}
-        description={item.intro}
+        description={currLocale ? item.intro[currLocale] : item.intro.en_US}
       />
       <NextSeo
-        title={item.title}
-        description={item.intro}
+        title={currLocale ? item.title[currLocale] : item.title.en_US}
+        description={currLocale ? item.intro[currLocale] : item.intro.en_US}
         openGraph={{
           type: 'website',
-          title: item.name,
-          description: item.intro,
+          title: currLocale ? item.title[currLocale] : item.title.en_US,
+          description: currLocale ? item.intro[currLocale] : item.intro.en_US,
           images: [
             {
               url: `https:${item.photo.url}`,
               width: 800,
               height: 600,
-              alt: item.name,
+              alt: currLocale ? item.title[currLocale] : item.title.en_US,
             },
           ],
         }}
@@ -106,10 +120,10 @@ export default function Post({ item }: any) {
       <div className="text-center pt-40 pb-56 bg-violet">
         <Container>
           <h2 className="text-4xl tracking-tight leading-10 font-extrabold text-white sm:text-5xl sm:leading-none md:text-6xl">
-            {item.title}
+            {currLocale ? item.title[currLocale] : item.title.en_US}
           </h2>
           <p className="mt-3 max-w-md mx-auto text-gray-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-            {item.intro}
+            {currLocale ? item.intro[currLocale] : item.intro.en_US}
           </p>
           <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-12">
             <div className="flex">
@@ -134,7 +148,9 @@ export default function Post({ item }: any) {
       </div>
       <Container>
         <div className="text-lg leading-7 font-medium py-6 text-justify max-w-6xl mx-auto">
-          <HTMLContent html={item.html} />
+          <HTMLContent
+            html={currLocale ? item.html[currLocale] : item.html.en_US}
+          />
         </div>
       </Container>
     </div>

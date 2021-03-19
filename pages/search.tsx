@@ -287,6 +287,7 @@ export default function Search({
                   product={item}
                   imgWidth={480}
                   imgHeight={480}
+                  locale={router.locale}
                 />
               ))}
             </InfiniteScroll>

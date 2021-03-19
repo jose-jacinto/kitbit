@@ -7,6 +7,7 @@ import { Container, Sidebar, Button, Modal, Toast } from '@components/ui'
 import { Navbar, Featurebar, Footer } from '@components/core'
 import { LoginView, SignUpView, ForgotPassword } from '@components/auth'
 import { useUI } from '@components/ui/context'
+import { ImageView } from '@components/kitbit'
 import { usePreventScroll } from '@react-aria/overlays'
 import s from './Layout.module.css'
 import debounce from 'lodash.debounce'
@@ -84,6 +85,7 @@ const Layout: FC<Props> = ({ children }) => {
         {modalView === 'LOGIN_VIEW' && <LoginView />}
         {modalView === 'SIGNUP_VIEW' && <SignUpView />}
         {modalView === 'FORGOT_VIEW' && <ForgotPassword />}
+        {modalView === 'IMAGE_VIEW' && <ImageView />}
       </Modal>
       {cookie_consent !== null && (
         <Featurebar

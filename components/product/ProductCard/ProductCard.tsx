@@ -12,6 +12,7 @@ interface Props {
   imgWidth: number | string
   imgHeight: number | string
   priority?: boolean
+  locale?: any
 }
 
 interface Photo {
@@ -60,7 +61,12 @@ const ProductCard: FC<Props> = ({
   imgWidth,
   imgHeight,
   priority,
+  locale,
 }) => {
+  const newText = locale === 'pt' ? 'NOVO!' : 'NEW!'
+  const inStock = locale === 'pt' ? 'Em Stock!' : 'In Stock!'
+  const outStock = locale === 'pt' ? 'Sem Stock!' : 'Out of Stock!'
+
   return (
     <Link href={`/product/${p.uri}`}>
       <a
@@ -75,7 +81,7 @@ const ProductCard: FC<Props> = ({
             </div>
             <img
               src={getProcessedUrl(p.photo)}
-              alt={'Product Image'}
+              alt={p.name}
               width={imgWidth}
               height={imgHeight}
               // priority={priority}
@@ -87,9 +93,9 @@ const ProductCard: FC<Props> = ({
           <>
             <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
               {p.stock <= 0 ? (
-                <span className={s.productPrice}>{'Out of Stock!'}</span>
+                <span className={s.productPrice}>{outStock}</span>
               ) : (
-                <span className={s.productPrice}>{'In Stock!'}</span>
+                <span className={s.productPrice}>{inStock}</span>
               )}
             </div>
             <div className={s.squareBg} />
@@ -104,7 +110,7 @@ const ProductCard: FC<Props> = ({
                     <span className="ml-5">
                       {p.discount[0].finalPrice.toFixed(2)} €{' '}
                       <span className="ml-4 text-kitbit">
-                        {p.isNew && 'NEW!'}
+                        {p.isNew && newText}
                       </span>
                     </span>
                   </span>
@@ -112,7 +118,7 @@ const ProductCard: FC<Props> = ({
                   <span className={s.productPrice}>
                     {p.price.toFixed(2)} €{' '}
                     <span className="ml-4 text-kitbit">
-                      {p.isNew && 'NEW!'}
+                      {p.isNew && newText}
                     </span>
                   </span>
                 )}

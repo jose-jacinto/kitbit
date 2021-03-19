@@ -1,0 +1,6 @@
+.root {
+  @apply grid grid-cols-2 pb-8 gap-4 mb-10;
+  @screen md {
+    @apply grid-cols-2;
+  }
+}

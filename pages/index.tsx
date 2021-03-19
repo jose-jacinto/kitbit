@@ -100,7 +100,7 @@ export default function Home({
   categories,
   brands,
 }: any) {
-  const { query } = useRouter()
+  const { query, locale } = useRouter()
   const { setModalView, openModal } = useUI()
 
   useEffect(() => {
@@ -121,6 +121,7 @@ export default function Home({
             imgWidth={i === 0 ? 1600 : 820}
             imgHeight={i === 0 ? 1600 : 820}
             priority
+            locale={locale}
           />
         ))}
       </Grid>
@@ -136,6 +137,7 @@ export default function Home({
             // The second image is the largest one in the grid
             imgWidth={i === 1 ? 1600 : 820}
             imgHeight={i === 1 ? 1600 : 820}
+            locale={locale}
           />
         ))}
       </Grid>

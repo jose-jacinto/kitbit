@@ -63,6 +63,7 @@ const HomeAllProductsGrid: FC<Props> = ({ categories, brands, products }) => {
               variant="simple"
               imgWidth={480}
               imgHeight={480}
+              locale={locale}
             />
           ))}
         </Grid>

@@ -10,7 +10,6 @@ import { useUI } from '@components/ui/context'
 import { Swatch, ProductSlider } from '@components/product'
 import { Button, Input, Text, Container } from '@components/ui'
 import { HTMLContent } from '@components/core'
-// import WishlistButton from '@components/wishlist/WishlistButton'
 
 import { addToCart } from 'whitebrim'
 import axios from 'axios'
@@ -50,6 +49,10 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
 
   const [displayPrice, setPrice] = useState<any>(null)
   const [effect, setEffect] = useState<boolean>(false)
+
+  const newText = locale === 'pt' ? 'NOVO!' : 'NEW!'
+  const inStock = locale === 'pt' ? 'Em Stock!' : 'In Stock!'
+  const outStock = locale === 'pt' ? 'Sem Stock!' : 'Out of Stock!'
 
   useEffect(() => {
     if (!displayPrice) {
@@ -257,12 +260,12 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         }}
       />
       <div className={cn(s.root, 'fit')}>
-        <div className={cn(s.productDisplay, 'fit')}>
+        <div className={cn(s.productDisplay, 'mainElement fit')}>
           <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
             {product.stock <= 0 ? (
-              <span className={s.productPrice}>{'Out of Stock!'}</span>
+              <span className={s.productPrice}>{outStock}</span>
             ) : (
-              <span className={s.productPrice}>{'In Stock!'}</span>
+              <span className={s.productPrice}>{inStock}</span>
             )}
           </div>
           <div className={s.nameBox}>
@@ -276,7 +279,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                   <span className="ml-5">
                     {product.discount[0].finalPrice.toFixed(2)} €{' '}
                     <span className="ml-4 text-kitbit">
-                      {product.isNew && 'NEW!'}
+                      {product.isNew && newText}
                     </span>
                   </span>
                 </>
@@ -284,7 +287,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                 <span>
                   {displayPrice && displayPrice.toFixed(2)} €{' '}
                   <span className="ml-4 text-kitbit">
-                    {product.isNew && 'NEW!'}
+                    {product.isNew && newText}
                   </span>
                 </span>
               )}
@@ -293,7 +296,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           <div className={s.sliderContainer}>
             <ProductSlider>
               {/* Main photo then gallery */}
-              <div key={product.photo.url} className={s.imageContainer}>
+              <div className={s.imageContainer}>
                 <img
                   className={s.img}
                   src={getProcessedUrl(product.photo)}

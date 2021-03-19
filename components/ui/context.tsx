@@ -60,7 +60,7 @@ type Action =
       payload: payload
     }
 
-type MODAL_VIEWS = 'SIGNUP_VIEW' | 'LOGIN_VIEW' | 'FORGOT_VIEW'
+type MODAL_VIEWS = 'SIGNUP_VIEW' | 'LOGIN_VIEW' | 'FORGOT_VIEW' | 'IMAGE_VIEW'
 type ToastText = string
 type payload = object
 

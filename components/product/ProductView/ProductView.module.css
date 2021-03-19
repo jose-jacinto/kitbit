@@ -1,6 +1,6 @@
 .root {
   @apply relative grid items-start gap-8 grid-cols-1 overflow-x-hidden;
-  max-height: fit-content !important;
+  /* max-height: fit-content !important; */
 
   @screen lg {
     @apply grid-cols-12;
@@ -63,7 +63,7 @@
 
 .sliderContainer {
   @apply absolute z-10 inset-0 flex items-center justify-center overflow-x-hidden;
-  max-height: fit-content !important;
+  /* max-height: fit-content !important; */
 }
 
 .imageContainer {

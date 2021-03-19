@@ -4,8 +4,11 @@ import { Layout } from '@components/core'
 import { Heart } from '@components/icons'
 import { Container, Text } from '@components/ui'
 import { WishlistCard } from '@components/wishlist'
+import { useRouter } from 'next/router'
 
 export default function Wishlist() {
+  const { locale } = useRouter()
+
   // MISSING API
   const data = {
     items: [],
@@ -14,7 +17,9 @@ export default function Wishlist() {
   return (
     <Container>
       <div className="mt-3 mb-20">
-        <Text variant="pageHeading">My Wishlist</Text>
+        <Text variant="pageHeading">
+          {locale === 'pt' ? 'Minha Wishlist' : 'My Wishlist'}
+        </Text>
         <div className="group flex flex-col">
           {true ? (
             <Transition show>
@@ -31,7 +36,9 @@ export default function Wishlist() {
                     <Heart className="absolute" />
                   </span>
                   <h2 className="pt-6 text-2xl font-bold tracking-wide text-center">
-                    Your wishlist is empty
+                    {locale === 'pt'
+                      ? 'Wishlist está vazia'
+                      : 'Your wishlist is empty'}
                   </h2>
                   {/* <p className="text-accents-6 px-10 text-center pt-2">
                     Biscuit oat cake wafer icing ice cream tiramisu pudding
@@ -41,22 +48,22 @@ export default function Wishlist() {
               </Transition.Child>
             </Transition>
           ) : (
-              <Transition show>
-                {data &&
-                  data.items.map((item: any) => (
-                    <Transition.Child
-                      enter="transition-opacity ease-linear duration-300"
-                      enterFrom="opacity-0"
-                      enterTo="opacity-100"
-                      leave="transition-opacity ease-linear duration-300"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <WishlistCard key={item._id} item={item} />
-                    </Transition.Child>
-                  ))}
-              </Transition>
-            )}
+            <Transition show>
+              {data &&
+                data.items.map((item: any) => (
+                  <Transition.Child
+                    enter="transition-opacity ease-linear duration-300"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="transition-opacity ease-linear duration-300"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <WishlistCard key={item._id} item={item} />
+                  </Transition.Child>
+                ))}
+            </Transition>
+          )}
         </div>
       </div>
     </Container>
