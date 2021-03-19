@@ -50,7 +50,7 @@ const Footer: FC<Props> = ({ className }) => {
               <li className="py-3 md:py-0 md:pb-4">
                 <Link href="/shipping">
                   <a className="text-primary hover:text-accents-6 transition ease-in-out duration-150">
-                    {locale === 'pt' ? 'Portes e Envio' : 'Shipping'}
+                    {locale === 'pt' ? 'Envio e Devoluções' : 'Shipping and Returns'}
                   </a>
                 </Link>
               </li>

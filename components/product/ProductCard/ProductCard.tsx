@@ -63,7 +63,7 @@ const ProductCard: FC<Props> = ({
   priority,
   locale,
 }) => {
-  const newText = locale === 'pt' ? 'NOVO!' : 'NEW!'
+  const newText = locale === 'pt' ? 'Novo!' : 'New!'
   const inStock = locale === 'pt' ? 'Em Stock' : 'In Stock'
   const outStock = locale === 'pt' ? 'Sem Stock' : 'Out of Stock'
 
@@ -84,67 +84,67 @@ const ProductCard: FC<Props> = ({
               alt={p.name}
               width={imgWidth}
               height={imgHeight}
-              // priority={priority}
-              // quality="85"
-              // loader={getProcessedUrl(p.photo)}
+            // priority={priority}
+            // quality="85"
+            // loader={getProcessedUrl(p.photo)}
             />
           </div>
         ) : (
-          <>
-            <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
-              {p.stock <= 0 ? (
-                <span className={cn(s.productPrice2, 'text-kitbit')}>
-                  {outStock}
-                </span>
-              ) : (
-                <span className={s.productPrice}>{inStock}</span>
-              )}
-            </div>
-            <div className={s.squareBg} />
-            <div className="flex flex-row justify-between box-border w-full z-20 absolute">
-              <div className="absolute top-0 left-0 pr-16 max-w-full">
-                <h3 className={s.productTitle}>
-                  <span>{p.name}</span>
-                </h3>
-                {p.discount[0] && p.discount[0].active ? (
-                  <span className={s.productPrice}>
-                    <del>{p.price.toFixed(2)} €</del>
-                    <span className="ml-5">
-                      {p.discount[0].finalPrice.toFixed(2)} €{' '}
-                      <span className="ml-4 text-kitbit">
-                        {p.isNew && newText}
-                      </span>
-                    </span>
+            <>
+              <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
+                {p.stock <= 0 ? (
+                  <span className={cn(s.productPrice2, 'text-kitbit')}>
+                    {outStock}
                   </span>
                 ) : (
-                  <span className={s.productPrice}>
-                    {p.price.toFixed(2)} €{' '}
-                    <span className="ml-4 text-kitbit">
-                      {p.isNew && newText}
-                    </span>
-                  </span>
-                )}
+                    <span className={s.productPrice}>{inStock}</span>
+                  )}
               </div>
-              <WishlistButton
-                className={s.wishlistButton}
-                productId={p._id}
-                variant={null}
-              />
-            </div>
-            <div className={s.imageContainer}>
-              <img
-                alt={p.name}
-                className={cn('w-full object-cover', s['product-image'])}
-                src={getProcessedUrl(p.photo)}
-                width={imgWidth}
-                height={imgHeight}
+              <div className={s.squareBg} />
+              <div className="flex flex-row justify-between box-border w-full z-20 absolute">
+                <div className="absolute top-0 left-0 pr-16 max-w-full">
+                  <h3 className={s.productTitle}>
+                    <span>{p.name}</span>
+                  </h3>
+                  {p.discount[0] && p.discount[0].active ? (
+                    <span className={s.productPrice}>
+                      <del>{p.price.toFixed(2)} €</del>
+                      <span className="ml-5">
+                        {p.discount[0].finalPrice.toFixed(2)} €{' '}
+                        <span className="ml-4 text-kitbit">
+                          {p.isNew && newText}
+                        </span>
+                      </span>
+                    </span>
+                  ) : (
+                      <span className={s.productPrice}>
+                        {p.price.toFixed(2)} €{' '}
+                        <span className="ml-4 text-kitbit">
+                          {p.isNew && newText}
+                        </span>
+                      </span>
+                    )}
+                </div>
+                <WishlistButton
+                  className={s.wishlistButton}
+                  productId={p._id}
+                  variant={null}
+                />
+              </div>
+              <div className={s.imageContainer}>
+                <img
+                  alt={p.name}
+                  className={cn('w-full object-cover', s['product-image'])}
+                  src={getProcessedUrl(p.photo)}
+                  width={imgWidth}
+                  height={imgHeight}
                 // priority={priority}
                 // quality="85"
                 // loader={getProcessedUrl(p.photo)}
-              />
-            </div>
-          </>
-        )}
+                />
+              </div>
+            </>
+          )}
       </a>
     </Link>
   )

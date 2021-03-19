@@ -19,7 +19,7 @@ export default function Shipping() {
             Envios para Portugal
           </h5>
           <p className="py-6">
-            Os custos de envio para Portugal são grátis.<br />
+            Os custos de envio para Portugal são grátis para pedidos acima de 100€. Todos os pedidos de 100€ ou abaixo têm um custo de entrega de 5€ que será aplicado no checkout.<br />
           As entrega são realizadas pelos CTT entre as 9h e as 19h nos dias úteis, e o tempo de envio não contempla domingos ou feriados.<br />
           * Os prazos mencionados não se aplicam ao caso dos Açores e da Madeira.<br /><br />
           </p>
@@ -30,6 +30,10 @@ export default function Shipping() {
             Os custos de envio são calculados no checkout, mediante ao país escolhido para a entrega.<br />
           *Encomendas internacionais podem estar sujeitas a impostos, direitos aduaneiros e taxas cobradas no país de destino (Taxas de Importação). Não controlamos estes custos, nem conseguimos efetuar uma estimativa.
         </p>
+          <h5 className="text-4xl tracking-tight leading-10 font-extrabold">
+            Backorder
+          </h5>
+          <p>Todos os artigos com a descrição de backorder podem demorar 5 dias úteis a serem expedidos. Contacte-nos para uma estimativa correcta do tempo de expedição.</p>
         </div>
         :
         <div className="text-lg leading-7 font-medium py-6 text-justify max-w-6xl mx-auto">
@@ -37,7 +41,7 @@ export default function Shipping() {
             Shipping to Portugal
           </h5>
           <p className="py-6">
-            All order delivery to continental Portugal are free of charge.<br />
+            The delivery cost to continental Portugal is free of charge on all orders above 100€. For orders of 100€ and below, a flat fee of 5€ will be applied to your checkout.<br />
             Our current provider is CTT and we estimate a 48 hour delivery time after order confirmation.<br />
           </p>
           <h5 className="text-4xl tracking-tight leading-10 font-extrabold">
@@ -52,6 +56,17 @@ export default function Shipping() {
           <p className="py-6">
             For orders outside EU the checkout calculator will inform you the correct shipping fee.<br />
             We are not responsible for any customs tax or extra fees that you may incurr.
+          </p>
+          <h5 className="text-4xl tracking-tight leading-10 font-extrabold">
+            Backorder
+          </h5>
+          <p>All items that are available on backorder can take up to 5 business days to be shipped. Contact us for more information about the availability of these items.</p>
+          <br />
+          <h5 className="text-4xl tracking-tight leading-10 font-extrabold">
+            Returns
+          </h5>
+          <p>You have 14 days from the shipping date of your order to request a return and refund of your purchase from Kitbit. For return eligibility, all the items must be in perfect conditions.<br />
+            You can request a return and refund by contacting us at <a href="mailto:store@kitbit.eu">store@kitbit.eu</a>.
           </p>
         </div>
       }
