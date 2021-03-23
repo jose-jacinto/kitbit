@@ -121,28 +121,28 @@ export default function Cart() {
             </h2>
           </div>
         ) : (
-          <div className="px-4 sm:px-6 flex-1">
-            <Text variant="pageHeading">
-              {locale === 'pt' ? 'Carrinho' : 'My Cart'}
-            </Text>
-            <Text variant="sectionHeading">
-              {locale === 'pt'
-                ? 'Confirme a sua encomenda'
-                : 'Review your Order'}
-            </Text>
-            <ul className="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-accents-2 border-b border-accents-2">
-              {user &&
-                user.cart.map((item: any) => (
-                  <CartItem
-                    user={user}
-                    setUser={setUser}
-                    key={item.id}
-                    item={item}
-                    currencyCode={'€'}
-                  />
-                ))}
-            </ul>
-            <div className="my-6">
+                <div className="px-4 sm:px-6 flex-1">
+                  <Text variant="pageHeading">
+                    {locale === 'pt' ? 'Carrinho' : 'My Cart'}
+                  </Text>
+                  <Text variant="sectionHeading">
+                    {locale === 'pt'
+                      ? 'Confirme a sua encomenda'
+                      : 'Review your Order'}
+                  </Text>
+                  <ul className="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-accents-2 border-b border-accents-2">
+                    {user &&
+                      user.cart.map((item: any) => (
+                        <CartItem
+                          user={user}
+                          setUser={setUser}
+                          key={item.id}
+                          item={item}
+                          currencyCode={'€'}
+                        />
+                      ))}
+                  </ul>
+                  {/* <div className="my-6">
               <Text>
                 Before you leave, take a look at these items. We picked them
                 just for you
@@ -152,9 +152,9 @@ export default function Cart() {
                   <div className="border border-accents-3 w-full h-24 bg-accents-2 bg-opacity-50 transform cursor-pointer hover:scale-110 duration-75" />
                 ))}
               </div>
-            </div>
-          </div>
-        )}
+            </div> */}
+                </div>
+              )}
       </div>
       <div className="lg:col-span-4">
         <div className="flex-shrink-0 px-4 py-24 sm:px-6">
@@ -191,8 +191,8 @@ export default function Cart() {
                         ) : couponMessage ? (
                           couponMessage
                         ) : (
-                          couponText
-                        )}
+                              couponText
+                            )}
                       </Button>
                     </div>
                   </div>
@@ -242,16 +242,16 @@ export default function Cart() {
                     : 'Continue Shopping'}
                 </Button>
               ) : (
-                <Button
-                  onClick={() => goToCheckout()}
-                  Component="a"
-                  width="100%"
-                >
-                  {locale === 'pt'
-                    ? 'Ir para o checkout'
-                    : 'Proceed to Checkout'}
-                </Button>
-              )}
+                  <Button
+                    onClick={() => goToCheckout()}
+                    Component="a"
+                    width="100%"
+                  >
+                    {locale === 'pt'
+                      ? 'Ir para o checkout'
+                      : 'Proceed to Checkout'}
+                  </Button>
+                )}
             </div>
           </div>
         </div>

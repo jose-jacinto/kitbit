@@ -239,16 +239,19 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
       <NextSeo
         title={product.name}
         description={
-          currLocale
-            ? product.description[currLocale]
-            : product.description.en_US
+          product.simpleDescription
+          // currLocale
+          //   ? product.description[currLocale]
+          //   : product.description.en_US
         }
         openGraph={{
           type: 'website',
           title: product.name,
-          description: currLocale
-            ? product.description[currLocale]
-            : product.description.en_US,
+          description: product.simpleDescription,
+          url: `https://kitbit.eu/product/${product.uri}`,
+          // description: currLocale
+          //   ? product.description[currLocale]
+          //   : product.description.en_US,
           images: [
             {
               url: `https:${product.photo.url}`,

@@ -58,8 +58,8 @@ const Footer: FC<Props> = ({ className }) => {
                 <Link href="/payments">
                   <a className="text-primary hover:text-accents-6 transition ease-in-out duration-150">
                     {locale === 'pt'
-                      ? 'Métodos de Pagamento'
-                      : 'Payment Methods'}
+                      ? 'Pagamento'
+                      : 'Payments'}
                   </a>
                 </Link>
               </li>
