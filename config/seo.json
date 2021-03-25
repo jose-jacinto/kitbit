@@ -1,7 +1,7 @@
 {
   "title": "Kitbit",
   "titleTemplate": "%s - One-stop shop for the modern explorer",
-  "description": "One-stop shop for the modern explorer",
+  "description": "We gather hand-picked boards and electronic products from all around the globe and combine them into kits ready to be assembled and tinkered with",
   "openGraph": {
     "type": "website",
     "locale": "en_IE",

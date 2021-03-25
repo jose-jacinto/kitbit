@@ -225,7 +225,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
             price: product.price,
             priceCurrency: 'EUR',
             itemCondition: 'https://schema.org/NewCondition',
-            availability: product.stock <= 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+            availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
             url: `https://kitbit.eu/product/${product.uri}`,
             seller: {
               name: 'Kitbit',
