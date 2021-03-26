@@ -61,12 +61,12 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           `${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/get_price?modelId[]=${product._id}`,
           localStorage.getItem('wb_token')
             ? {
-              headers: {
-                Authorization: localStorage.getItem('wb_token')
-                  ? localStorage.getItem('wb_token')
-                  : null,
-              },
-            }
+                headers: {
+                  Authorization: localStorage.getItem('wb_token')
+                    ? localStorage.getItem('wb_token')
+                    : null,
+                },
+              }
             : {}
         )
         .then((response) => {
@@ -77,27 +77,23 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         })
     }
 
-    if (!effect) {
-      import('react-facebook-pixel')
-        .then((x) => x.default)
-        .then((ReactPixel) => {
-          ReactPixel.init('201854665067073')
-          ReactPixel.track('ViewContent', {
-            content_name: product.name,
-            content_category:
-              product.categories && product.categories.length > 0
-                ? product.categories[0].name
-                : '',
-            content_ids: [product._id],
-            content_type: 'product',
-            value: product.price,
-            currency: 'EUR',
-            google_product_category: '3356',
-          })
+    import('react-facebook-pixel')
+      .then((x) => x.default)
+      .then((ReactPixel) => {
+        ReactPixel.init('201854665067073')
+        ReactPixel.track('ViewContent', {
+          content_name: product.name,
+          content_category:
+            product.categories && product.categories.length > 0
+              ? product.categories[0].name
+              : '',
+          content_ids: [product._id],
+          content_type: 'product',
+          value: product.price,
+          currency: 'EUR',
+          google_product_category: '3356',
         })
-
-      setEffect(true)
-    }
+      })
 
     if (urlVariant && product.variant_options) {
       const variant = product.variant_options.find(
@@ -105,7 +101,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
       )
       selectMainVar(variant)
     }
-  }, [])
+  }, [product])
 
   const addItemToCart = () => {
     if (localStorage.getItem('wb_token')) {
@@ -225,7 +221,10 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
             price: product.price,
             priceCurrency: 'EUR',
             itemCondition: 'https://schema.org/NewCondition',
-            availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+            availability:
+              product.stock > 0
+                ? 'https://schema.org/InStock'
+                : 'https://schema.org/OutOfStock',
             url: `https://kitbit.eu/product/${product.uri}`,
             seller: {
               name: 'Kitbit',
@@ -272,8 +271,8 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                 {outStock}
               </span>
             ) : (
-                <span className={s.productPrice}>{inStock}</span>
-              )}
+              <span className={s.productPrice}>{inStock}</span>
+            )}
           </div>
           <div className={s.nameBox}>
             <h1 className={s.name}>{product.name}</h1>
@@ -291,13 +290,13 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                   </span>
                 </>
               ) : (
-                  <span>
-                    {displayPrice && displayPrice.toFixed(2)} €{' '}
-                    <span className="ml-4 text-kitbit">
-                      {product.isNew && newText}
-                    </span>
+                <span>
+                  {displayPrice && displayPrice.toFixed(2)} €{' '}
+                  <span className="ml-4 text-kitbit">
+                    {product.isNew && newText}
                   </span>
-                )}
+                </span>
+              )}
             </div>
           </div>
           <div className={s.sliderContainer}>
@@ -354,46 +353,46 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           <div>
             {product.stock > 0 ? (
               selectedMainVar ||
-                (!selectedMainVar && product.variant_options.length === 0) ? (
-                  <Button
-                    aria-label="Add to Cart"
-                    type="button"
-                    className={s.button}
-                    onClick={addItemToCart}
-                    loading={loading}
-                    disabled={loading} // if (no variant selected and variantLength > 0)
-                  >
-                    {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
-                  </Button>
-                ) : null
+              (!selectedMainVar && product.variant_options.length === 0) ? (
+                <Button
+                  aria-label="Add to Cart"
+                  type="button"
+                  className={s.button}
+                  onClick={addItemToCart}
+                  loading={loading}
+                  disabled={loading} // if (no variant selected and variantLength > 0)
+                >
+                  {locale === 'pt' ? 'Adicionar ao Carrinho' : 'Add to Cart'}
+                </Button>
+              ) : null
             ) : (
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-12 sm:col-span-6">
-                    <Text className="heading">
-                      {locale === 'pt'
-                        ? 'Sem stock. Receba uma notificação quando estiver em stock'
-                        : 'Out of Stock. Receive a notification when back in stock'}
-                    </Text>
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <Input type="email" placeholder="Email" onChange={setEmail} />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <Button
-                      aria-label={
-                        locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'
-                      }
-                      variant="slim"
-                      type="button"
-                      onClick={() => console.log('Notify')}
-                      loading={loading}
-                      disabled={loading}
-                    >
-                      {locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'}
-                    </Button>
-                  </div>
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-12 sm:col-span-6">
+                  <Text className="heading">
+                    {locale === 'pt'
+                      ? 'Sem stock. Receba uma notificação quando estiver em stock'
+                      : 'Out of Stock. Receive a notification when back in stock'}
+                  </Text>
                 </div>
-              )}
+                <div className="col-span-6 sm:col-span-3">
+                  <Input type="email" placeholder="Email" onChange={setEmail} />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <Button
+                    aria-label={
+                      locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'
+                    }
+                    variant="slim"
+                    type="button"
+                    onClick={() => console.log('Notify')}
+                    loading={loading}
+                    disabled={loading}
+                  >
+                    {locale === 'pt' ? 'Alertar retoma de stock' : 'Notify me'}
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <WishlistButton
