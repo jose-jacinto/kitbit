@@ -50,7 +50,7 @@ const Navbar: FC<Props> = ({ className }) => {
         <div className="flex flex-1 items-center">
           <Link href="/">
             <a aria-label="Logo">
-              <Logo width="140" />
+              <Logo width="140px" />
             </a>
           </Link>
           <nav className="space-x-4 ml-6 hidden lg:block">
