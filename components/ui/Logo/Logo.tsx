@@ -5,7 +5,7 @@ const Logo = ({ className = '', ...props }) => {
     width: props.width,
     height: 'auto'
   }
-  if (props.hight) properStyle.height = props.height;
+  if (props.height) properStyle.height = props.height;
 
   return (
     <img src="/kitbit_logo_normal.png" style={properStyle} />
