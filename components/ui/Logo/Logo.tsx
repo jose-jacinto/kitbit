@@ -1,6 +1,9 @@
-const Logo = ({ className = '', ...props }) => (
+import React from 'react';
+import ReactLogo from 'public/kitbit_logo_normal.png';
 
-  <img src="/kitbit_logo-02-02.png" style={{ width: 110 }} />
-)
-
-export default Logo
+const Logo = ({ className = '', ...props }) => {
+  return (
+    <img src="/kitbit_logo_normal.png" width="140" />
+  );
+}
+export default Logo;

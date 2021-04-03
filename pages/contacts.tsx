@@ -28,7 +28,7 @@ export default function Contacts() {
             Email
           </h5>
           <p className="py-6">
-            <a href="store@kitbit.eu">store@kitbit.eu</a>
+            <a href="mailto:store@kitbit.eu">store@kitbit.eu</a>
           </p>
         </div>
         :
@@ -47,7 +47,7 @@ export default function Contacts() {
             Email
           </h5>
           <p className="py-6">
-            <a href="store@kitbit.eu">store@kitbit.eu</a>
+            <a href="mailto:store@kitbit.eu">store@kitbit.eu</a>
           </p>
         </div>
       }
