@@ -7,7 +7,7 @@ import { useUI } from '@components/ui/context'
 
 import { loginUser, getUser } from 'whitebrim'
 
-interface Props {}
+interface Props { }
 
 const LoginView: FC<Props> = () => {
   const { locale } = useRouter()
