@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactLogo from 'public/kitbit_logo_normal.png';
 
 const Logo = ({ className = '', ...props }) => {
   return (
