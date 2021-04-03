@@ -37,7 +37,7 @@ export default function Contacts() {
             Store
           </h5>
           <p className="py-6">
-            We are closed during this period <br /><br />
+            Our location is closed during this period <br /><br />
             Rua Margarida de Abreu<br />
             No 13, Esc 3<br />
             1900-314 Lisboa<br />

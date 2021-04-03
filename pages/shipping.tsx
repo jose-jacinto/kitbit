@@ -61,13 +61,7 @@ export default function Shipping() {
             Backorder
           </h5>
           <p>All items that are available on backorder can take up to 5 business days to be shipped. Contact us for more information about the availability of these items.</p>
-          <br />
-          <h5 className="text-4xl tracking-tight leading-10 font-extrabold">
-            Returns
-          </h5>
-          <p>You have 14 days from the shipping date of your order to request a return and refund of your purchase from Kitbit. For return eligibility, all the items must be in perfect conditions.<br />
-            You can request a return and refund by contacting us at <a href="mailto:store@kitbit.eu">store@kitbit.eu</a>.
-          </p>
+
         </div>
       }
     </Container>

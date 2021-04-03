@@ -37,7 +37,7 @@ const fetchItems = async (data: {
     }))
 }
 
-export async function getStaticProps({}: GetStaticPropsContext) {
+export async function getStaticProps({ }: GetStaticPropsContext) {
   let highlightItems = {
     modelName: 'product',
     currentPage: 1,
