@@ -804,10 +804,10 @@ export const applyPromoCode = (options) =>
             });
     });
 
-export const removePromoCode = () =>
+export const removePromoCode = (id) =>
     new Promise((resolve, reject) => {
         axios
-            .post(`${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/project/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/account/remove_promo_code`, { promoCode: null }, {
+            .post(`${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/project/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/account/remove_promo_code`, { promoId: id }, {
                 headers: {
                     Authorization: localStorage.getItem("wb_token"),
                 },

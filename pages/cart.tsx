@@ -31,7 +31,7 @@ export default function Cart() {
           setTimeout(() => {
             setCouponMessage(null)
           }, 2500)
-          setUser(response.data)
+          setUser({ ...user, cartExtraData: response.data.cartExtraData })
         } else {
           setCouponMessage(locale === 'pt' ? 'Não encontrado' : 'Not found')
           setTimeout(() => {
@@ -48,12 +48,12 @@ export default function Cart() {
       })
   }
 
-  const removeCoupon = () => {
-    removePromoCode()
+  const removeCoupon = (id: string) => {
+    removePromoCode(id)
       .then((response: any) => {
         if (response && response.status !== 204) {
           console.log(response)
-          setUser(response.data)
+          setUser({ ...user, cartExtraData: response.data.cartExtraData })
         } else {
           console.log(response)
         }
@@ -121,28 +121,28 @@ export default function Cart() {
             </h2>
           </div>
         ) : (
-                <div className="px-4 sm:px-6 flex-1">
-                  <Text variant="pageHeading">
-                    {locale === 'pt' ? 'Carrinho' : 'My Cart'}
-                  </Text>
-                  <Text variant="sectionHeading">
-                    {locale === 'pt'
-                      ? 'Confirme a sua encomenda'
-                      : 'Review your Order'}
-                  </Text>
-                  <ul className="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-accents-2 border-b border-accents-2">
-                    {user &&
-                      user.cart.map((item: any) => (
-                        <CartItem
-                          user={user}
-                          setUser={setUser}
-                          key={item.id}
-                          item={item}
-                          currencyCode={'€'}
-                        />
-                      ))}
-                  </ul>
-                  {/* <div className="my-6">
+          <div className="px-4 sm:px-6 flex-1">
+            <Text variant="pageHeading">
+              {locale === 'pt' ? 'Carrinho' : 'My Cart'}
+            </Text>
+            <Text variant="sectionHeading">
+              {locale === 'pt'
+                ? 'Confirme a sua encomenda'
+                : 'Review your Order'}
+            </Text>
+            <ul className="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-accents-2 border-b border-accents-2">
+              {user &&
+                user.cart.map((item: any) => (
+                  <CartItem
+                    user={user}
+                    setUser={setUser}
+                    key={item.id}
+                    item={item}
+                    currencyCode={'€'}
+                  />
+                ))}
+            </ul>
+            {/* <div className="my-6">
               <Text>
                 Before you leave, take a look at these items. We picked them
                 just for you
@@ -153,8 +153,8 @@ export default function Cart() {
                 ))}
               </div>
             </div> */}
-                </div>
-              )}
+          </div>
+        )}
       </div>
       <div className="lg:col-span-4">
         <div className="flex-shrink-0 px-4 py-24 sm:px-6">
@@ -191,8 +191,8 @@ export default function Cart() {
                         ) : couponMessage ? (
                           couponMessage
                         ) : (
-                              couponText
-                            )}
+                          couponText
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -218,10 +218,15 @@ export default function Cart() {
                 user.cartExtraData &&
                 user.cartExtraData.promoRow.map((promo: any) => (
                   <li className="flex justify-between py-1" key={promo._id}>
-                    <span>{promo.title}</span>
+                    <span>
+                      {promo.title}{' '}
+                      {promo.description &&
+                        promo.description !== '' &&
+                        `- ${promo.description}`}
+                    </span>
                     <a
                       className="hover:underline cursor-pointer"
-                      onClick={() => removeCoupon()}
+                      onClick={() => removeCoupon(promo.uid)}
                     >
                       {locale === 'pt' ? 'Remover' : 'Remove'}
                     </a>
@@ -242,16 +247,16 @@ export default function Cart() {
                     : 'Continue Shopping'}
                 </Button>
               ) : (
-                  <Button
-                    onClick={() => goToCheckout()}
-                    Component="a"
-                    width="100%"
-                  >
-                    {locale === 'pt'
-                      ? 'Ir para o checkout'
-                      : 'Proceed to Checkout'}
-                  </Button>
-                )}
+                <Button
+                  onClick={() => goToCheckout()}
+                  Component="a"
+                  width="100%"
+                >
+                  {locale === 'pt'
+                    ? 'Ir para o checkout'
+                    : 'Proceed to Checkout'}
+                </Button>
+              )}
             </div>
           </div>
         </div>
