@@ -51,7 +51,7 @@ export default function Cart() {
   const removeCoupon = (id: string) => {
     removePromoCode(id)
       .then((response: any) => {
-        if (response && response.status !== 204) {
+        if (response) {
           console.log(response)
           setUser({ ...user, cartExtraData: response.data.cartExtraData })
         } else {
