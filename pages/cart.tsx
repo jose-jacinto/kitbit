@@ -31,7 +31,13 @@ export default function Cart() {
           setTimeout(() => {
             setCouponMessage(null)
           }, 2500)
-          setUser({ ...user, cartExtraData: response.data.cartExtraData })
+          setUser({
+            ...user,
+            // cart: response.data.cart,
+            cartExtraData: response.data.cartExtraData,
+          })
+
+          window.location.reload()
         } else {
           setCouponMessage(locale === 'pt' ? 'Não encontrado' : 'Not found')
           setTimeout(() => {
@@ -53,7 +59,10 @@ export default function Cart() {
       .then((response: any) => {
         if (response) {
           console.log(response)
+
           setUser({ ...user, cartExtraData: response.data.cartExtraData })
+
+          window.location.reload()
         } else {
           console.log(response)
         }

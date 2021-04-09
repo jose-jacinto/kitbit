@@ -34,20 +34,20 @@ const SignUpView: FC<Props> = () => {
     let submitValues = {
       ...values,
       shipping_address: {
-        name: values.firstName + ' ' + values.lastName,
+        name: values.name.first + ' ' + values.name.last,
         street1: values.street1,
         street2: values.street2,
         code: values.code,
         city: values.city,
-        country: values.country,
+        country: '-',
       },
       billing_address: {
-        name: values.firstName + ' ' + values.lastName,
+        name: values.name.first + ' ' + values.name.last,
         street1: values.street1,
         street2: values.street2,
         code: values.code,
         city: values.city,
-        country: values.country,
+        country: '-',
       },
     }
 
@@ -96,7 +96,7 @@ const SignUpView: FC<Props> = () => {
       style={{ width: '45rem' }}
     >
       <div className="flex justify-center pb-12 ">
-        <Logo width="64px" height="64px" />
+        <Logo width="125px" />
       </div>
 
       <div className="flex flex-col space-y-4">
