@@ -133,14 +133,17 @@ export default function Home({
         headline="Kitbit - One-stop shop for the modern explorer"
         description="We gather hand-picked boards and electronic products from all around the globe and combine them into kits ready to be assembled and tinkered with."
       />
-      <Grid layout="B">
+      <Grid layout="normal">
         {recentProducts.map((item: any, i: number) => (
           <ProductCard
             key={item._id}
             product={item}
+            variant="simple"
+            imgWidth={480}
+            imgHeight={480}
             // The second image is the largest one in the grid
-            imgWidth={i === 1 ? 1600 : 820}
-            imgHeight={i === 1 ? 1600 : 820}
+            // imgWidth={i === 1 ? 1600 : 820}
+            // imgHeight={i === 1 ? 1600 : 820}
             locale={locale}
           />
         ))}
