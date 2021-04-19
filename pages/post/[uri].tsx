@@ -125,7 +125,7 @@ export default function Post({ item }: any) {
           <p className="mt-3 max-w-md mx-auto text-gray-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
             {currLocale ? item.intro[currLocale] : item.intro.en_US}
           </p>
-          <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-12">
+          {/* <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-12">
             <div className="flex">
               <div className="flex-shrink-0 inline-flex rounded-full border-2 border-white">
                 <img
@@ -143,7 +143,7 @@ export default function Post({ item }: any) {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </Container>
       </div>
       <Container>
