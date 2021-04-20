@@ -1,5 +1,5 @@
 import { useKeenSlider } from 'keen-slider/react'
-import React, { Children, FC, isValidElement, useState } from 'react'
+import React, { Children, FC, isValidElement, useState, useEffect, useRef } from 'react'
 import cn from 'classnames'
 
 import s from './ProductSlider.module.css'
@@ -7,6 +7,7 @@ import s from './ProductSlider.module.css'
 const ProductSlider: FC = ({ children }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isMounted, setIsMounted] = useState(false)
+  const sliderContainerRef = useRef<HTMLDivElement>(null)
 
   const [ref, slider] = useKeenSlider<HTMLDivElement>({
     loop: true,
@@ -17,8 +18,42 @@ const ProductSlider: FC = ({ children }) => {
     },
   })
 
+  // Stop the history navigation gesture on touch devices
+  useEffect(() => {
+    const preventNavigation = (event: TouchEvent) => {
+      // Center point of the touch area
+      const touchXPosition = event.touches[0].pageX
+      // Size of the touch area
+      const touchXRadius = event.touches[0].radiusX || 0
+
+      // We set a threshold (10px) on both sizes of the screen,
+      // if the touch area overlaps with the screen edges
+      // it's likely to trigger the navigation. We prevent the
+      // touchstart event in that case.
+      if (
+        touchXPosition - touchXRadius < 10 ||
+        touchXPosition + touchXRadius > window.innerWidth - 10
+      )
+        event.preventDefault()
+    }
+
+    sliderContainerRef.current!.addEventListener(
+      'touchstart',
+      preventNavigation
+    )
+
+    return () => {
+      if (sliderContainerRef.current) {
+        sliderContainerRef.current!.removeEventListener(
+          'touchstart',
+          preventNavigation
+        )
+      }
+    }
+  }, [])
+
   return (
-    <div className={s.root}>
+    <div className={s.root} ref={sliderContainerRef}>
       <button
         className={cn(s.leftControl, s.control)}
         onClick={slider?.prev}
@@ -31,7 +66,7 @@ const ProductSlider: FC = ({ children }) => {
       />
       <div
         ref={ref}
-        className="keen-slider h-full transition-opacity duration-150"
+        className="keen-slider transition-opacity duration-150"
         style={{ opacity: isMounted ? 1 : 0 }}
       >
         {Children.map(children, (child) => {
@@ -41,9 +76,8 @@ const ProductSlider: FC = ({ children }) => {
               ...child,
               props: {
                 ...child.props,
-                className: `${
-                  child.props.className ? `${child.props.className} ` : ''
-                }keen-slider__slide`,
+                className: `${child.props.className ? `${child.props.className} ` : ''
+                  }keen-slider__slide`,
               },
             }
           }

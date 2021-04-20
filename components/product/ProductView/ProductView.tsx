@@ -262,18 +262,9 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         }}
       />
       <div className={cn(s.root, 'fit')}>
-        <div className={cn(s.productDisplay, 'mainElement fit')}>
-          <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
-            {product.stock <= 0 ? (
-              <span
-                className={cn(s.productPrice2, 'text-kitbit', 'text-kitbit')}
-              >
-                {outStock}
-              </span>
-            ) : (
-              <span className={s.productPrice}>{inStock}</span>
-            )}
-          </div>
+        {/* className down here was mainElement */}
+        <div className={cn(s.productDisplay, 'fit')}>
+          
           <div className={s.nameBox}>
             <h1 className={s.name}>{product.name}</h1>
             <div className={s.price}>
@@ -300,7 +291,18 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
             </div>
           </div>
           <div className={s.sliderContainer}>
-            <ProductSlider>
+            <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
+            {product.stock <= 0 ? (
+              <span
+                className={cn(s.productPrice2, 'text-kitbit', 'text-kitbit')}
+              >
+                {outStock}
+              </span>
+            ) : (
+              <span className={s.productPrice}>{inStock}</span>
+            )}
+          </div>
+            <ProductSlider key={product._id}>
               {/* Main photo then gallery */}
               <div className={s.imageContainer}>
                 <img
