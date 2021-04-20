@@ -73,7 +73,15 @@ const Footer: FC<Props> = ({ className }) => {
             </ul>
           </div>
           <div className="col-span-1 lg:col-span-2">
-            <ul className="flex flex-initial flex-col md:flex-1"></ul>
+            <ul className="flex flex-initial flex-col md:flex-1">
+              <li className="py-3 md:py-0 md:pb-4">
+                <Link href="/privacy">
+                  <a className="text-primary hover:text-accents-6 transition ease-in-out duration-150">
+                    Privacy
+                  </a>
+                </Link>
+              </li>
+            </ul>
           </div>
           <div className="col-span-1 lg:col-span-6 flex items-start lg:justify-end text-primary">
             <div className="flex space-x-6 items-center h-10">
