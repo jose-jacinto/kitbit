@@ -58,12 +58,12 @@ export async function getStaticPaths({ locales }: GetStaticPathsContext) {
   return {
     paths: locales
       ? locales.reduce<string[]>((arr, locale) => {
-          // Add a post path for every locale
-          data.items.forEach((post: { uri: string }) => {
-            arr.push(`/${locale}/post/${post.uri}`)
-          })
-          return arr
-        }, [])
+        // Add a post path for every locale
+        data.items.forEach((post: { uri: string }) => {
+          arr.push(`/${locale}/post/${post.uri}`)
+        })
+        return arr
+      }, [])
       : data.items.forEach((post: { uri: any }) => `/post/${post.uri}`),
     // If your store has tons of posts, enable fallback mode to improve build times!
     fallback: false,
@@ -84,7 +84,7 @@ export default function Post({ item }: any) {
   }
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 ">
       <ArticleJsonLd
         url={`https://kitbit.vercel.app/post/${item.uri}`}
         title={currLocale ? item.title[currLocale] : item.title.en_US}
@@ -149,6 +149,7 @@ export default function Post({ item }: any) {
       <Container>
         <div className="text-lg leading-7 font-medium py-6 text-justify max-w-6xl mx-auto">
           <HTMLContent
+            className="blog-page"
             html={currLocale ? item.html[currLocale] : item.html.en_US}
           />
         </div>

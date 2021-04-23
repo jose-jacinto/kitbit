@@ -28,3 +28,7 @@
 .root a:hover {
   text-decoration: underline;
 }
+
+.root ul, .root ol {
+  list-style: initial !important;
+}
