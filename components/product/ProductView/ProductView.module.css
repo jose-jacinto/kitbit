@@ -1,6 +1,5 @@
 .root {
-  @apply relative grid items-start gap-8 grid-cols-1 overflow-x-hidden;
-  /* max-height: fit-content !important; */
+  @apply relative grid items-start gap-8 grid-cols-1 overflow-x-hidden overflow-y-hidden;
 
   @screen lg {
     @apply grid-cols-12;

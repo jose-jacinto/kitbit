@@ -9,6 +9,8 @@ interface Props {
   className?: string
   label?: string
   price?: number
+  outOfStock?: boolean
+  locale?: string
   variant?: 'size' | 'color' | string
 }
 
@@ -19,6 +21,8 @@ const Swatch: FC<Props & ButtonProps> = ({
   variant = 'type',
   active,
   price,
+  outOfStock,
+  locale,
   ...props
 }) => {
   variant = variant?.toLowerCase()
@@ -43,6 +47,9 @@ const Swatch: FC<Props & ButtonProps> = ({
       {...props}
     >
       {label}
+      {outOfStock && (
+        locale === 'pt' ? " (Sem Stock)" : " (Out of Stock)"
+      )}
       <br />
       {price && price.toFixed(2)} €
     </Button>

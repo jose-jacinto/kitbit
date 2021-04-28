@@ -61,12 +61,12 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           `${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/get_price?modelId[]=${product._id}`,
           localStorage.getItem('wb_token')
             ? {
-                headers: {
-                  Authorization: localStorage.getItem('wb_token')
-                    ? localStorage.getItem('wb_token')
-                    : null,
-                },
-              }
+              headers: {
+                Authorization: localStorage.getItem('wb_token')
+                  ? localStorage.getItem('wb_token')
+                  : null,
+              },
+            }
             : {}
         )
         .then((response) => {
@@ -99,7 +99,13 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
       const variant = product.variant_options.find(
         (variant: any) => variant._id === urlVariant
       )
-      selectMainVar(variant)
+      if (variant.stock > 0) {
+        selectMainVar(variant)
+      } else {
+        selectMainVar(product.variant_options[0])
+      }
+    } else {
+      selectMainVar(product.variant_options[0])
     }
   }, [product])
 
@@ -264,7 +270,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
       <div className={cn(s.root, 'fit')}>
         {/* className down here was mainElement */}
         <div className={cn(s.productDisplay, 'fit')}>
-          
+
           <div className={s.nameBox}>
             <h1 className={s.name}>{product.name}</h1>
             <div className={s.price}>
@@ -292,16 +298,16 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           </div>
           <div className={s.sliderContainer}>
             <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
-            {product.stock <= 0 ? (
-              <span
-                className={cn(s.productPrice2, 'text-kitbit', 'text-kitbit')}
-              >
-                {outStock}
-              </span>
-            ) : (
-              <span className={s.productPrice}>{inStock}</span>
-            )}
-          </div>
+              {product.stock <= 0 ? (
+                <span
+                  className={cn(s.productPrice2, 'text-kitbit', 'text-kitbit')}
+                >
+                  {outStock}
+                </span>
+              ) : (
+                <span className={s.productPrice}>{inStock}</span>
+              )}
+            </div>
             <ProductSlider key={product._id}>
               {/* Main photo then gallery */}
               <div className={s.imageContainer}>
@@ -330,10 +336,13 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         </div>
         <div className={s.sidebar}>
           <section>
-            {product.variant_options.map((variant: any, i: number) => {
-              return (
-                <div className="pb-4">
-                  <div className="flex flex-row py-4">
+            {product.variant_options.length > 0 && (
+              <h1 className="font-bold mb-5">{locale === 'pt' ? 'Opções' : 'Options'}</h1>
+            )}
+            <div className="flex flex-wrap w-full">
+              {product.variant_options.map((variant: any, i: number) => {
+                return (
+                  <div className="xl:w-1/3.5 lg:w-1/3 md:w-1/2 pb-4">
                     <Swatch
                       key={`${variant.name}-${i}`}
                       active={
@@ -343,19 +352,24 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
                       label={`${variant.name}`}
                       price={variant.price}
                       onClick={() => selectMainVariant(variant)}
+                      disabled={variant.stock <= 0}
+                      outOfStock={variant.stock <= 0}
+                      locale={locale}
                     />
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
             <div className="pb-14 break-words w-full max-w-xl">
-              <HTMLContent html={product.description[currLocale]} />
+              <h1 className="font-bold mb-5 mt-5">{locale === 'pt' ? 'Descrição' : 'Description'}</h1>
+              <br />
+              <HTMLContent html={product.description[currLocale]} className="blog-page" />
             </div>
           </section>
           <div>
             {product.stock > 0 ? (
               selectedMainVar ||
-              (!selectedMainVar && product.variant_options.length === 0) ? (
+                (!selectedMainVar && product.variant_options.length === 0) ? (
                 <Button
                   aria-label="Add to Cart"
                   type="button"
