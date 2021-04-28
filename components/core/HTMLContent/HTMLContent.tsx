@@ -2,7 +2,7 @@ import cn from 'classnames'
 import s from './HTMLContent.module.css'
 
 type Props = {
-  className?: 'string'
+  className?: string
   html: string
 }
 
