@@ -205,7 +205,7 @@ const CartItem = (props: any) => {
         'opacity-75 pointer-events-none': removing,
       })}
     >
-      <div className="w-28 h-28 bg-violet relative overflow-hidden">
+      <div className="w-16 h-16 bg-violet relative overflow-hidden">
         <img
           className={s.productImage}
           src={getProcessedUrl(props.item.photo)}
@@ -218,7 +218,7 @@ const CartItem = (props: any) => {
             {props.item.name}
           </span>
         </Link>
-        <div className="flex items-center">
+        <div className="flex items-center mt-3">
           <button type="button" onClick={() => increaseQuantity(-1)}>
             <Minus width={18} height={18} />
           </button>

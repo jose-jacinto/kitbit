@@ -195,15 +195,14 @@ export default function Profile() {
   }
 
   return (
-    <Container className="pt-6">
+    <Container className="pt-6 pb-5">
       {user && (
         <div className="md:grid md:grid-cols-3 md:gap-6">
-          <div className="md:col-span-1">
+          <div className="md:col-span-1 mb-10">
             <div className="px-4 sm:px-0 mb-4">
               <a
-                className={`flex items-center py-2 pr-8 pl-4 text-gray-700 border-r-4 cursor-pointer hover:bg-gray-200 ${
-                  activeForm === 'account' && 'bg-gray-200 border-kitbit'
-                }`}
+                className={`flex items-center py-2 pr-8 pl-4 text-gray-700 border-r-4 cursor-pointer hover:bg-gray-200 ${activeForm === 'account' && 'bg-gray-200 border-kitbit'
+                  }`}
                 onClick={() => setActiveForm('account')}
               >
                 <svg
@@ -234,9 +233,8 @@ export default function Profile() {
             </div>
             <div className="px-4 sm:px-0 mb-4">
               <a
-                className={`flex items-center py-2 pr-8 pl-4 text-gray-700 border-r-4 cursor-pointer hover:bg-gray-200 ${
-                  activeForm === 'address' && 'bg-gray-200 border-kitbit'
-                }`}
+                className={`flex items-center py-2 pr-8 pl-4 text-gray-700 border-r-4 cursor-pointer hover:bg-gray-200 ${activeForm === 'address' && 'bg-gray-200 border-kitbit'
+                  }`}
                 onClick={() => setActiveForm('address')}
               >
                 <svg
@@ -260,9 +258,8 @@ export default function Profile() {
             </div>
             <div className="px-4 sm:px-0 mb-4">
               <a
-                className={`flex items-center py-2 pr-8 pl-4 text-gray-700 border-r-4 cursor-pointer hover:bg-gray-200 ${
-                  activeForm === 'password' && 'bg-gray-200 border-kitbit'
-                }`}
+                className={`flex items-center py-2 pr-8 pl-4 text-gray-700 border-r-4 cursor-pointer hover:bg-gray-200 ${activeForm === 'password' && 'bg-gray-200 border-kitbit'
+                  }`}
                 onClick={() => setActiveForm('password')}
               >
                 <svg
@@ -285,7 +282,7 @@ export default function Profile() {
               </a>
             </div>
           </div>
-          <div className="mt-5 md:mt-0 md:col-span-2">
+          <div className="mt-5 md:mt-0 md:col-span-2 mb-10">
             {activeForm === 'account' ? (
               <form onSubmit={submitAcc(onSubmitAccDetails)}>
                 <div className="shadow sm:rounded-md sm:overflow-hidden">

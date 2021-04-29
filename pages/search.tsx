@@ -115,8 +115,10 @@ export default function Search({
 
   return (
     <Container>
-      <div className="grid grid-cols-12 gap-4 mt-3 mb-20">
-        <div className="col-span-2">
+      {/* <div className="grid grid-cols-12 gap-4 mt-3 mb-20"> */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 mb-20">
+        {/* <div className="col-span-2"> */}
+        <div className="col-span-8 lg:col-span-2 order-1 lg:order-none">
           <ul className="mb-10">
             <li className="py-1 text-base font-bold tracking-wide">
               <a
@@ -218,7 +220,8 @@ export default function Search({
             ))}
           </ul>
         </div>
-        <div className="col-span-8">
+        {/* <div className="col-span-8"> */}
+        <div className="col-span-8 order-3 lg:order-none">
           {q && (
             <div className="mb-12 transition ease-in duration-75">
               {data ? (
