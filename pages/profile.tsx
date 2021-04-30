@@ -288,7 +288,7 @@ export default function Profile() {
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
                   <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                     <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700 mb-4">
                           {locale === 'pt' ? 'Primeiro Nome' : 'First Name'}
                         </label>
@@ -307,7 +307,7 @@ export default function Profile() {
                             requiredMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           {locale === 'pt' ? 'Primeiro Nome' : 'First Name'}
                         </label>
@@ -344,7 +344,7 @@ export default function Profile() {
                           {errorsAcc.email && emailMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           Telefone
                         </label>
@@ -361,7 +361,7 @@ export default function Profile() {
                           errorsAcc.custom.telephone &&
                           requiredMessage}
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           NIF
                         </label>
@@ -426,7 +426,7 @@ export default function Profile() {
                             requiredMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           {locale === 'pt' ? 'Morada' : 'Address'}
                         </label>
@@ -445,7 +445,7 @@ export default function Profile() {
                             requiredMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           {locale === 'pt'
                             ? 'Rua, apartamento etc'
@@ -466,7 +466,7 @@ export default function Profile() {
                             requiredMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           {locale === 'pt' ? 'Código Postal' : 'Zip Code'}
                         </label>
@@ -485,7 +485,7 @@ export default function Profile() {
                             requiredMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           {locale === 'pt' ? 'Cidade' : 'City'}
                         </label>
@@ -532,7 +532,7 @@ export default function Profile() {
                             requiredMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           {locale === 'pt' ? 'Morada' : 'Address'}
                         </label>
@@ -551,7 +551,7 @@ export default function Profile() {
                             requiredMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           {locale === 'pt'
                             ? 'Rua, apartamento etc'
@@ -572,7 +572,7 @@ export default function Profile() {
                             requiredMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           {locale === 'pt' ? 'Código Postal' : 'Zip Code'}
                         </label>
@@ -591,7 +591,7 @@ export default function Profile() {
                             requiredMessage}
                         </span>
                       </div>
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-12 lg:col-span-3">
                         <label className="block text-sm font-medium text-gray-700  mb-4">
                           {locale === 'pt' ? 'Cidade' : 'City'}
                         </label>
@@ -654,7 +654,7 @@ export default function Profile() {
                             {errorsPwd.password && requiredMessage}
                           </span>
                         </div>
-                        <div className="col-span-6 sm:col-span-3">
+                        <div className="col-span-12 lg:col-span-3">
                           <label className="block text-sm font-medium text-gray-700 mb-4">
                             {locale === 'pt' ? 'Nova Password' : 'New Password'}
                           </label>
@@ -669,7 +669,7 @@ export default function Profile() {
                             {errorsPwd.new_password && requiredMessage}
                           </span>
                         </div>
-                        <div className="col-span-6 sm:col-span-3">
+                        <div className="col-span-12 lg:col-span-3">
                           <label className="block text-sm font-medium text-gray-700 mb-4">
                             {locale === 'pt'
                               ? 'Confirmar Nova Password'

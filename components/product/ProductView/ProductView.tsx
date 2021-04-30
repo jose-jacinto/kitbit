@@ -70,7 +70,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
             : {}
         )
         .then((response) => {
-          setPrice(response.data[0].productSpec.price)
+          if (!urlVariant) setPrice(response.data[0].productSpec.price)
         })
         .catch((err) => {
           console.log(err)
@@ -100,12 +100,12 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         (variant: any) => variant._id === urlVariant
       )
       if (variant.stock > 0) {
-        selectMainVar(variant)
+        selectMainVariant(variant)
       } else {
-        selectMainVar(product.variant_options[0])
+        selectMainVariant(product.variant_options[0])
       }
-    } else {
-      selectMainVar(product.variant_options[0])
+    } else if (product.variant_options.length > 0) {
+      selectMainVariant(product.variant_options[0])
     }
   }, [product])
 
@@ -174,12 +174,15 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
   }
 
   const selectMainVariant = (variant: any) => {
-    window.history.pushState(
-      null,
-      '',
-      `/product/${product.uri}?variant=${variant._id}`
-    )
-    selectMainVar(variant)
+    if (variant) {
+      window.history.pushState(
+        null,
+        '',
+        `/product/${product.uri}?variant=${variant._id}`
+      )
+      setPrice(variant.price)
+      selectMainVar(variant)
+    }
   }
 
   // Set locale to show product info in the correct language
