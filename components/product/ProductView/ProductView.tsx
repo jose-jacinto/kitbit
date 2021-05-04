@@ -342,24 +342,22 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
             {product.variant_options.length > 0 && (
               <h1 className="font-bold mb-5">{locale === 'pt' ? 'Opções' : 'Options'}</h1>
             )}
-            <div className="flex flex-wrap w-full">
+            <div className="grid grid-cols-3">
               {product.variant_options.map((variant: any, i: number) => {
                 return (
-                  <div className="xl:w-1/3.5 lg:w-1/3 md:w-1/2 pb-4">
-                    <Swatch
-                      key={`${variant.name}-${i}`}
-                      active={
-                        selectedMainVar && selectedMainVar._id === variant._id
-                      }
-                      variant={'slim'}
-                      label={`${variant.name}`}
-                      price={variant.price}
-                      onClick={() => selectMainVariant(variant)}
-                      disabled={variant.stock <= 0}
-                      outOfStock={variant.stock <= 0}
-                      locale={locale}
-                    />
-                  </div>
+                  <Swatch
+                    key={`${variant.name}-${i}`}
+                    active={
+                      selectedMainVar && selectedMainVar._id === variant._id
+                    }
+                    variant={'slim'}
+                    label={`${variant.name}`}
+                    price={variant.price}
+                    onClick={() => selectMainVariant(variant)}
+                    disabled={variant.stock <= 0}
+                    outOfStock={variant.stock <= 0}
+                    locale={locale}
+                  />
                 )
               })}
             </div>
