@@ -48,6 +48,8 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
   )
 
   const [displayPrice, setPrice] = useState<any>(null)
+  const [displayStock, setStock] = useState<any>(null)
+  const [displayVariantStock, setVariantStock] = useState<any>(null)
   const [effect, setEffect] = useState<boolean>(false)
 
   const newText = locale === 'pt' ? 'NOVO!' : 'NEW!'
@@ -77,6 +79,35 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         })
     }
 
+    if (!displayStock && !displayVariantStock) {
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_WB_DOMAIN}/api/model/${process.env.NEXT_PUBLIC_WB_PROJECT_ID}/get_stock?modelId[]=${product._id}`,
+          localStorage.getItem('wb_token')
+            ? {
+              headers: {
+                Authorization: localStorage.getItem('wb_token')
+                  ? localStorage.getItem('wb_token')
+                  : null,
+              },
+            }
+            : {}
+        )
+        .then((response) => {
+          const productStock = response.data.filter((el: any) => el.modelId && !el.variantId);
+          const variantsStock = response.data.filter((el: any) => el.modelId && el.variantId);
+
+          console.log(productStock[0]);
+          console.log(variantsStock);
+
+          setStock(productStock[0]);
+          setVariantStock(variantsStock);
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+
     import('react-facebook-pixel')
       .then((x) => x.default)
       .then((ReactPixel) => {
@@ -95,19 +126,21 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
         })
       })
 
-    if (urlVariant && product.variant_options) {
+    if (urlVariant && product.variant_options && displayVariantStock && displayStock) {
       const variant = product.variant_options.find(
         (variant: any) => variant._id === urlVariant
       )
-      if (variant.stock > 0) {
+      if (displayVariantStock.find((leStock: any) => variant._id === leStock.variantId).stock > 0) {
         selectMainVariant(variant)
       } else {
-        selectMainVariant(product.variant_options[0])
+        const variantWithStock = product.variant_options.find((leVar: any) => leVar.stock > 0);
+        selectMainVariant(variantWithStock)
       }
-    } else if (product.variant_options.length > 0) {
-      selectMainVariant(product.variant_options[0])
+    } else if (product.variant_options.length > 0 && displayVariantStock && displayStock) {
+      const variantWithStock = product.variant_options.find((leVar: any) => leVar.stock > 0);
+      selectMainVariant(variantWithStock)
     }
-  }, [product])
+  }, [product, displayStock, displayVariantStock])
 
   const addItemToCart = () => {
     if (localStorage.getItem('wb_token')) {
@@ -217,7 +250,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
     }
   }
 
-  return (
+  return displayPrice && displayStock && displayVariantStock && (
     <Container className="max-w-none w-full" clean>
       <ProductJsonLd
         productName={product.name}
@@ -231,7 +264,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
             priceCurrency: 'EUR',
             itemCondition: 'https://schema.org/NewCondition',
             availability:
-              product.stock > 0
+              displayStock.stock > 0
                 ? 'https://schema.org/InStock'
                 : 'https://schema.org/OutOfStock',
             url: `https://kitbit.eu/product/${product.uri}`,
@@ -301,7 +334,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
           </div>
           <div className={s.sliderContainer}>
             <div className="absolute bottom-0 left-0 pr-16 max-w-full z-20">
-              {product.stock <= 0 ? (
+              {displayStock.stock <= 0 ? (
                 <span
                   className={cn(s.productPrice2, 'text-kitbit', 'text-kitbit')}
                 >
@@ -344,6 +377,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
             )}
             <div className="grid grid-cols-3">
               {product.variant_options.map((variant: any, i: number) => {
+                variant.stock = displayVariantStock.find((leStock: any) => variant._id === leStock.variantId).stock;
                 return (
                   <Swatch
                     key={`${variant.name}-${i}`}
@@ -368,7 +402,7 @@ const ProductView: FC<Props> = ({ product, urlVariant }) => {
             </div>
           </section>
           <div>
-            {product.stock > 0 ? (
+            {displayStock.stock > 0 ? (
               selectedMainVar ||
                 (!selectedMainVar && product.variant_options.length === 0) ? (
                 <Button
